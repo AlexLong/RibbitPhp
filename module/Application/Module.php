@@ -9,6 +9,9 @@
 
 namespace Application;
 
+use Application\Domain\DbLayerConcrete\GeneralRepository;
+use Composer\Console\Application;
+use Zend\Db\Sql\Sql;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -35,5 +38,29 @@ class Module
                 ),
             ),
         );
+    }
+
+    public  function  getServiceConfig()
+    {
+        return array(
+            'invokables' => array(
+
+            ),
+           'factories' => array(
+
+         'GeneralRepository' => function($sm){
+                 $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                 $sql = new Sql($dbAdapter);
+                 $repository  = new GeneralRepository();
+                 $repository->setSqlManager($sql);
+                 $repository->setDbAdapter($dbAdapter);
+                 $repository->setEntityManager('doctrine.entitymanager.orm_default');
+                 $repository->setServiceLocator($sm);
+
+                 return $repository;
+             }
+           )
+        );
+
     }
 }
