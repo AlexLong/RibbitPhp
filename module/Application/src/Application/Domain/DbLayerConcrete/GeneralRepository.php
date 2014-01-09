@@ -19,24 +19,36 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInterface {
 
 
-    protected $dbAdapter;
+    protected static $dbAdapter;
 
     protected $serviceManager;
 
     protected $entityManager;
 
-    private  $sqlManager;
+    protected  $sqlManager;
+
+
+    public  function execute($statement)
+    {
+
+        $request  = $this->getSqlManager()->getStringForSqlObject($statement);
+
+        return $this->getDbAdapter()->query($request,$this->getDbAdapter()->QUERY_MODE_EXECUTE);
+
+    }
 
     public  function setSqlManager(Sql $sql)
     {
         $this->sqlManager = $sql;
     }
 
-
     public function getSqlManager()
     {
         return $this->sqlManager;
     }
+
+
+
 
     public function setDbAdapter( AdapterInterface $dbAdapter )
     {
