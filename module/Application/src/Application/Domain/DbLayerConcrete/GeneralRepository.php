@@ -11,6 +11,7 @@ namespace Application\Domain\DbLayerConcrete;
 
 
 use Application\Domain\DbLayerInterfaces\RepositoryInterface;
+use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Sql;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -19,24 +20,21 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInterface {
 
 
-    protected static $dbAdapter;
+    protected $dbAdapter;
 
     protected $serviceManager;
 
     protected $entityManager;
 
-    protected  $sqlManager;
+    protected $sqlManager;
 
 
     public  function execute($statement)
     {
 
-        $request  = $this->getSqlManager()->getStringForSqlObject($statement);
-
-        return $this->getDbAdapter()->query($request,$this->getDbAdapter()->QUERY_MODE_EXECUTE);
-
+        $request = $this->getSqlManager()->getSqlStringForSqlObject($statement);
+        return $this->getDbAdapter()->query($request,Adapter::QUERY_MODE_EXECUTE);
     }
-
     public  function setSqlManager(Sql $sql)
     {
         $this->sqlManager = $sql;
@@ -46,9 +44,6 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
     {
         return $this->sqlManager;
     }
-
-
-
 
     public function setDbAdapter( AdapterInterface $dbAdapter )
     {

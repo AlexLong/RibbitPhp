@@ -10,6 +10,7 @@
 namespace Application\Controller;
 
 use Application\Domain\DbLayerConcrete\GeneralRepository;
+use Application\Domain\DbLayerConcrete\UserRepository;
 use Zend\Db\Sql\Sql;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -19,20 +20,19 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 
-        $repo =  $this->serviceLocator->get('GeneralRepository');
+        $user = $this->serviceLocator->get('RepositoryAccessor')->users;
 
+        $res = $user->findById(1);
 
-        $sql = $repo->getSqlManager();
-
-        var_dump($sql->getAdapter());
-        exit;
-        $sql->update();
-
-
-
+        foreach($res as $set){
+            echo($set->username);
+            echo($set->email);
+        }
 
         return new ViewModel();
     }
+
+
 
 
 }

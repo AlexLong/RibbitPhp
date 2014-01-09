@@ -12,6 +12,12 @@ namespace Application\Domain\DbLayerInterfaces;
 
 interface RepositoryInterface {
 
+    public function execute($statement);
 
+    public function getSqlManager();
+
+    public function getDbAdapter();
+
+    public  function getServiceLocator();
 
 } 

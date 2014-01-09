@@ -10,6 +10,7 @@
 namespace Application;
 
 use Application\Domain\DbLayerConcrete\GeneralRepository;
+use Application\Domain\DbLayerConcrete\RepositoryAccessor;
 use Composer\Console\Application;
 use Zend\Db\Sql\Sql;
 use Zend\Mvc\ModuleRouteListener;
@@ -48,6 +49,13 @@ class Module
             ),
            'factories' => array(
 
+
+           'RepositoryAccessor' => function($sm){
+               $general_repository = $sm->get('GeneralRepository');
+               $repository_accessor = new RepositoryAccessor($general_repository);
+               return $repository_accessor;
+           } ,
+
          'GeneralRepository' => function($sm){
                  $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                  $sql = new Sql($dbAdapter);
@@ -56,7 +64,6 @@ class Module
                  $repository->setDbAdapter($dbAdapter);
                  $repository->setEntityManager('doctrine.entitymanager.orm_default');
                  $repository->setServiceLocator($sm);
-
                  return $repository;
              }
            )
