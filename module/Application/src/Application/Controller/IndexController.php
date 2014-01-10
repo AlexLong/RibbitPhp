@@ -13,6 +13,7 @@ use Application\Domain\DbLayerConcrete\GeneralRepository;
 use Application\Domain\DbLayerConcrete\UserRepository;
 use Zend\Db\Sql\Sql;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\SessionManager;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
@@ -22,12 +23,13 @@ class IndexController extends AbstractActionController
 
         $user = $this->serviceLocator->get('RepositoryAccessor')->users;
 
-        $res = $user->findById(1, array('username', 'email'));
-
-        var_dump($res);
+        $authService = $this->serviceLocator->get('AuthService');
 
 
+        $result = $authService->authenticate("test","secret");
 
+
+        var_dump($authService->getSessionManager()->user_id);
 
         return new ViewModel();
     }

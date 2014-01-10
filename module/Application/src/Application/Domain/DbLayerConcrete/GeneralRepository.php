@@ -54,10 +54,9 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
                 ->where($where)
                 ->limit($limit);
         }
+        $result = $this->execute($select)->toArray();
 
-        $result = $this->execute($select);
-        return $result->toArray();
-
+        return  (count($result) == 1 ) ? $result[0] : $result;
     }
 
 

@@ -20,6 +20,20 @@ return array(
         ),
     ),
 
+    'session' => array(
+        'config' => array(
+            'class' => 'Zend\Session\Config\SessionConfig',
+            'options' => array(
+                'name' => 'c_user',
+            ),
+        ),
+        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
+        'validators' => array(
+            'Zend\Session\Validator\RemoteAddr',
+            'Zend\Session\Validator\HttpUserAgent',
+        ),
+    ),
+
     'service_manager' => array(
         'factories' => array(
             'Zend\Db\Adapter\Adapter' => function ($sm) {
