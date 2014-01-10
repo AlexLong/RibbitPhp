@@ -22,12 +22,12 @@ class IndexController extends AbstractActionController
 
         $user = $this->serviceLocator->get('RepositoryAccessor')->users;
 
-        $res = $user->findById(1);
+        $res = $user->findById(1, array('username', 'email'));
 
-        foreach($res as $set){
-            echo($set->username);
-            echo($set->email);
-        }
+        var_dump($res);
+
+
+
 
         return new ViewModel();
     }

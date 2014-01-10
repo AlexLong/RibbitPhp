@@ -48,8 +48,6 @@ class Module
 
             ),
            'factories' => array(
-
-
            'RepositoryAccessor' => function($sm){
                $general_repository = $sm->get('GeneralRepository');
                $repository_accessor = new RepositoryAccessor($general_repository);

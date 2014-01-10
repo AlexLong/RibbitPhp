@@ -12,12 +12,13 @@ namespace Application\Domain\DbLayerConcrete;
 
 use Application\Domain\DbLayerInterfaces\RepositoryInterface;
 use Application\Domain\DbLayerInterfaces\UserRepositoryInterface;
+use Zend\Db\Adapter\Adapter;
 use Zend\Db\Sql\Sql;
 
 class UserRepository implements  UserRepositoryInterface {
 
 
-    protected static $table = 'ribbit_user';
+    protected $table = 'ribbit_user';
 
     protected $general_repository;
 
@@ -25,27 +26,17 @@ class UserRepository implements  UserRepositoryInterface {
     {
         $this->general_repository = $repository;
     }
-
-    function  findById($id)
+    function  findById($id, array $columns = null)
     {
-          $select = $this->general_repository->getSqlManager()
-            ->select()
-            ->from(self::$table)
-            ->where(array('id' => $id))
-            ->limit(1);
-     return  $this->general_repository->execute($select);
-
+         return $this->general_repository->findBy(array('id' => $id),$this->table,$columns);
     }
-
-    function  findByUsername($username)
+    function  findByUsername($username, array $columns = null)
     {
-        // TODO: Implement findByUsername() method.
+        return $this->general_repository->findBy(array('username' => $username),$this->table,$columns);
     }
-
-    function  findByEmail($email)
+    function  findByEmail($email, array $columns = null)
     {
-        // TODO: Implement findByEmail() method.
+        return $this->general_repository->findBy(array('email' => $email),$this->table,$columns);
     }
-
 
 } 
