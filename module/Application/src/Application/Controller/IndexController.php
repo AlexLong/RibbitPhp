@@ -11,6 +11,8 @@ namespace Application\Controller;
 
 use Application\Domain\DbLayerConcrete\GeneralRepository;
 use Application\Domain\DbLayerConcrete\UserRepository;
+use Application\Domain\Entity\RibbitUser;
+use Doctrine\Tests\Common\DataFixtures\TestEntity\User;
 use Zend\Db\Sql\Sql;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\SessionManager;
@@ -21,15 +23,19 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 
-        $user = $this->serviceLocator->get('RepositoryAccessor')->users;
+       // $user = $this->serviceLocator->get('RepositoryAccessor')->users;
 
         $authService = $this->serviceLocator->get('AuthService');
 
 
-        $result = $authService->authenticate("test","secret");
+
+     //$authService->authenticate("test","secret");
+      //  $authService->logout();
 
 
-        var_dump($authService->getSessionManager()->user_id);
+        $logged = $authService->is_logged();
+
+        var_dump($logged);
 
         return new ViewModel();
     }
