@@ -61,6 +61,17 @@ class Module
         );
     }
 
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'invokables' => array(
+                'renderForm' => 'Application\ViewHelpers\Form\RenderFormHelper'
+            )
+        );
+    }
+
+
     public  function  getServiceConfig()
     {
         return array(

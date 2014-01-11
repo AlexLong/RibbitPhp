@@ -23,21 +23,19 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 
-       // $user = $this->serviceLocator->get('RepositoryAccessor')->users;
+        return new ViewModel();
+    }
 
-        $authService = $this->serviceLocator->get('AuthService');
+    public function loginAction()
+    {
 
-
-
-     //$authService->authenticate("test","secret");
-      //  $authService->logout();
-
-
-        $logged = $authService->is_logged();
-
-        var_dump($logged);
 
         return new ViewModel();
+    }
+
+    public function getAuthService()
+    {
+        return  $authService = $this->serviceLocator->get('AuthService');
     }
 
 
