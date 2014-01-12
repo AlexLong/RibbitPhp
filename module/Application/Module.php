@@ -26,6 +26,11 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+
+        $eventManager->getSharedManager()->attach('AuthService','authenticate', function($e){
+            var_dump($e);
+        });
+
         $this->bootstrapSession($e);
     }
 
@@ -76,7 +81,6 @@ class Module
     {
         return array(
             'invokables' => array(
-
             ),
            'factories' => array(
 
