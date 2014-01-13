@@ -37,7 +37,7 @@ return array(
             ),
 
             'login' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Literal',
                 'options' => array(
                     'route'    => '/login',
                     'defaults' => array(

@@ -18,56 +18,39 @@ use Doctrine\Tests\Common\DataFixtures\TestEntity\User;
 use Zend\Db\Sql\Sql;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\Plugin\Redirect;
 use Zend\Session\SessionManager;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class IndexController extends AbstractBaseController
 {
-    public function getAuthService()
-    {
-        return  $authService = $this->serviceLocator->get('AuthService');
-    }
-    public function indexAction()
+   public function indexAction()
     {
 
         return new ViewModel();
     }
+
 
     public function loginAction()
     {
 
-        $loginForm = new LoginForm();
+        if($this->getRequest()->isPost()){
 
-        $loginModel = new LoginModel();
-
-
-        $req = $this->getRequest();
-
-        if($req->ispost()){
-            $loginForm->setInputFilter($loginModel->getInputFilter());
-            $data = $req->getPost();
-            $loginForm->setData($req->getPost());
-            if(!$loginForm->isValid())
+            $data = $this->getRequest()->getPost();
+            if(!$this->getAuthService()->authenticate($data))
             {
-                $messages = $loginForm->getMessages();
-                var_dump($messages);
-            }else{
+                $messages = $this->getAuthService()->getValidationMessages();
 
-
+                return new ViewModel(array('validation_messages' => $messages));
             }
 
         }
 
-
-       // $this->getAuthService()->authenticate($this->request->getContent());
-
-        return new ViewModel();
+       return new ViewModel();
     }
 
-    public  function  getRequestManager()
-    {
-        return new Request();
-    }
+
+
 
 
 

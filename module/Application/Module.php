@@ -27,10 +27,14 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $eventManager->getSharedManager()->attach('AuthService','authenticate', function($e){
-            var_dump($e);
-        });
+        /*
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH,function($e){
 
+            $appl = $e->getRouteMatch();
+            $params = $appl->getParams();
+            var_dump($params['action']);
+        },50);
+        */
         $this->bootstrapSession($e);
     }
 
@@ -88,7 +92,14 @@ class Module
             'AuthService' => function($sm){
                $user_repository = $sm->get('RepositoryAccessor')->users;
                $sessionManager = $sm->get('Zend\Session\SessionManager');
-               return new AuthenticationService($user_repository,$sessionManager);
+               $loginForm = new \Application\Form\LoginForm();
+               $loginModel = new \Application\Model\LoginModel();
+
+               $authService = new AuthenticationService($user_repository, $sessionManager);
+               $authService->setLoginForm($loginForm);
+               $authService->setLoginModel($loginModel);
+
+               return $authService;
             },
 
 
