@@ -11,7 +11,7 @@ namespace Application;
 
 use Application\Domain\DbLayerConcrete\GeneralRepository;
 use Application\Domain\DbLayerConcrete\RepositoryAccessor;
-use Application\Service\User\AuthenticationService;
+use Application\Service\Interfaces\User\AuthenticationService;
 use Composer\Console\Application;
 use Zend\Db\Sql\Sql;
 use Zend\Mvc\ModuleRouteListener;
@@ -87,8 +87,6 @@ class Module
             'invokables' => array(
             ),
            'factories' => array(
-
-
             'AuthService' => function($sm){
                $user_repository = $sm->get('RepositoryAccessor')->users;
                $sessionManager = $sm->get('Zend\Session\SessionManager');

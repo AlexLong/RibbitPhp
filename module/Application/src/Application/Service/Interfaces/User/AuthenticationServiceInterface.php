@@ -12,6 +12,11 @@ namespace Application\Service\Interfaces\User;
 
 interface AuthenticationServiceInterface {
 
-    public  function  authenticate($postData);
+     function  authenticate($postData);
+
+     function is_logged();
+
+
+
 
 } 
