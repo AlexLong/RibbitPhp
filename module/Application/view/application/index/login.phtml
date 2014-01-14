@@ -1,3 +1,15 @@
+
+
+
+<?php if($this->validation_messages){?>
+
+
+    <div class="alert alert-danger">
+        <?php echo $this->validation_messages[0]; ?>
+    </div>
+
+    <?php  }?>
+
 <?php
 
 $form = $this->renderForm('login');

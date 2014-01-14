@@ -27,7 +27,7 @@ class LoginForm extends  Form {
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true
+
             ),
         ));
         $this->add(array(
@@ -40,7 +40,7 @@ class LoginForm extends  Form {
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true
+
             ),
         ));
 

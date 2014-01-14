@@ -7,15 +7,18 @@
  * 
  */
 
-namespace Application\Service\Interfaces\User;
+namespace Application\Service\User;
 
 
 use Application\Domain\DbLayerInterfaces\UserRepositoryInterface;
+use Application\Form\LoginForm;
 use Application\Model\LoginModel;
-use UserAuth\Form\LoginForm;
+use Application\Service\Interfaces\User\AuthenticationServiceInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\SessionManager;
 
-class AuthenticationService implements  AuthenticationServiceInterface {
+class AuthenticationService implements  AuthenticationServiceInterface, ServiceLocatorAwareInterface {
 
     protected $user_repository;
 
@@ -25,42 +28,66 @@ class AuthenticationService implements  AuthenticationServiceInterface {
 
     protected $loginModel;
 
-    protected $ValidationMessages;
+    protected $validationMessages;
+
+
+    protected $serviceLocator;
+
+    protected $select = array('id','email' ,'password' );
+
+    const INVALID_EMAIL = "Invalid email/password. Please Try again.";
 
     //protected $formData = array();
 
-
-
     public function  authenticate($postData)
     {
-
-        $form =   $this->getLoginForm()->setInputFilter($this->getLoginModel());
-
+        $form =  $this->getLoginForm()->setInputFilter($this->getLoginModel()->getInputFilter());
         $form->setData($postData);
 
         if(!$form->isValid())
         {
-            $this->ValidationMessages = $form->getMessages();
+            $this->validationMessages[] =  self::INVALID_EMAIL; //$form->getMessages();
+            return false;
+        }
+
+       $user = $this->getUserRepository()->findByEmail($postData['email'],
+            $this->select);
+        if((!isset($user)  || $user == null) ||
+            ($user['password'] !== md5($postData['password']))){
+
+            $this->validationMessages[] = self::INVALID_EMAIL;
 
             return false;
         }
-       $user = $this->getUserRepository()->findByEmail($postData['email'],
-            array('id','email' ,'password' ));
 
-        if((!isset($user)  || $user == null) || ($user['password'] !== md5($postData['password'])) ) return false;
+
 
 
     //    $ses  = new SessionManager();
 
-        $this->getSessionManager()->offsetSet('user_id', $user['id']);
 
+        $this->getSessionManager()->getStorage()->offsetSet('user_id', $user['id']);
+
+        if(isset($postData['remember_me']))
+            $this->getSessionManager()->rememberMe();
 
       return true;
     }
 
     function is_logged()
     {
-        // TODO: Implement is_logged() method.
+        $ses = new SessionManager();
+        $ses->getStorage()->offsetExists('user_id');
+      if(!$this->getSessionManager()->isValid() || !$this->getSessionManager()->getStorage()->offsetExists('user_id')){
+        return false;
+      }
+
+
+
+          return true;
+
+
+
     }
 
 
@@ -141,11 +168,29 @@ class AuthenticationService implements  AuthenticationServiceInterface {
      */
     public function getValidationMessages()
     {
-        return $this->ValidationMessages;
+        return $this->validationMessages;
     }
 
+    /**
+     * Set service locator
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
 
+    /**
+     * Get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
 
+    }
 
 
 } 

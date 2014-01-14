@@ -14,6 +14,7 @@ namespace Application\Model;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Validator\Db\AbstractDb;
 use Zend\Validator\NotEmpty;
 
 class LoginModel implements InputFilterAwareInterface {
@@ -29,6 +30,8 @@ class LoginModel implements InputFilterAwareInterface {
         $this->email     = (isset($data['email']))     ? $data['email']     : null;
         $this->password = (isset($data['password'])) ? $data['password'] : null;
         $this->csrf  = (isset($data['csrf']))  ? $data['csrf']  : null;
+
+
     }
 
 
@@ -55,7 +58,6 @@ class LoginModel implements InputFilterAwareInterface {
          if(!$this->inputFilter){
 
              $inputFilter = new InputFilter();
-
 
              $inputFilter->add(array(
                   'name' => 'email',

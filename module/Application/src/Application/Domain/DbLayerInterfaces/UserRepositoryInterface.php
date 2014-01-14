@@ -11,10 +11,11 @@ namespace Application\Domain\DbLayerInterfaces;
 
 interface UserRepositoryInterface
 {
+
     function  findById($id, array $columns = null);
 
     function  findByUsername($username, array $columns = null);
 
-  public   function  findByEmail($email, array $columns = null);
+    function  findByEmail($email, array $columns = null);
 
 }

@@ -20,6 +20,7 @@ use Zend\Http\Request;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\Controller\Plugin\Redirect;
 use Zend\Session\SessionManager;
+use Zend\Stdlib\ArrayUtils;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractBaseController
@@ -30,15 +31,16 @@ class IndexController extends AbstractBaseController
         return new ViewModel();
     }
 
-
     public function loginAction()
     {
 
         if($this->getRequest()->isPost()){
 
             $data = $this->getRequest()->getPost();
+
             if(!$this->getAuthService()->authenticate($data))
             {
+
                 $messages = $this->getAuthService()->getValidationMessages();
 
                 return new ViewModel(array('validation_messages' => $messages));
