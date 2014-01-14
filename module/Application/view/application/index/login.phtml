@@ -1,0 +1,29 @@
+<?php
+
+$form = $this->renderForm('login');
+
+$form->setAttributes(array(
+    'method' => 'post',
+    'action' => $this->Url('login')
+));
+
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formLabel($form->get('email'));
+echo $this->formElement($form->get('email'));
+
+echo $this->formLabel($form->get('password'));
+echo $this->formElement($form->get('password'));
+
+
+echo $this->formLabel($form->get('remember_me'));
+echo $this->formElement($form->get('remember_me'));
+
+
+echo $this->formElement($form->get('csrf'));
+echo $this->formElement($form->get('submit'));
+
+echo $this->form()->closeTag();
+?>

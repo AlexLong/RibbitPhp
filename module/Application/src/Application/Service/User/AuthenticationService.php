@@ -25,13 +25,32 @@ class AuthenticationService implements  AuthenticationServiceInterface {
 
     protected $loginModel;
 
+    protected $ValidationMessages;
+
     //protected $formData = array();
 
 
 
     public function  authenticate($postData)
     {
-        // TODO: Implement authenticate() method.
+
+        $form =   $this->getLoginForm()->setInputFilter($this->getLoginModel());
+
+        $form->setData($postData);
+
+
+        if(!$form->isValid())
+        {
+            $this->ValidationMessages = $form->getMessages();
+
+            return false;
+        }
+
+       $user = $this->getUserRepository()->findByEmail($postData['email'],
+            array('email', 'username', 'password','role' ));
+        if((!isset($user)  || $user == null) || ($user['password'] !== md5($postData['password'])) ) return false;
+
+      return true;
     }
 
     function is_logged()
@@ -102,6 +121,22 @@ class AuthenticationService implements  AuthenticationServiceInterface {
     public function getUserRepository()
     {
         return $this->user_repository;
+    }
+
+    /**
+     * @param mixed $ValidationMessages
+     */
+    public function setValidationMessages($ValidationMessages)
+    {
+        $this->ValidationMessages = $ValidationMessages;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getValidationMessages()
+    {
+        return $this->ValidationMessages;
     }
 
 

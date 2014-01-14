@@ -7,7 +7,7 @@
  * 
  */
 
-namespace UserAuth\Form;
+namespace Application\Form;
 
 use Zend\Form\Form;
 

@@ -15,6 +15,6 @@ interface UserRepositoryInterface
 
     function  findByUsername($username, array $columns = null);
 
-    function  findByEmail($email, array $columns = null);
+  public   function  findByEmail($email, array $columns = null);
 
 }

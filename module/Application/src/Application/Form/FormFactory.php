@@ -7,7 +7,7 @@
  * 
  */
 
-namespace UserAuth\Form;
+namespace Application\Form;
 
 
 class FormFactory {
@@ -22,7 +22,7 @@ class FormFactory {
 
         $content = self::$forms[$form];
 
-        return new $content;
+        return new $content();
     }
 
 
