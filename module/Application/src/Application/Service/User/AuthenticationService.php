@@ -38,17 +38,22 @@ class AuthenticationService implements  AuthenticationServiceInterface {
 
         $form->setData($postData);
 
-
         if(!$form->isValid())
         {
             $this->ValidationMessages = $form->getMessages();
 
             return false;
         }
-
        $user = $this->getUserRepository()->findByEmail($postData['email'],
-            array('email', 'username', 'password','role' ));
+            array('id','email' ,'password' ));
+
         if((!isset($user)  || $user == null) || ($user['password'] !== md5($postData['password'])) ) return false;
+
+
+    //    $ses  = new SessionManager();
+
+        $this->getSessionManager()->offsetSet('user_id', $user['id']);
+
 
       return true;
     }

@@ -16,4 +16,15 @@ class LoginValidator extends  NoRecordExists {
 
 
 
+
+    public  function __construct(array $options)
+    {
+        parent::__construct($options);
+
+    }
+
+
+
+
+
 } 
