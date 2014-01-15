@@ -16,7 +16,7 @@ $form = $this->renderForm('login');
 
 $form->setAttributes(array(
     'method' => 'post',
-    'action' => $this->Url('login')
+    'action' => $this->Url('index/index_child', array('action' => 'login'))
 ));
 
 $form->prepare();
@@ -30,12 +30,14 @@ echo $this->formLabel($form->get('password'));
 echo $this->formElement($form->get('password'));
 
 
+
 echo $this->formLabel($form->get('remember_me'));
 echo $this->formElement($form->get('remember_me'));
 
 
 echo $this->formElement($form->get('csrf'));
 echo $this->formElement($form->get('submit'));
+
 
 echo $this->form()->closeTag();
 ?>

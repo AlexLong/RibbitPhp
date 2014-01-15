@@ -27,6 +27,7 @@ class LoginForm extends  Form {
             ),
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => true
 
             ),
         ));
@@ -40,6 +41,7 @@ class LoginForm extends  Form {
             ),
             'attributes' => array(
                 'class' => 'form-control',
+                'required' => true
 
             ),
         ));
@@ -47,9 +49,13 @@ class LoginForm extends  Form {
         $this->add(array(
             'name' => 'remember_me',
             'type' => 'Checkbox',
+
             'options' => array(
                 'label' => 'Remember Me?',
             ),
+            'attributes' => array(
+                'checked' => 'checked'
+            )
         ));
 
         $this->add(array(

@@ -27,14 +27,18 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        /*
+
         $eventManager->attach(MvcEvent::EVENT_DISPATCH,function($e){
 
-            $appl = $e->getRouteMatch();
-            $params = $appl->getParams();
-            var_dump($params['action']);
+
+           //$appl = $e->getRouteMatch();
+           // $params = $appl->getParams();
+           //$name =$appl->getMatchedRouteName();
+            //$params = $appl->getParams();
+           // var_dump($params['action']);
+
         },50);
-        */
+
         $this->bootstrapSession($e);
     }
 

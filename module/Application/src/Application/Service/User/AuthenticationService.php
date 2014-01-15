@@ -33,7 +33,7 @@ class AuthenticationService implements  AuthenticationServiceInterface, ServiceL
 
     protected $serviceLocator;
 
-    protected $select = array('id','email' ,'password' );
+    protected $select = array('id','email' ,'password');
 
     const INVALID_EMAIL = "Invalid email/password. Please Try again.";
 
@@ -49,7 +49,6 @@ class AuthenticationService implements  AuthenticationServiceInterface, ServiceL
             $this->validationMessages[] =  self::INVALID_EMAIL; //$form->getMessages();
             return false;
         }
-
        $user = $this->getUserRepository()->findByEmail($postData['email'],
             $this->select);
         if((!isset($user)  || $user == null) ||
@@ -59,22 +58,17 @@ class AuthenticationService implements  AuthenticationServiceInterface, ServiceL
 
             return false;
         }
-
-
-
-
-    //    $ses  = new SessionManager();
-
-
         $this->getSessionManager()->getStorage()->offsetSet('user_id', $user['id']);
 
-        if(isset($postData['remember_me']))
+        if(isset($postData['remember_me']) && $postData['remember_me'] == true){
             $this->getSessionManager()->rememberMe();
+        }
+
 
       return true;
     }
 
-    function is_logged()
+    public  function is_logged()
     {
         $ses = new SessionManager();
         $ses->getStorage()->offsetExists('user_id');

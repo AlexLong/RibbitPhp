@@ -25,29 +25,37 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractBaseController
 {
+
+    protected  $userHome = 'user_home';
+
    public function indexAction()
-    {
+   {
+       // $this->getUserPlugin()->RedirectToAuth($this->getEvent());
 
         return new ViewModel();
-    }
+   }
 
     public function loginAction()
     {
+        $logged = $this->getAuthService()->is_logged();
 
-        if($this->getRequest()->isPost()){
+       // $reoute = $this->getEvent()->
+
+        if($logged)
+            return $this->forward()->dispatch('Application\Controller\Home',array('action' =>'index'));
+
+        if($this->getRequest()->isPost() && !$logged){
 
             $data = $this->getRequest()->getPost();
 
             if(!$this->getAuthService()->authenticate($data))
             {
-
                 $messages = $this->getAuthService()->getValidationMessages();
 
                 return new ViewModel(array('validation_messages' => $messages));
             }
-
+            return  $this->redirect($this->userHome);
         }
-
        return new ViewModel();
     }
 
