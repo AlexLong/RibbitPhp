@@ -60,10 +60,10 @@ class LoginForm extends  Form {
 
         $this->add(array(
                 'type' => 'Zend\Form\Element\Csrf',
-                'name' => 'csrf',
+                'name' => 'auth_token',
                 'options' => array(
                     'csrf_options' => array(
-                      //  'timeout' => 600
+                        'timeout' => 600
                     )
                 )
             )

@@ -1,7 +1,4 @@
 <?php
-$query = array(
-    'type' => 'Query',
-);// End Query
 
 return array(
 
@@ -57,7 +54,7 @@ return array(
             ),
             'may_terminate' => true,
             'child_routes' => array(
-               // 'query' => array('type' => 'query'),
+
             ),
 
         ),

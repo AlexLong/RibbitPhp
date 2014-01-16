@@ -30,22 +30,17 @@ class IndexController extends AbstractBaseController
 
    public function indexAction()
    {
-       $this->getUserPlugin()->requireAuth();
-
+     $this->getUserPlugin()->requireAuth();
+   // var_dump($this->getEvent()->getRouteMatch());
         return new ViewModel();
    }
 
     public function loginAction()
     {
 
-        $logged = $this->getAuthService()->is_identified();
+        $this->getUserPlugin()->signedUserRedirect();
 
-       // $reoute = $this->getEvent()->
-
-        if($logged)
-            return $this->forward()->dispatch('Application\Controller\Home',array('action' =>'index'));
-
-        if($this->getRequest()->isPost() && !$logged){
+        if($this->getRequest()->isPost()){
 
             $data = $this->getRequest()->getPost();
 
@@ -53,9 +48,10 @@ class IndexController extends AbstractBaseController
             {
                 $messages = $this->getAuthService()->getValidationMessages();
 
+                $this->response->setContent("?inv=4");
                 return new ViewModel(array('validation_messages' => $messages));
             }
-            return  $this->redirect($this->userHome);
+            return  $this->getUserPlugin()->redirectToHome();
         }
        return new ViewModel();
     }

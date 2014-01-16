@@ -27,35 +27,58 @@ class UserPlugin extends AbstractPlugin  {
 
     protected $authPath = array('route' => "index/index_child", 'action' => 'login');
 
-    public function redirectToAuth(array $authPath = null)
+    protected $userLinks;
+
+    public function redirectToAuth()
     {
-        if($authPath == null)
-            $authPath = $this->authPath;
-        $action = $this->getEvent()->getRouteMatch()->getParam('action');
-        $routeName = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
-
-        return $this->getRedirect()->toRoute($authPath['route'],
-            array('action' => $authPath['action']), array('query' =>
-                array( 'rt' => $routeName.'/'.$action  )));
+        return $this->configureRedirectByLink('login_form', $this->getCurrentRoute());
     }
-
 
     public  function requireAuth()
     {
-
         if(!$this->getAuthService()->is_identified()){
             return $this->redirectToAuth();
         }
         return false;
     }
 
+    public  function signedUserRedirect()
+    {
+        if($this->getAuthService()->is_identified()){
+            return $this->redirectToHome();
+        }
+        return false;
+    }
+    public  function  redirectToHome(){
+
+        return $this->configureRedirectByLink('user_home');
+    }
+
+    public  function  getCurrentRoute()
+    {
+        $action = $this->getEvent()->getRouteMatch()->getParam('action');
+        $routeName = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
+        return array( 'rt' => $routeName.'/'.$action  );
+    }
+
+    public function configureRedirectByLink($user_link, $query = null )
+    {
+        $links = $this->getUserLinks();
+
+        $chosen_link = $links[$user_link];
+        return ($this->getRedirect()->toRoute($chosen_link['route'],
+            array('action' => $chosen_link['action']), array('query' =>
+                $query)));
+
+    }
     public function setRedirect(Redirect $redirect)
     {
         if(null == $this->redirect )
             $this->redirect = $redirect;
-
        $this->redirect = $redirect;
     }
+
+
 
 
     protected function getRedirect()
@@ -98,7 +121,21 @@ class UserPlugin extends AbstractPlugin  {
         return $this->authService;
     }
 
+    /**
+     * @param mixed $userLinks
+     */
+    public function setUserLinks($userLinks)
+    {
+        $this->userLinks = $userLinks;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getUserLinks()
+    {
+        return $this->userLinks;
+    }
 
 
 

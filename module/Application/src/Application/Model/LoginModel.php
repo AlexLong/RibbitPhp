@@ -96,39 +96,27 @@ class LoginModel implements InputFilterAwareInterface {
                          )
                         )
                    );
-
+/*
              $inputFilter->add(array(
-                     'name' => 'csrf',
+                     'name' => 'auth_token',
                      'required' => true,
                      'validators' => array(
                          array(
                              'name' => 'Csrf',
-                             'break_chain_on_failure' => true,
                              'options' => array(
-
                                  'messages' => array(
                                      \Zend\Validator\Csrf::NOT_SAME => 'The security token is missing in your request or invalid. Please try again.'
                                  ),
 
-                             ),
-
-                         ),
-                         array(
-                             'name' => 'NotEmpty',
-                             'break_chain_on_failure' => true,
-                             'options' => array(
-                                 'messages' => array(
-                                     \Zend\Validator\NotEmpty::IS_EMPTY => 'The security token is missing in your request or invalid. Please try again.'
-                                 ),
 
                              ),
 
                          ),
-
                      )
                  )
              );
 
+             */
              $this->inputFilter = $inputFilter;
          }
         return $this->inputFilter;

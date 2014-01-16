@@ -41,12 +41,21 @@ class AuthenticationService implements  AuthenticationServiceInterface, ServiceL
 
     public function  authenticate($postData)
     {
+
+        if(!$this->getSessionStorage()->offsetExists($this->getSessionManager()->getName()))
+        {
+            $this->getSessionManager()->regenerateId();
+        }
+
         $form =  $this->getLoginForm()->setInputFilter($this->getLoginModel()->getInputFilter());
         $form->setData($postData);
 
+
         if(!$form->isValid())
         {
+            var_dump($form->getMessages());
             $this->validationMessages[] =  self::INVALID_EMAIL; //$form->getMessages();
+
             return false;
         }
        $user = $this->getUserRepository()->findByEmail($postData['email'],
@@ -131,6 +140,11 @@ class AuthenticationService implements  AuthenticationServiceInterface, ServiceL
     public function getSessionManager()
     {
         return $this->sessionManager;
+    }
+
+    public function getSessionStorage()
+    {
+        return $this->getSessionManager()->getStorage();
     }
 
     /**

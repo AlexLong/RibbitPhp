@@ -19,6 +19,8 @@ class AbstractBaseController extends AbstractActionController
 
    protected   $userPlugin;
 
+    protected   $config;
+
 
 
     public function onDispatch(MvcEvent $e)
@@ -64,10 +66,34 @@ class AbstractBaseController extends AbstractActionController
 
     public function setUserPlugin(UserPlugin $userPlugin)
     {
+        $user_links = $this->getConfig();
+
         $this->userPlugin = $userPlugin;
         $this->userPlugin->setAuthService($this->getAuthService());
         $this->userPlugin->setRedirect($this->redirect());
         $this->userPlugin->setEvent($this->getEvent());
+        $this->userPlugin->setUserLinks($user_links['user_links']);
+        unset($user_links);
+    }
+
+    /**
+     * @param mixed $config
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfig()
+    {
+        if(!$this->config)
+        {
+            $this->setConfig($this->getServiceLocator()->get('config'));
+        }
+        return $this->config;
     }
 
 
