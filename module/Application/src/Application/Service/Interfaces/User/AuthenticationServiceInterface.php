@@ -14,7 +14,7 @@ interface AuthenticationServiceInterface {
 
      function  authenticate($postData);
 
-     function is_logged();
+     function is_identified();
 
 
 } 

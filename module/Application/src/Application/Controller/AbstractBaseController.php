@@ -12,11 +12,27 @@ namespace Application\Controller;
 
 use Application\Controller\Plugin\UserPlugin;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\MvcEvent;
 
 class AbstractBaseController extends AbstractActionController
 {
 
-   public  $userPlugin;
+   protected   $userPlugin;
+
+
+
+    public function onDispatch(MvcEvent $e)
+    {
+        parent::onDispatch($e);
+
+
+
+
+      //  $this->setUserPlugin(new UserPlugin());
+
+       // echo "Dispatched !!!!!";
+
+    }
 
     public function getAuthService()
     {
@@ -36,15 +52,28 @@ class AbstractBaseController extends AbstractActionController
 
     public function  getUserPlugin()
     {
+
         if($this->userPlugin == null){
-            $this->userPlugin = new UserPlugin();
-            $this->userPlugin->setRedirect($this->redirect());
-            return $this->userPlugin;
+            $userPlugin = new UserPlugin();
+            $userPlugin->setAuthService($this->getAuthService());
+            $userPlugin->setRedirect($this->redirect());
+            $userPlugin->setEvent($this->getEvent());
+            $this->userPlugin = $userPlugin;
         }
-
-
         return $this->userPlugin;
     }
+
+    /*
+    public function setUserPlugin(UserPlugin $userPlugin)
+    {
+        if($this->userPlugin == null){
+            $userPlugin->setAuthService($this->getAuthService());
+            $userPlugin->setRedirect($this->redirect());
+            $userPlugin->setEvent($this->getEvent());
+            $this->userPlugin = $userPlugin;
+        }
+    }
+    */
 
 
 

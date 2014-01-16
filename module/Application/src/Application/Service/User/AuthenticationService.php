@@ -68,7 +68,7 @@ class AuthenticationService implements  AuthenticationServiceInterface, ServiceL
       return true;
     }
 
-    public  function is_logged()
+    public  function is_identified()
     {
         $ses = new SessionManager();
         $ses->getStorage()->offsetExists('user_id');

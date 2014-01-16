@@ -30,14 +30,15 @@ class IndexController extends AbstractBaseController
 
    public function indexAction()
    {
-       // $this->getUserPlugin()->RedirectToAuth($this->getEvent());
+       $this->getUserPlugin()->requireAuth();
 
         return new ViewModel();
    }
 
     public function loginAction()
     {
-        $logged = $this->getAuthService()->is_logged();
+
+        $logged = $this->getAuthService()->is_identified();
 
        // $reoute = $this->getEvent()->
 
@@ -58,11 +59,6 @@ class IndexController extends AbstractBaseController
         }
        return new ViewModel();
     }
-
-
-
-
-
 
 
 
