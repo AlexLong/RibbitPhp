@@ -53,27 +53,23 @@ class AbstractBaseController extends AbstractActionController
     public function  getUserPlugin()
     {
 
-        if($this->userPlugin == null){
-            $userPlugin = new UserPlugin();
-            $userPlugin->setAuthService($this->getAuthService());
-            $userPlugin->setRedirect($this->redirect());
-            $userPlugin->setEvent($this->getEvent());
-            $this->userPlugin = $userPlugin;
+        if(!$this->userPlugin)
+        {
+            $this->setUserPlugin(new UserPlugin());
+
         }
         return $this->userPlugin;
     }
 
-    /*
+
     public function setUserPlugin(UserPlugin $userPlugin)
     {
-        if($this->userPlugin == null){
-            $userPlugin->setAuthService($this->getAuthService());
-            $userPlugin->setRedirect($this->redirect());
-            $userPlugin->setEvent($this->getEvent());
-            $this->userPlugin = $userPlugin;
-        }
+        $this->userPlugin = $userPlugin;
+        $this->userPlugin->setAuthService($this->getAuthService());
+        $this->userPlugin->setRedirect($this->redirect());
+        $this->userPlugin->setEvent($this->getEvent());
     }
-    */
+
 
 
 
