@@ -21,7 +21,7 @@ class IndexController extends AbstractBaseController
    {
 
 
-   $this->getUserPlugin()->requireAuth();
+   //$this->getUserPlugin()->requireAuth();
        //$this->redirect()->toUrl('https://www.google.com');
   // $this->getUserPlugin()->generateReturnUri($this->getCurrentUri());
    // var_dump($this->getEvent()->getRouteMatch());
@@ -48,6 +48,12 @@ class IndexController extends AbstractBaseController
                 return $this->getUserPlugin()->redirectToReturnUri();
             }
             return  $this->getUserPlugin()->redirectToHome();
+        }
+
+        if($this->getRequest()->getQuery('rt') != null)
+        {
+            $rt = $this->getRequest()->getQuery('rt');
+            $this->getUserPlugin()->generateReturnUri($rt);
         }
        return new ViewModel();
     }

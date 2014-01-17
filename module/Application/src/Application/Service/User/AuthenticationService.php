@@ -33,6 +33,10 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     protected $serviceLocator;
 
+    protected $userIdentify;
+
+    protected $defaultUserId  = 'user_id';
+
     protected $select = array('id','email' ,'password');
 
     const INVALID_EMAIL = "Invalid email/password. Please Try again.";
@@ -67,7 +71,7 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
             return false;
         }
-        $this->getSessionManager()->getStorage()->offsetSet('user_id', $user['id']);
+        $this->getSessionManager()->getStorage()->offsetSet($this->defaultUserId, $user['id']);
 
         if(isset($postData['remember_me']) && $postData['remember_me'] == true){
             $this->getSessionManager()->rememberMe();
@@ -80,20 +84,24 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     public  function is_identified()
     {
         $ses = new SessionManager();
-        $ses->getStorage()->offsetExists('user_id');
+        $ses->getStorage()->offsetGet($this->defaultUserId);
       if(!$this->getSessionManager()->isValid() || !$this->getSessionManager()->getStorage()->offsetExists('user_id')){
         return false;
       }
-
-
-
           return true;
-
-
-
     }
 
-
+    /**
+     * @return mixed
+     */
+    public function getUserIdentify()
+    {
+        if($this->is_identified())
+        {
+            return $this->$this->getSessionManager()->getStorage()->offsetGet('user_id');
+        }
+        return null;
+    }
     /**
      * @param mixed $loginForm
      */
@@ -199,6 +207,12 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
         return $this->serviceLocator;
 
     }
+
+
+
+
+
+
 
 
 } 

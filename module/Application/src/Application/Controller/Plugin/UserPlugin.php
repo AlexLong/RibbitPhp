@@ -17,6 +17,7 @@ use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Controller\Plugin\Redirect;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\SessionManager;
+use Zend\Uri\Uri;
 
 class UserPlugin extends AbstractPlugin  {
 
@@ -54,10 +55,23 @@ class UserPlugin extends AbstractPlugin  {
         return $this->configureRedirectByLink('login_form');
     }
 
-    public  function  generateReturnUri()
+    public  function  generateReturnUri($return_uri = null)
     {
-        $current_uri = $this->getRequest()->getUriString();
 
+        if($return_uri != null)
+        {
+            $uri = new Uri($return_uri);
+            $current_host = $this->getRequest()->getUri()->getHost();
+
+            if(!$uri->isValid() || $uri->getHost() != $current_host)
+                return false;
+
+            $this->getSessionManager()->getStorage()->offsetSet($this->return_uri,$return_uri);
+            return $this;
+        }
+
+
+        $current_uri = $this->getRequest()->getUriString();
         $this->getSessionManager()->getStorage()->offsetSet($this->return_uri,$current_uri);
 
         return $this;
