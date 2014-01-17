@@ -12,9 +12,11 @@ namespace Application\Controller\Plugin;
 
 use Application\Service\Interfaces\User\AuthenticationServiceInterface;
 use Zend\Authentication\AuthenticationService;
+use Zend\Http\Request;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Controller\Plugin\Redirect;
 use Zend\Mvc\MvcEvent;
+use Zend\Session\SessionManager;
 
 class UserPlugin extends AbstractPlugin  {
 
@@ -29,19 +31,61 @@ class UserPlugin extends AbstractPlugin  {
 
     protected $userLinks;
 
-    public function redirectToAuth()
-    {
-        return $this->configureRedirectByLink('login_form', $this->getCurrentRoute());
-    }
+    protected $sessionManager;
+
+    protected $request;
+
+    protected $route;
+
+    protected $return_uri = 'return_uri';
+
 
     public  function requireAuth()
     {
         if(!$this->getAuthService()->is_identified()){
+            $this->generateReturnUri();
             return $this->redirectToAuth();
         }
         return false;
     }
 
+    public function redirectToAuth()
+    {
+        return $this->configureRedirectByLink('login_form');
+    }
+
+    public  function  generateReturnUri()
+    {
+        $current_uri = $this->getRequest()->getUriString();
+
+        $this->getSessionManager()->getStorage()->offsetSet($this->return_uri,$current_uri);
+
+        return $this;
+    }
+
+    public function hasReturnUri()
+    {
+        return $this->getSessionManager()->getStorage()->offsetExists($this->return_uri);
+    }
+
+    public  function getReturnUri()
+    {
+        return $this->getSessionManager()->getStorage()->offsetGet($this->return_uri);
+    }
+
+    public function destroyReturnUri()
+    {
+
+        if($this->getSessionManager()->getStorage()->offsetExists($this->return_uri)){
+
+            $this->getSessionManager()->getStorage()->offsetUnset($this->return_uri);
+        }
+        return $this;
+    }
+    public  function redirectToReturnUri()
+    {
+        return $this->getRedirect()->toUrl($this->getReturnUri());
+    }
     public  function signedUserRedirect()
     {
         if($this->getAuthService()->is_identified()){
@@ -50,16 +94,10 @@ class UserPlugin extends AbstractPlugin  {
         return false;
     }
     public  function  redirectToHome(){
-
         return $this->configureRedirectByLink('user_home');
     }
 
-    public  function  getCurrentRoute()
-    {
-        $action = $this->getEvent()->getRouteMatch()->getParam('action');
-        $routeName = $this->getEvent()->getRouteMatch()->getMatchedRouteName();
-        return array( 'rt' => $routeName.'/'.$action  );
-    }
+
 
     public function configureRedirectByLink($user_link, $query = null )
     {
@@ -69,7 +107,6 @@ class UserPlugin extends AbstractPlugin  {
         return ($this->getRedirect()->toRoute($chosen_link['route'],
             array('action' => $chosen_link['action']), array('query' =>
                 $query)));
-
     }
     public function setRedirect(Redirect $redirect)
     {
@@ -136,6 +173,41 @@ class UserPlugin extends AbstractPlugin  {
     {
         return $this->userLinks;
     }
+
+    /**
+     * @param mixed $sessionManager
+     */
+    public function setSessionManager(SessionManager $sessionManager)
+    {
+        $this->sessionManager = $sessionManager;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSessionManager()
+    {
+
+        return $this->sessionManager;
+    }
+
+    /**
+     * @param mixed $request
+     */
+    public function setRequest(Request $request)
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+
 
 
 

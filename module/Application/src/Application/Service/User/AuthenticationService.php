@@ -18,7 +18,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\SessionManager;
 
-class AuthenticationService implements  AuthenticationServiceInterface, ServiceLocatorAwareInterface {
+class AuthenticationService   implements  AuthenticationServiceInterface, ServiceLocatorAwareInterface {
 
     protected $user_repository;
 

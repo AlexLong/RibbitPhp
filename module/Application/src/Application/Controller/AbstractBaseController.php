@@ -19,15 +19,13 @@ class AbstractBaseController extends AbstractActionController
 
    protected   $userPlugin;
 
-    protected   $config;
+    protected  $config;
 
 
 
     public function onDispatch(MvcEvent $e)
     {
         parent::onDispatch($e);
-
-
 
 
       //  $this->setUserPlugin(new UserPlugin());
@@ -52,7 +50,7 @@ class AbstractBaseController extends AbstractActionController
         return $this->getSessionManager()->getStorage();
     }
 
-    public function  getUserPlugin()
+    public function getUserPlugin()
     {
 
         if(!$this->userPlugin)
@@ -63,6 +61,10 @@ class AbstractBaseController extends AbstractActionController
         return $this->userPlugin;
     }
 
+    public function getCurrentUri()
+    {
+        return $this->getRequest()->getUriString();
+    }
 
     public function setUserPlugin(UserPlugin $userPlugin)
     {
@@ -73,9 +75,17 @@ class AbstractBaseController extends AbstractActionController
         $this->userPlugin->setRedirect($this->redirect());
         $this->userPlugin->setEvent($this->getEvent());
         $this->userPlugin->setUserLinks($user_links['user_links']);
+        $this->userPlugin->setSessionManager($this->getSessionManager());
+        $this->userPlugin->setRequest($this->getRequest());
         unset($user_links);
     }
 
+
+
+    public  function  getRequestParams()
+    {
+        return  $this->getEvent()->getParams();
+    }
     /**
      * @param mixed $config
      */
