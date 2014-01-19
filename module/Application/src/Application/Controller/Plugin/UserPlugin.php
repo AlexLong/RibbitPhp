@@ -43,39 +43,54 @@ class UserPlugin extends AbstractPlugin  {
 
     public  function requireAuth()
     {
+
         if(!$this->getAuthService()->is_identified()){
-            $this->generateReturnUri();
+            $this->generateReturnUri($this->getRequest()->getUriString());
             return $this->redirectToAuth();
         }
+
         return false;
+
     }
+
 
     public function redirectToAuth()
     {
         return $this->configureRedirectByLink('login_form');
     }
 
+    public  function redirectToIndex()
+    {
+        return $this->configureRedirectByLink('index');
+    }
+    public function validateReturnUri($return_uri)
+    {
+        $uri = new Uri($return_uri);
+        $current_host = $this->getRequest()->getUri()->getHost();
+
+        if(!$uri->isValid() || $uri->getHost() != $current_host)
+            return false;
+
+        return true;
+    }
     public  function  generateReturnUri($return_uri = null)
     {
-
-        if($return_uri != null)
+        if($return_uri != null && $this->validateReturnUri($return_uri) == true)
         {
-            $uri = new Uri($return_uri);
-            $current_host = $this->getRequest()->getUri()->getHost();
-
-            if(!$uri->isValid() || $uri->getHost() != $current_host)
-                return false;
-
             $this->getSessionManager()->getStorage()->offsetSet($this->return_uri,$return_uri);
+
             return $this;
         }
-
-
-        $current_uri = $this->getRequest()->getUriString();
-        $this->getSessionManager()->getStorage()->offsetSet($this->return_uri,$current_uri);
-
         return $this;
     }
+
+
+
+    public  function redirectByQuery($query)
+    {
+
+    }
+
 
     public function hasReturnUri()
     {
@@ -98,7 +113,9 @@ class UserPlugin extends AbstractPlugin  {
     }
     public  function redirectToReturnUri()
     {
-        return $this->getRedirect()->toUrl($this->getReturnUri());
+        $rt = $this->getReturnUri();
+        $this->destroyReturnUri();
+        return $this->getRedirect()->toUrl($rt);
     }
     public  function signedUserRedirect()
     {

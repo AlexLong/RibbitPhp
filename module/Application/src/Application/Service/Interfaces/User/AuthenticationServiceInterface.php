@@ -14,9 +14,12 @@ interface AuthenticationServiceInterface {
 
      function  authenticate($postData);
 
+     function logout();
+
      function is_identified();
 
      function getUserIdentify();
+
 
 
 } 

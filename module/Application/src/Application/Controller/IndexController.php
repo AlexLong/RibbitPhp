@@ -19,9 +19,7 @@ class IndexController extends AbstractBaseController
 
    public function indexAction()
    {
-
-
-   //$this->getUserPlugin()->requireAuth();
+   $this->getUserPlugin()->requireAuth();
        //$this->redirect()->toUrl('https://www.google.com');
   // $this->getUserPlugin()->generateReturnUri($this->getCurrentUri());
    // var_dump($this->getEvent()->getRouteMatch());
@@ -30,7 +28,6 @@ class IndexController extends AbstractBaseController
 
     public function loginAction()
     {
-
         $this->getUserPlugin()->signedUserRedirect();
 
         if($this->getRequest()->isPost()){
@@ -52,10 +49,31 @@ class IndexController extends AbstractBaseController
 
         if($this->getRequest()->getQuery('rt') != null)
         {
-            $rt = $this->getRequest()->getQuery('rt');
-            $this->getUserPlugin()->generateReturnUri($rt);
+
+            $this->getUserPlugin()->generateReturnUri($this->getRequest()->getQuery('rt'));
+
         }
        return new ViewModel();
+    }
+
+    public function logoutAction()
+    {
+        $this->layout()->terminate();
+
+        $this->getAuthService()->logout();
+
+        if($this->getRequest()->getQuery('rt') != null)
+        {
+            $rt = $this->getRequest()->getQuery('rt');
+
+            if($this->getUserPlugin()->validateReturnUri($rt))
+            {
+              return  $this->redirect()->toUrl($rt);
+            }
+        }
+
+      return $this->getUserPlugin()->redirectToIndex();
+
     }
 
 

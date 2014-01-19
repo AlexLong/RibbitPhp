@@ -43,17 +43,15 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     //protected $formData = array();
 
-    public function  authenticate($postData)
+    public function authenticate($postData)
     {
 
         if(!$this->getSessionStorage()->offsetExists($this->getSessionManager()->getName()))
         {
             $this->getSessionManager()->regenerateId();
         }
-
         $form =  $this->getLoginForm()->setInputFilter($this->getLoginModel()->getInputFilter());
         $form->setData($postData);
-
 
         if(!$form->isValid())
         {
@@ -77,18 +75,24 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
             $this->getSessionManager()->rememberMe();
         }
 
-
       return true;
     }
 
     public  function is_identified()
     {
-        $ses = new SessionManager();
-        $ses->getStorage()->offsetGet($this->defaultUserId);
-      if(!$this->getSessionManager()->isValid() || !$this->getSessionManager()->getStorage()->offsetExists('user_id')){
+      if(!$this->getSessionManager()->isValid() || !$this->getSessionManager()->getStorage()->offsetExists($this->defaultUserId)){
         return false;
       }
           return true;
+    }
+    public  function logout()
+    {
+        if($this->getSessionManager()->getStorage()->offsetExists($this->defaultUserId))
+        {
+           $this->getSessionStorage()->offsetUnset($this->defaultUserId);
+        }
+
+        return true;
     }
 
     /**

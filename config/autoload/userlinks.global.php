@@ -8,6 +8,10 @@
  */
 return array(
      'user_links' => array(
+         'index' => array(
+           'route' => 'index',
+           'action' => 'index'
+         ),
          'user_home' => array(
              'route' => 'user_home',
              'action' => 'index'
