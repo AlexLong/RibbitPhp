@@ -20,21 +20,20 @@ class UserIdentity extends  AbstractHelper {
 
     function __invoke()
     {
-        if (!$this->authService instanceof AuthenticationServiceInterface) {
-            throw new \Exception('No AuthenticationService instance provided');
-        }
-
-        if (!$this->authService->hasIdentity()) {
-            return null;
-        }
-
-        return $this->authService->getIdentity();
+        return $this;
     }
+
+    public  function isLogged()
+    {
+        return $this->getAuthService()->is_identified();
+    }
+    //public  function
+
 
     /**
      * @param mixed $authService
      */
-    public function setAuthService($authService)
+    public function setAuthService(AuthenticationServiceInterface $authService)
     {
         $this->authService = $authService;
     }

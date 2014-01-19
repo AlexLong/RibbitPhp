@@ -80,7 +80,12 @@ class Module
         return array(
             'invokables' => array(
                 'renderForm' => 'Application\ViewHelpers\Form\RenderFormHelper'
-            )
+            ),
+            'factories' => array(
+                'UserIdentity' => 'Application\ViewHelpers\Service\UserIdentityFactory'
+            ),
+
+
         );
     }
 
@@ -89,27 +94,11 @@ class Module
     {
         return array(
             'invokables' => array(
+
             ),
            'factories' => array(
 
-
-
-
-            'AuthService' => function($sm){
-               $user_repository = $sm->get('RepositoryAccessor')->users;
-
-               $sessionManager = $sm->get('Zend\Session\SessionManager');
-
-               $loginForm = new \Application\Form\LoginForm();
-               $loginModel = new \Application\Model\LoginModel();
-               $authService = new AuthenticationService();
-               $authService->setSessionManager($sessionManager);
-               $authService->setLoginForm($loginForm);
-               $authService->setLoginModel($loginModel);
-               $authService->setUserRepository($user_repository);
-               return $authService;
-            },
-
+            'AuthService' => 'Application\Service\User\AuthenticationServiceFactory',
 
            'RepositoryAccessor' => function($sm){
                $general_repository = $sm->get('GeneralRepository');

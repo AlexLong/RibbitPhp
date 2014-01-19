@@ -16,5 +16,7 @@ interface AuthenticationServiceInterface {
 
      function is_identified();
 
+     function getUserIdentify();
+
 
 } 

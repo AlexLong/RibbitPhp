@@ -98,7 +98,7 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     {
         if($this->is_identified())
         {
-            return $this->$this->getSessionManager()->getStorage()->offsetGet('user_id');
+            return $this->getSessionManager()->getStorage()->offsetGet('user_id');
         }
         return null;
     }
