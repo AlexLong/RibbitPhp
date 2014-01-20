@@ -20,5 +20,8 @@
         "bjyoungblood/bjy-profiler": "@dev",
         "twitter/bootstrap": "3.*",
         "zendframework/zftool": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
     }
 }
