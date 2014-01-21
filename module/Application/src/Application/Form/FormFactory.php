@@ -17,9 +17,10 @@ class FormFactory {
        'login' => 'Application\Form\LoginForm'
     );
 
+
+
     public  static function CreateForm($form, $name = "")
     {
-
         $content = self::$forms[$form];
 
         return new $content();

@@ -18,4 +18,6 @@ interface UserRepositoryInterface
 
     function  findByEmail($email, array $columns = null);
 
+    function  createUser($values = array());
+
 }

@@ -22,7 +22,7 @@ class AbstractBaseController extends AbstractActionController
     protected  $config;
 
 
-
+/*
     public function onDispatch(MvcEvent $e)
     {
         parent::onDispatch($e);
@@ -33,6 +33,7 @@ class AbstractBaseController extends AbstractActionController
        // echo "Dispatched !!!!!";
 
     }
+*/
 
     public function getAuthService()
     {

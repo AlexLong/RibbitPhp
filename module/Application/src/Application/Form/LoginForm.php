@@ -14,7 +14,9 @@ use Zend\Form\Form;
 class LoginForm extends  Form {
 
 
-    public function __construct($name = null)
+    protected $underDev;
+
+    public function __construct($underDev = true)
     {
         parent::__construct('login');
 
@@ -46,6 +48,8 @@ class LoginForm extends  Form {
             ),
         ));
 
+
+
         $this->add(array(
             'name' => 'remember_me',
             'type' => 'Checkbox',
@@ -58,16 +62,28 @@ class LoginForm extends  Form {
             )
         ));
 
-        $this->add(array(
-                'type' => 'Zend\Form\Element\Csrf',
-                'name' => 'auth_token',
-                'options' => array(
-                    'csrf_options' => array(
-                        'timeout' => 600
-                    )
+        if(!$underDev)
+        {
+            $token = 'Zend\Form\Element\Csrf';
+        }else{
+            $token = 'hidden';
+        }
+
+
+            $this->add(array(
+
+                    'type' => $token,
+                    'name' => 'auth_token',
+                    'options' => array(
+                        'csrf_options' => array(
+                            'timeout' => 600
+                        )
+                    ),
+                    'attributes' => array(
+                        'id' => 'auth_token'
+                    ),
                 )
-            )
-        );
+            );
 
         $this->add(array(
             'name' => 'submit',
@@ -80,8 +96,18 @@ class LoginForm extends  Form {
 
         ));
 
-
-
     }
+
+
+
+    /**
+     * @param boolean $underDev
+     */
+    public function setUnderDev($underDev)
+    {
+        $this->underDev = $underDev;
+    }
+
+
 
 } 

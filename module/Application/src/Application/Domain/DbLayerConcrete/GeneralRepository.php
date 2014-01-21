@@ -31,7 +31,6 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
 
     public  function execute($statement)
     {
-
         $request = $this->getSqlManager()->getSqlStringForSqlObject($statement);
         return $this->getDbAdapter()->query($request,Adapter::QUERY_MODE_EXECUTE);
     }
@@ -59,6 +58,20 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
         return  (count($result) == 1 ) ? $result[0] : $result;
     }
 
+
+    public function AddTo($table, $columns = array(), $values = array(),  $where = null)
+    {
+
+        if($where == null){
+           return $this->execute( $this->sqlManager->insert($table)
+                ->columns($columns)
+                ->values($values));
+        }
+         return  $this->execute($this->sqlManager->insert($table)
+                ->columns($columns)
+                ->where($where)
+                ->values($values));
+    }
 
     public  function setSqlManager(Sql $sql)
     {

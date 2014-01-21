@@ -12,6 +12,11 @@
  */
 
 return array(
+
+    'dev_mode' => array(
+        'under_dev' => true,
+    ),
+
     'db' => array(
         'driver'         => 'Pdo',
         'dsn'            => 'mysql:dbname=ribbit;host=localhost',

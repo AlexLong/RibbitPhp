@@ -16,6 +16,8 @@ interface RepositoryInterface {
 
     public  function findBy($where = array(),$table,$columns = null,$limit = 1);
 
+    function AddTo($table, $columns = array(), $values = array(),  $where = null);
+
     public function getSqlManager();
 
     public function getDbAdapter();

@@ -12,6 +12,7 @@ namespace Application\Controller;
 
 use Application\Domain\Entity\RibbitUser;
 
+use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractBaseController
@@ -19,10 +20,7 @@ class IndexController extends AbstractBaseController
 
    public function indexAction()
    {
-   $this->getUserPlugin()->requireAuth();
-       //$this->redirect()->toUrl('https://www.google.com');
-  // $this->getUserPlugin()->generateReturnUri($this->getCurrentUri());
-   // var_dump($this->getEvent()->getRouteMatch());
+
         return new ViewModel();
    }
 
@@ -34,7 +32,7 @@ class IndexController extends AbstractBaseController
 
             $data = $this->getRequest()->getPost();
 
-            if(!$this->getAuthService()->authenticate($data))
+            if($this->getAuthService()->authenticate($data) == false)
             {
                 $messages = $this->getAuthService()->getValidationMessages();
 
@@ -75,7 +73,5 @@ class IndexController extends AbstractBaseController
       return $this->getUserPlugin()->redirectToIndex();
 
     }
-
-
 
 }

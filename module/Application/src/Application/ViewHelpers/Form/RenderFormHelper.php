@@ -11,6 +11,7 @@ namespace Application\ViewHelpers\Form;
 
 
 use Application\Form\FormFactory;
+use Application\Form\LoginForm;
 use Zend\Form\View\Helper\AbstractHelper;
 
 class RenderFormHelper extends AbstractHelper {
@@ -18,13 +19,24 @@ class RenderFormHelper extends AbstractHelper {
 
 
 
-    public function __invoke($form, $name = null)
+    public function __invoke($form = null, $name = null)
     {
         if(!$form)
             return $this;
 
-      return  $this->renderForm($form,$name);
+          return  $this->renderForm($form,$name);
     }
+
+
+
+    public  function login($underDev = false)
+    {
+
+        $form = new LoginForm($underDev);
+        $form->setUnderDev($underDev);
+        return $form;
+    }
+
 
     public function renderForm($form, $name = null)
     {

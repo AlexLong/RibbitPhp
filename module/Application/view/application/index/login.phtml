@@ -12,7 +12,7 @@
 
 <?php
 
-$form = $this->renderForm('login');
+$form = $this->renderForm()->login(true);
 
 $form->setAttributes(array(
     'method' => 'post',
@@ -36,6 +36,8 @@ echo $this->formElement($form->get('remember_me'));
 
 
 echo $this->formElement($form->get('auth_token'));
+
+
 echo $this->formElement($form->get('submit'));
 
 

@@ -2,27 +2,18 @@
 /**
  * 
  * User: Windows
- * Date: 1/14/14
- * Time: 1:09 AM
+ * Date: 1/21/14
+ * Time: 10:01 PM
  * 
  */
 
 namespace Application\Form\Validator;
 
 
-use Application\Domain\DbLayerInterfaces\UserRepositoryInterface;
 use Zend\Validator\AbstractValidator;
 use Zend\Validator\Exception;
 
-class EmailValidator extends  AbstractUserValidator {
-
-
-    public  function __construct(array $options = null)
-    {
-
-        parent::__construct($options);
-    }
-
+class UsernameValidator extends  AbstractUserValidator {
     /**
      * Returns true if and only if $value meets the validation requirements
      *
@@ -36,16 +27,13 @@ class EmailValidator extends  AbstractUserValidator {
      */
     public function isValid($post_data)
     {
-        $user = $this->getUserRepository()->findByEmail($post_data,
+        $user = $this->getUserRepository()->findByUsername($post_data,
             array('id','email' ,'password' ));
 
         if((!isset($user) || $user == null) )return false;
 
         return true;
     }
-
-
-
 
 
 

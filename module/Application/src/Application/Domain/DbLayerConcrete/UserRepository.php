@@ -22,6 +22,9 @@ class UserRepository implements  UserRepositoryInterface {
 
     protected $general_repository;
 
+    protected $insert_columns = array('email', 'username', 'password',
+        'registration_date', 'role');
+
     public  function __construct(RepositoryInterface $repository)
     {
         $this->general_repository = $repository;
@@ -38,5 +41,13 @@ class UserRepository implements  UserRepositoryInterface {
     {
         return $this->general_repository->findBy(array('email' => $email),$this->table,$columns);
     }
+
+    function createUser($values = array())
+    {
+      return  $this->general_repository->AddTo($this->table,$this->insert_columns,$values);
+    }
+
+
+
 
 } 

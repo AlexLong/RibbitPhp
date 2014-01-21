@@ -37,26 +37,30 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     protected $defaultUserId  = 'user_id';
 
+    protected $underTesting = false;
+
     protected $select = array('id','email' ,'password');
+
+    protected $underDev;
+
 
     const INVALID_EMAIL = "Invalid email/password. Please Try again.";
 
-    //protected $formData = array();
+
 
     public function authenticate($postData)
     {
 
-        if(!$this->getSessionStorage()->offsetExists($this->getSessionManager()->getName()))
-        {
-            $this->getSessionManager()->regenerateId();
-        }
+
         $form =  $this->getLoginForm()->setInputFilter($this->getLoginModel()->getInputFilter());
+
         $form->setData($postData);
+
 
         if(!$form->isValid())
         {
-            var_dump($form->getMessages());
-            $this->validationMessages[] =  self::INVALID_EMAIL; //$form->getMessages();
+          //  var_dump($form->getMessages());
+            $this->validationMessages =  self::INVALID_EMAIL; //$form->getMessages();
 
             return false;
         }
@@ -69,10 +73,11 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
             return false;
         }
+
         $this->getSessionManager()->getStorage()->offsetSet($this->defaultUserId, $user['id']);
 
-        if(isset($postData['remember_me']) && $postData['remember_me'] == true){
-            $this->getSessionManager()->rememberMe();
+        if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
+           $this->getSessionManager()->rememberMe();
         }
 
       return true;
@@ -94,6 +99,8 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
         return true;
     }
+
+
 
     /**
      * @return mixed
@@ -180,7 +187,7 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
      */
     public function setValidationMessages($ValidationMessages)
     {
-        $this->ValidationMessages = $ValidationMessages;
+        $this->validationMessages = $ValidationMessages;
     }
 
     /**
@@ -214,8 +221,32 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
 
 
+    /**
+     * @param boolean $underTesting
+     */
+    public function setUnderTesting($underTesting)
+    {
+        $this->underTesting = $underTesting;
+    }
 
+    /**
+     * @param mixed $underDev
+     */
+    public function setUnderDev($underDev)
+    {
+        if(!$underDev)
+            $this->underDev = false;
 
+        $this->underDev = $underDev;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUnderDev()
+    {
+        return $this->underDev;
+    }
 
 
 
