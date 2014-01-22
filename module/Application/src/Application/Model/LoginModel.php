@@ -14,8 +14,7 @@ namespace Application\Model;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
-use Zend\Validator\Db\AbstractDb;
-use Zend\Validator\NotEmpty;
+
 
 class LoginModel implements InputFilterAwareInterface {
 
@@ -24,15 +23,6 @@ class LoginModel implements InputFilterAwareInterface {
     public $csrf;
     protected $inputFilter;
 
-
-    public function exchangeArray($data)
-    {
-        $this->email     = (isset($data['email']))     ? $data['email']     : null;
-        $this->password = (isset($data['password'])) ? $data['password'] : null;
-        $this->csrf  = (isset($data['csrf']))  ? $data['csrf']  : null;
-
-
-    }
 
 
 
@@ -75,6 +65,19 @@ class LoginModel implements InputFilterAwareInterface {
                                  ),
                              ),
                          ),
+
+                         array(
+                             'name' => 'EmailAddress',
+                             'break_chain_on_failure' => true,
+                             'options' => array(
+                                 'encoding' => 'UTF-8',
+
+                                 'messages' => array(
+                                     \Zend\Validator\EmailAddress::INVALID => 'Invalid Email.',
+                                     \Zend\Validator\EmailAddress::INVALID_FORMAT => 'Invalid Email.',
+                                 ),
+                             ),
+                         ),
                      )
                )
              );
@@ -96,27 +99,7 @@ class LoginModel implements InputFilterAwareInterface {
                          )
                         )
                    );
-/*
-             $inputFilter->add(array(
-                     'name' => 'auth_token',
-                     'required' => true,
-                     'validators' => array(
-                         array(
-                             'name' => 'Csrf',
-                             'options' => array(
-                                 'messages' => array(
-                                     \Zend\Validator\Csrf::NOT_SAME => 'The security token is missing in your request or invalid. Please try again.'
-                                 ),
 
-
-                             ),
-
-                         ),
-                     )
-                 )
-             );
-
-             */
              $this->inputFilter = $inputFilter;
          }
         return $this->inputFilter;

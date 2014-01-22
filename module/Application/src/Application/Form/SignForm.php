@@ -2,23 +2,24 @@
 /**
  * 
  * User: Windows
- * Date: 1/11/14
- * Time: 6:16 PM
+ * Date: 1/22/14
+ * Time: 11:30 AM
  * 
  */
 
 namespace Application\Form;
 
+
+
 use Zend\Form\Form;
 
-class LoginForm extends  Form {
-
+class SignForm extends Form{
 
     protected $underDev;
 
-    public function __construct($underDev = true, $data = array())
+    public function __construct($underDev = true)
     {
-        parent::__construct('login');
+        parent::__construct('sign');
 
         $this->add(array(
             'name' => 'email',
@@ -29,12 +30,41 @@ class LoginForm extends  Form {
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true,
+                'required' => true
+
+            ),
+        ));
+
+
+        $this->add(array(
+            'name' => 'username',
+            'type' => 'Text',
+
+            'options' => array(
+                'label' => 'Username',
+            ),
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => true
 
             ),
         ));
         $this->add(array(
             'name' => 'password',
+            'type' => 'Password',
+            'options' => array(
+                'label' => 'Password',
+            ),
+
+            'attributes' => array(
+                'class' => 'form-control',
+                'required' => true
+
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'password_confirmation',
             'type' => 'Password',
             'options' => array(
                 'label' => 'Password',
@@ -46,17 +76,7 @@ class LoginForm extends  Form {
             ),
         ));
 
-        $this->add(array(
-            'name' => 'remember_me',
-            'type' => 'Checkbox',
 
-            'options' => array(
-                'label' => 'Remember Me?',
-            ),
-            'attributes' => array(
-                'checked' => 'checked'
-            )
-        ));
 
         if(!$underDev)
         {
@@ -66,20 +86,19 @@ class LoginForm extends  Form {
         }
 
 
-            $this->add(array(
-
-                    'type' => $token,
-                    'name' => 'auth_token',
-                    'options' => array(
-                        'csrf_options' => array(
-                            'timeout' => 600
-                        )
-                    ),
-                    'attributes' => array(
-                        'id' => 'auth_token'
-                    ),
-                )
-            );
+        $this->add(array(
+                'type' => $token,
+                'name' => 'sign_token',
+                'options' => array(
+                    'csrf_options' => array(
+                        'timeout' => 600
+                    )
+                ),
+                'attributes' => array(
+                    'id' => 'sign_token'
+                ),
+            )
+        );
 
         $this->add(array(
             'name' => 'submit',
@@ -103,7 +122,5 @@ class LoginForm extends  Form {
     {
         $this->underDev = $underDev;
     }
-
-
 
 } 

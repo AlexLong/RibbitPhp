@@ -14,12 +14,21 @@ use Application\Domain\DbLayerInterfaces\UserRepositoryInterface;
 use Zend\Validator\AbstractValidator;
 use Zend\Validator\Exception;
 
-class EmailValidator extends  AbstractUserValidator {
+class EmailExists extends  AbstractUserValidator {
 
+
+    /**
+     * Error constants
+     */
+
+    const ERROR_EMAIL_FOUND    = 'emailFound';
+
+    protected $messageTemplates = array(
+        self::ERROR_EMAIL_FOUND    => "Email address is already in use.",
+    );
 
     public  function __construct(array $options = null)
     {
-
         parent::__construct($options);
     }
 
@@ -36,12 +45,16 @@ class EmailValidator extends  AbstractUserValidator {
      */
     public function isValid($post_data)
     {
+        $valid = true;
+
         $user = $this->getUserRepository()->findByEmail($post_data,
-            array('id','email' ,'password' ));
+            array('email'));
 
-        if((!isset($user) || $user == null) )return false;
-
-        return true;
+        if(($user != null) || (is_array($user) && count($user) > 0) ) {
+            $this->error(self::ERROR_EMAIL_FOUND);
+            $valid = false;
+        }
+        return $valid;
     }
 
 

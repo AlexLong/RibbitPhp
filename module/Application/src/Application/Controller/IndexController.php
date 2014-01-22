@@ -12,6 +12,7 @@ namespace Application\Controller;
 
 use Application\Domain\Entity\RibbitUser;
 
+use Application\Form\LoginForm;
 use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 
@@ -34,9 +35,16 @@ class IndexController extends AbstractBaseController
 
             if($this->getAuthService()->authenticate($data) == false)
             {
+
+
                 $messages = $this->getAuthService()->getValidationMessages();
 
-                return new ViewModel(array('validation_messages' => $messages));
+
+                $failed_form = new LoginForm(false);
+                $failed_form->setData($data);
+
+                return new ViewModel(array('validation_messages' => $messages,
+                                            'failed_form' => $failed_form));
             }
             if($this->getUserPlugin()->hasReturnUri())
             {
@@ -52,6 +60,11 @@ class IndexController extends AbstractBaseController
 
         }
        return new ViewModel();
+    }
+
+    public function signAction()
+    {
+
     }
 
     public function logoutAction()

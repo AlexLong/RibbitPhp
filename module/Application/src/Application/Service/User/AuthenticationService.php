@@ -51,16 +51,15 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     public function authenticate($postData)
     {
 
-
         $form =  $this->getLoginForm()->setInputFilter($this->getLoginModel()->getInputFilter());
 
         $form->setData($postData);
 
-
         if(!$form->isValid())
         {
-          //  var_dump($form->getMessages());
+
             $this->validationMessages =  self::INVALID_EMAIL; //$form->getMessages();
+
 
             return false;
         }

@@ -13,7 +13,7 @@ namespace Application\Form\Validator;
 use Zend\Validator\AbstractValidator;
 use Zend\Validator\Exception;
 
-class UsernameValidator extends  AbstractUserValidator {
+class UsernameExists extends  AbstractUserValidator {
     /**
      * Returns true if and only if $value meets the validation requirements
      *
@@ -25,14 +25,28 @@ class UsernameValidator extends  AbstractUserValidator {
      * @return bool
      * @throws Exception\RuntimeException If validation of $value is impossible
      */
+    const ERROR_USER_FOUND    = 'userFound';
+
+    protected $messageTemplates = array(
+        self::ERROR_USER_FOUND    => "Specified username is already in use.",
+    );
+
+    public  function __construct(array $options = null)
+    {
+        parent::__construct($options);
+    }
     public function isValid($post_data)
     {
+        $valid = true;
+
         $user = $this->getUserRepository()->findByUsername($post_data,
-            array('id','email' ,'password' ));
+            array('username'));
 
-        if((!isset($user) || $user == null) )return false;
-
-        return true;
+        if(($user != null) || (is_array($user) && count($user) > 0) ) {
+            $this->error(self::ERROR_USER_FOUND);
+            $valid = false;
+        }
+        return $valid;
     }
 
 
