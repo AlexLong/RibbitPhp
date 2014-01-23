@@ -21,7 +21,6 @@ class SignModel implements  InputFilterAwareInterface{
     public $username;
     public $email;
     public $password;
-    public $password_confirm;
     public $csrf;
 
     protected $inputFilter;
@@ -74,15 +73,19 @@ class SignModel implements  InputFilterAwareInterface{
 
                         ),
                         array(
-                            'name' => 'LessThan',
-                            'options' => array(
-                               'max' => 255,
-                                'messages' => array(
-                                    \Zend\Validator\LessThan::NOT_LESS => 'Entered password is too long.'
-                                ),
-                            )
+                            'name' => 'StringLength',
 
-                        )
+                            'options' => array(
+
+                                'min' => 2,
+                                'max' => 20,
+                                'messages' => array(
+                                    \Zend\Validator\StringLength::TOO_LONG => 'Your username is too long.',
+                                    \Zend\Validator\StringLength::TOO_SHORT => 'Your username must be at least 2 characters.',
+                                ),
+                            ),
+
+                        ),
                     )
                 )
             );
@@ -113,7 +116,20 @@ class SignModel implements  InputFilterAwareInterface{
                                 )
                             )
 
-                        )
+                        ),
+                        array(
+                            'name' => 'StringLength',
+
+                            'options' => array(
+
+                                'max' => 50,
+                                'messages' => array(
+                                    \Zend\Validator\StringLength::TOO_LONG => 'Your email is too long.',
+
+                                ),
+                            ),
+
+                        ),
                     )
                 )
             );
@@ -132,32 +148,31 @@ class SignModel implements  InputFilterAwareInterface{
                             ),
 
                         ),
-                    )
-                )
-            );
-            $inputFilter->add(array(
-                    'name' => 'password_confirm',
-                    'required' => true,
-                    'validators' => array(
                         array(
-                            'name' => 'NotEmpty',
-                            'break_chain_on_failure' => true,
+                            'name' => 'StringLength',
+
                             'options' => array(
-                                'encoding' => 'UTF-8',
+
+                                'min' => 6,
+                                'max' => 150,
                                 'messages' => array(
-                                    \Zend\Validator\NotEmpty::IS_EMPTY => 'Please re-enter your password.',
+
+                                    \Zend\Validator\StringLength::TOO_LONG => 'Your Password is too long.',
+                                    \Zend\Validator\StringLength::TOO_SHORT => 'Password must be at least 6 characters.',
                                 ),
                             ),
 
                         ),
-                    )
+                    ),
+
+
                 )
             );
 
             $this->inputFilter = $inputFilter;
         }
         return $this->inputFilter;
-        // TODO: Implement getInputFilter() method.
+
     }
 
 

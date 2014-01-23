@@ -13,6 +13,7 @@ use Application\Domain\DbLayerConcrete\GeneralRepository;
 use Application\Domain\DbLayerConcrete\RepositoryAccessor;
 use Application\Service\User\AuthenticationService;
 use Composer\Console\Application;
+use Zend\Config\Config;
 use Zend\Db\Sql\Sql;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
@@ -60,7 +61,13 @@ class Module
 
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        $conf = array_merge(
+            include __DIR__ . '/config/template.config.php',
+            include __DIR__ . '/config/module.config.php'
+        );
+
+     return new Config($conf);
+
     }
 
     public function getAutoloaderConfig()

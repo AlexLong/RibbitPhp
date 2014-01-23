@@ -38,11 +38,8 @@ class IndexController extends AbstractBaseController
 
 
                 $messages = $this->getAuthService()->getValidationMessages();
-
-
-                $failed_form = new LoginForm(false);
+                $failed_form = new LoginForm(true);
                 $failed_form->setData($data);
-
                 return new ViewModel(array('validation_messages' => $messages,
                                             'failed_form' => $failed_form));
             }

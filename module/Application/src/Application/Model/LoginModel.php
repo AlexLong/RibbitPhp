@@ -23,9 +23,6 @@ class LoginModel implements InputFilterAwareInterface {
     public $csrf;
     protected $inputFilter;
 
-
-
-
     /**
      * Set input filter
      *

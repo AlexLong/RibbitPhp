@@ -51,7 +51,7 @@ class LoginForm extends  Form {
             'type' => 'Checkbox',
 
             'options' => array(
-                'label' => 'Remember Me?',
+                'label' => 'Remember me on this computer?',
             ),
             'attributes' => array(
                 'checked' => 'checked'

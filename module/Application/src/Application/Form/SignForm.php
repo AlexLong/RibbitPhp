@@ -64,18 +64,16 @@ class SignForm extends Form{
         ));
 
         $this->add(array(
-            'name' => 'password_confirmation',
-            'type' => 'Password',
+            'name' => 'remember_me',
+            'type' => 'Checkbox',
+
             'options' => array(
-                'label' => 'Password',
+                'label' => 'Remember me on this computer?',
             ),
             'attributes' => array(
-                'class' => 'form-control',
-                'required' => true
-
-            ),
+                'checked' => 'checked'
+            )
         ));
-
 
 
         if(!$underDev)
@@ -84,8 +82,6 @@ class SignForm extends Form{
         }else{
             $token = 'hidden';
         }
-
-
         $this->add(array(
                 'type' => $token,
                 'name' => 'sign_token',

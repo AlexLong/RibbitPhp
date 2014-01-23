@@ -14,7 +14,9 @@ class FormFactory {
 
 
    public static $forms = array(
-       'login' => 'Application\Form\LoginForm'
+       'login' => 'Application\Form\LoginForm',
+       'sign' => 'Application\Form\SignForm'
+
     );
 
 
