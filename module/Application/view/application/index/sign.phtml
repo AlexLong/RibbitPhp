@@ -1,0 +1,11 @@
+<h1>Register a new account.</h1>
+<?php
+
+echo $this->partial('index/sign_form',array(
+    'validation_messages' => $this->validation_messages,
+    'failed_form' => $this->failed_form
+    )
+);
+
+?>
+Already have an account? <a href="<?php echo $this->Url('index/index_child', array('action' => 'login'))?>">Login.</a>

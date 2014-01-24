@@ -13,6 +13,8 @@ namespace Application\Controller;
 use Application\Domain\Entity\RibbitUser;
 
 use Application\Form\LoginForm;
+use Application\Form\SignForm;
+use Application\Model\LoginModel;
 use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 
@@ -54,7 +56,7 @@ class IndexController extends AbstractBaseController
         {
 
             $this->getUserPlugin()->generateReturnUri($this->getRequest()->getQuery('rt'));
-
+            
         }
        return new ViewModel();
     }
@@ -62,6 +64,29 @@ class IndexController extends AbstractBaseController
     public function signAction()
     {
 
+        if($this->getRequest()->isPost()){
+
+            $data = $this->getRequest()->getPost();
+
+
+
+           $signForm = $this->getServiceLocator()->get('SignForm');
+
+            $signForm->setData($data);
+              
+            var_dump($signForm->getMessages());
+
+            if(!$signForm->isValid())
+            {
+           
+                var_dump($signForm->getMessages());
+            }
+
+
+        }
+
+
+        return new ViewModel();
     }
 
     public function logoutAction()
@@ -81,7 +106,6 @@ class IndexController extends AbstractBaseController
         }
 
       return $this->getUserPlugin()->redirectToIndex();
-
     }
 
 }

@@ -11,7 +11,13 @@ namespace Application;
 
 use Application\Domain\DbLayerConcrete\GeneralRepository;
 use Application\Domain\DbLayerConcrete\RepositoryAccessor;
+use Application\Form\LoginForm;
+use Application\Form\SignForm;
+use Application\Form\Validator\EmailExists;
+use Application\Form\Validator\UsernameExists;
+use Application\Model\SignModel;
 use Application\Service\User\AuthenticationService;
+use Application\ViewHelpers\Form\RenderFormHelper;
 use Composer\Console\Application;
 use Zend\Config\Config;
 use Zend\Db\Sql\Sql;
@@ -86,10 +92,22 @@ class Module
     {
         return array(
             'invokables' => array(
-                'renderForm' => 'Application\ViewHelpers\Form\RenderFormHelper'
+
+
             ),
             'factories' => array(
-                'UserIdentity' => 'Application\ViewHelpers\Service\UserIdentityFactory'
+                'renderForm' => function($sm){
+                  $locator = $sm->getServiceLocator();
+                  $helper = new RenderFormHelper();
+                  $helper->setSignForm($locator->get('SignForm'));
+
+                  return $helper;
+                },
+
+                'UserIdentity' => 'Application\ViewHelpers\Service\UserIdentityFactory',
+
+
+
             ),
 
 
@@ -106,12 +124,28 @@ class Module
            'factories' => array(
 
             'AuthService' => 'Application\Service\User\AuthenticationServiceFactory',
+               'SignForm' => function($sm){
+                       $locator = $sm;
+                       $signForm = new SignForm();
+                       $signModel = new SignModel();
 
+                       $emailExistValidator = new EmailExists();
+                       $usernameExistsValidator = new UsernameExists();
+                       $usernameExistsValidator->setUserRepository($locator->get('RepositoryAccessor')->users);
+                       $emailExistValidator->setUserRepository($locator->get('RepositoryAccessor')->users);
+
+                       $signModel->setEmailValidator($emailExistValidator);
+                       $signModel->setUsernameValidator($usernameExistsValidator);
+
+                       $signForm->setInputFilter($signModel->getInputFilter());
+                       return $signForm;
+
+                   },
            'RepositoryAccessor' => function($sm){
                $general_repository = $sm->get('GeneralRepository');
                $repository_accessor = new RepositoryAccessor($general_repository);
                return $repository_accessor;
-           } ,
+           },
 
 
 

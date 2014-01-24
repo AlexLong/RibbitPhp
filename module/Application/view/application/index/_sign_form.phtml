@@ -9,26 +9,22 @@
 
     }else{
         echo $this->validation_messages;
-       
     }
 
     }?>
 </div>
-
 <?php
-
-
-(isset($this->failed_form)) ? $form = $this->failed_form : $form = $this->renderForm()->sign(true);
-
-
+(isset($this->failed_form)) ? $form = $this->failed_form : $form = $this->renderForm()->sign();
 $form->setAttributes(array(
     'method' => 'post',
     'action' => $this->Url('index/index_child', array('action' => 'sign'))
 ));
-
 $form->prepare();
 
 echo $this->form()->openTag($form);
+
+echo $this->formLabel($form->get('username'));
+echo $this->formElement($form->get('username'));
 
 echo $this->formLabel($form->get('email'));
 echo $this->formElement($form->get('email'));
@@ -41,12 +37,10 @@ echo $this->formLabel($form->get('remember_me'));
 echo $this->formElement($form->get('remember_me'));
 
 
-echo $this->formElement($form->get('auth_token'));
-
+echo $this->formElement($form->get('sign_token'));
 
 
 echo $this->formElement($form->get('submit'));
-
 
 echo $this->form()->closeTag();
 

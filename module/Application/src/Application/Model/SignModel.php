@@ -23,6 +23,9 @@ class SignModel implements  InputFilterAwareInterface{
     public $password;
     public $csrf;
 
+    protected $emailValidator;
+    protected $usernameValidator;
+
     protected $inputFilter;
     /**
      * Set input filter
@@ -45,12 +48,15 @@ class SignModel implements  InputFilterAwareInterface{
 
         if(!$this->inputFilter){
 
+        
+         //   var_dump( $this->getEmailValidator());
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
                     'name' => 'username',
                     'required' => true,
                     'validators' => array(
+                       $this->getUsernameValidator(),
                         array(
                             'name' => 'NotEmpty',
                             'break_chain_on_failure' => true,
@@ -65,9 +71,10 @@ class SignModel implements  InputFilterAwareInterface{
                         array(
                             'name' => 'Regex',
                             'options' => array(
-                               'pattern' => '/[^a-zA-Z0-9_]/',
+                               'pattern' => '/[a-zA-Z0-9_]/',
                                 'messages' => array(
-                                    \Zend\Validator\Regex::INVALID => 'Please use latin alphanumeric characters  for your username.'
+                                    \Zend\Validator\Regex::INVALID => 'Please use latin alphanumeric characters  for your username.',
+                                     \Zend\Validator\Regex::NOT_MATCH => 'Please use latin alphanumeric characters  for your username.'
                                 )
                             )
 
@@ -95,6 +102,7 @@ class SignModel implements  InputFilterAwareInterface{
                     'name' => 'email',
                     'required' => true,
                     'validators' => array(
+                    $this->getEmailValidator(),
                         array(
                             'name' => 'NotEmpty',
                             'break_chain_on_failure' => true,
@@ -174,6 +182,41 @@ class SignModel implements  InputFilterAwareInterface{
         return $this->inputFilter;
 
     }
+
+    /**
+     * @param mixed $usernameValidator
+     */
+    public function setUsernameValidator($usernameValidator)
+    {
+        $this->usernameValidator = $usernameValidator;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUsernameValidator()
+    {
+        return $this->usernameValidator;
+    }
+
+    /**
+     * @param mixed $emailValidator
+     */
+    public function setEmailValidator($emailValidator)
+    {
+        $this->emailValidator = $emailValidator;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmailValidator()
+    {
+        return $this->emailValidator;
+    }
+
+
+
 
 
 } 

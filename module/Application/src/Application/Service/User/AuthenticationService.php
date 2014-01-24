@@ -26,10 +26,13 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     protected $loginForm;
 
+    protected $signForm;
+
+    protected $signModel;
+
     protected $loginModel;
 
     protected $validationMessages;
-
 
     protected $serviceLocator;
 
@@ -44,20 +47,38 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     protected $underDev;
 
 
+
     const INVALID_EMAIL = "Invalid email/password. Please Try again.";
+
+
+    public  function signUp($postData)
+    {
+
+        $form =  $this->getSignForm()->setInputFilter($this->getSignModel()->getInputFilter());
+
+
+        $form->setData($postData);
+        if(!$form->isValid()){
+            $this->validationMessages = $form->getMessages();
+            return false;
+        }
+
+
+        return true;
+
+    }
 
 
 
     public function authenticate($postData)
     {
-
-
         $form =  $this->getLoginForm()->setInputFilter($this->getLoginModel()->getInputFilter());
 
         $form->setData($postData);
 
         if(!$form->isValid())
         {
+            $this->validationMessages[] = self::INVALID_EMAIL;
             return false;
         }
        $user = $this->getUserRepository()->findByEmail($postData['email'],
@@ -65,7 +86,7 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
         if((!isset($user)  || $user == null) ||
             ($user['password'] !== md5($postData['password']))){
 
-            $this->validationMessages[] = self::INVALID_EMAIL;
+
 
             return false;
         }
@@ -244,6 +265,37 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
         return $this->underDev;
     }
 
+    /**
+     * @param mixed $signForm
+     */
+    public function setSignForm($signForm)
+    {
+        $this->signForm = $signForm;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSignForm()
+    {
+        return $this->signForm;
+    }
+
+    /**
+     * @param mixed $signModel
+     */
+    public function setSignModel($signModel)
+    {
+        $this->signModel = $signModel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSignModel()
+    {
+        return $this->signModel;
+    }
 
 
 } 

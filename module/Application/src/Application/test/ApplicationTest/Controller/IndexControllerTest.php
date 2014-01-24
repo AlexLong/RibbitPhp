@@ -11,12 +11,7 @@
 
 namespace ApplicationTest;
 
-use Application\Form\LoginForm;
-use Application\Service\User\AuthenticationService;
-use ApplicationTest\Bootstrap;
-use Zend\Db\Adapter\Adapter;
-use Zend\Dom\Query;
-use Zend\Mvc\ResponseSender\HttpResponseSender;
+
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use Application\Controller\IndexController;
 use Zend\Http\Request;
@@ -24,9 +19,8 @@ use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Router\RouteMatch;
 use PHPUnit_Framework_TestCase;
-use Zend\Session\SessionManager;
 use Zend\Stdlib\Parameters;
-use Zend\Validator\Csrf;
+
 
 class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
@@ -39,11 +33,12 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     protected $authService;
     protected $sessionManager;
     protected $storage;
+    protected $serviceManager;
 
 
     protected function setUp()
     {
-        $serviceManager = Bootstrap::getServiceManager();
+       $this->serviceManager = Bootstrap::getServiceManager();
 
         $this->controller = new IndexController();
       //  $this->controller->getResponse()
@@ -51,7 +46,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $this->request    = new Request();
 
 
-        $this->sessionManager = $serviceManager->get('Zend\Session\SessionManager');
+        $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
         $this->storage = $this->sessionManager->getStorage();
         $this->routeMatch = new RouteMatch(array('controller' => 'index'));
         $this->event      = new MvcEvent();
@@ -61,27 +56,16 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
 
 
-        $this->authService = $serviceManager->get('AuthService');
+        $this->authService = $this->serviceManager->get('AuthService');
 
-        $config = $serviceManager->get('Config');
+        $config = $this->serviceManager->get('Config');
         $routerConfig = isset($config['router']) ? $config['router'] : array();
         $router = HttpRouter::factory($routerConfig);
-
-
-
         $this->event->setRouter($router);
         $this->event->setRouteMatch($this->routeMatch);
 
-
-
-
         $this->controller->setEvent($this->event);
-        $this->controller->setServiceLocator($serviceManager);
-
-
-
-
-
+        $this->controller->setServiceLocator($this->serviceManager);
 
         $this->controller->getRequest();
 
@@ -122,11 +106,51 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
         $this->routeMatch->setParam('action','login');
         $this->controller->dispatch($this->request);
+        
+        $expected = 302;
+        
+        $actual = $this->controller->getResponse()->getStatusCode();
+        
+        $this->assertEquals($expected, $actual);
+    }
+    
+    public function testCanBeSignPageAccessed()
+    {
+        
+        
+        $this->routeMatch->setParam('action', 'sign');
+        $this->controller->dispatch($this->request);
+        
+        $expected = 200;
+        $actual = $this->controller->getResponse()->getStatusCode();
+        
 
+        $this->assertEquals($expected, $actual);
+        
+ 
+    }
 
-       // $response = $this->controller->getResponse()->getStatusCode();
-        //$this->assertEquals(302,$response );
+    /************* Sign Form ************/
+    
+    
+    
+    
+    public function testCanInputBeValidated()
+    {
+        $params = new Parameters(array('email' => 'test@test.com','username' => 'te&&……%……%￥￥st',
+            'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
+        $this->request->setPost($params)
+            ->setMethod('Post');
+        
+  
+  
+
+      // $form = $this->serviceManager->get('SignForm');
+        $this->routeMatch->setParam('action', 'sign');
+        $this->controller->dispatch($this->request);
+
+        var_dump($this->serviceManager->get('SignForm')->getMessages());
     }
 
 

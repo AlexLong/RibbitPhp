@@ -45,8 +45,10 @@ class AbstractBaseController extends AbstractActionController
         return $this->serviceLocator->get('Zend\Session\SessionManager');
     }
 
+
     public function getSessionStorage()
     {
+
 
         return $this->getSessionManager()->getStorage();
     }

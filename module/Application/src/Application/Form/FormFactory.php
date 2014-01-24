@@ -19,8 +19,6 @@ class FormFactory {
 
     );
 
-
-
     public  static function CreateForm($form, $name = "")
     {
         $content = self::$forms[$form];

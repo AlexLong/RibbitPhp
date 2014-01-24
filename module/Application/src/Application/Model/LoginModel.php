@@ -70,8 +70,8 @@ class LoginModel implements InputFilterAwareInterface {
                                  'encoding' => 'UTF-8',
 
                                  'messages' => array(
-                                     \Zend\Validator\EmailAddress::INVALID => 'Invalid Email.',
-                                     \Zend\Validator\EmailAddress::INVALID_FORMAT => 'Invalid Email.',
+                                     \Zend\Validator\EmailAddress::INVALID => 'Email has an invalid format.',
+                                     \Zend\Validator\EmailAddress::INVALID_FORMAT => 'Email has an invalid format.',
                                  ),
                              ),
                          ),
