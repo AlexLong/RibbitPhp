@@ -73,14 +73,14 @@ class IndexController extends AbstractBaseController
            $signForm = $this->getServiceLocator()->get('SignForm');
 
             $signForm->setData($data);
-              
-            var_dump($signForm->getMessages());
 
             if(!$signForm->isValid())
             {
            
-                var_dump($signForm->getMessages());
+               var_dump($signForm->getMessages());
+                return false;
             }
+            $this->getAuthService()->signUp($data);
 
 
         }

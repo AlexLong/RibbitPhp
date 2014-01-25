@@ -37,6 +37,7 @@ class AbstractBaseController extends AbstractActionController
 
     public function getAuthService()
     {
+
         return $this->serviceLocator->get('AuthService');
     }
 
@@ -59,7 +60,6 @@ class AbstractBaseController extends AbstractActionController
         if(!$this->userPlugin)
         {
             $this->setUserPlugin(new UserPlugin());
-
         }
         return $this->userPlugin;
     }

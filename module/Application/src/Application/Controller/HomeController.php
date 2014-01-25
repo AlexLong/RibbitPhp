@@ -17,6 +17,7 @@ class HomeController extends  AbstractBaseController {
 
     public  function indexAction()
     {
+
         return new ViewModel();
     }
 

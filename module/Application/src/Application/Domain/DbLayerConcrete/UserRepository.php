@@ -44,9 +44,35 @@ class UserRepository implements  UserRepositoryInterface {
 
     function createUser($values = array())
     {
-      return  $this->general_repository->AddTo($this->table,$this->insert_columns,$values);
+        foreach($values as $key => $v)
+        {
+            if(!in_array($key,$this->insert_columns))
+                unset($values[$key]);
+        }
+      return  $this->general_repository->AddTo($this->table,$this->insert_columns,
+          $values
+          );
+
     }
 
+    
+    function dropById($userId)
+    {
+
+    $res = $this->findById($userId, array('id'));
+
+    if(!$res){
+
+        return false;
+    }
+        $statement = $this->general_repository->getSqlManager()->delete($this->table)
+            ->where(array('id' => $userId));
+
+        $this->general_repository->execute($statement);
+
+     return true;
+    
+    }
 
 
 

@@ -12,13 +12,15 @@ namespace Application\Service\Interfaces\User;
 
 interface AuthenticationServiceInterface {
 
-     function  authenticate($postData);
+     function authenticate($postData);
 
      function logout();
 
      function is_identified();
 
      function getUserIdentify();
+
+     function removeUser($userId);
 
 
 

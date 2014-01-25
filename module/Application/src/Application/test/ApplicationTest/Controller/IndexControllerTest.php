@@ -34,6 +34,9 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     protected $sessionManager;
     protected $storage;
     protected $serviceManager;
+    protected $userRepository;
+
+    protected $mock_user;
 
 
     protected function setUp()
@@ -46,15 +49,19 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $this->request    = new Request();
 
 
+        $this->adapter = $this->serviceManager->get('Zend\Db\Adapter\Adapter');
+        $this->userRepository = $this->serviceManager->get('RepositoryAccessor')->users;
+
         $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
         $this->storage = $this->sessionManager->getStorage();
+
         $this->routeMatch = new RouteMatch(array('controller' => 'index'));
         $this->event      = new MvcEvent();
 
         $this->response = new Response();
 
-
-
+        $this->mock_user = array('email' => 'test@test.com',
+            'username' => 'test', 'password' => 'secret');
 
         $this->authService = $this->serviceManager->get('AuthService');
 
@@ -96,10 +103,14 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     public  function  testCanBeAccountSuccessfullyLogged()
     {
 
-
         $params = new Parameters(array('email' => 'test@test.com',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
+      $id =  $this->userRepository->findByEmail($params['email'], array('id'));
+
+        if(!$id){
+            $this->authService->signUp($this->mock_user);
+        }
 
         $this->request->setPost($params)
             ->setMethod('Post');
@@ -137,20 +148,24 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     
     public function testCanInputBeValidated()
     {
-        $params = new Parameters(array('email' => 'test@test.com','username' => 'te&&……%……%￥￥st',
+        $params = new Parameters(array('email' => 'test@test.com','username' => 'test',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
+
+        $res =  $this->userRepository->findByEmail($params['email'], array('id'));
+
+
+        if($res){
+            $this->authService->removeUser($res['id']);
+        }
 
         $this->request->setPost($params)
             ->setMethod('Post');
-        
-  
-  
 
-      // $form = $this->serviceManager->get('SignForm');
-        $this->routeMatch->setParam('action', 'sign');
-        $this->controller->dispatch($this->request);
+       $this->routeMatch->setParam('action', 'sign');
+       $this->controller->dispatch($this->request);
 
-        var_dump($this->serviceManager->get('SignForm')->getMessages());
+
+    //  var_dump($this->serviceManager->get('SignForm')->getMessages());
     }
 
 

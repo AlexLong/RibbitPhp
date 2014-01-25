@@ -20,4 +20,6 @@ interface UserRepositoryInterface
 
     function  createUser($values = array());
 
+    function dropById($userId);
+
 }

@@ -14,9 +14,11 @@ use Application\Domain\DbLayerInterfaces\UserRepositoryInterface;
 use Application\Form\LoginForm;
 use Application\Model\LoginModel;
 use Application\Service\Interfaces\User\AuthenticationServiceInterface;
+use Zend\Mvc\Controller\Plugin\Params;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\SessionManager;
+use Zend\Stdlib\Parameters;
 
 class AuthenticationService   implements  AuthenticationServiceInterface, ServiceLocatorAwareInterface {
 
@@ -51,25 +53,20 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     const INVALID_EMAIL = "Invalid email/password. Please Try again.";
 
 
-    public  function signUp($postData)
+    public  function signUp($postData, $role = 'user')
     {
 
-        $form =  $this->getSignForm()->setInputFilter($this->getSignModel()->getInputFilter());
-
-
-        $form->setData($postData);
-        if(!$form->isValid()){
-            $this->validationMessages = $form->getMessages();
-            return false;
+        if(array_key_exists('password',$postData)){
+            $postData['password'] = md5($postData['password']);
         }
+        $postData['registration_date'] = date("Y-m-d H:i:s");
+        $postData['role'] = $role;
 
+       $this->getUserRepository()->createUser((array)$postData);
 
         return true;
 
     }
-
-
-
     public function authenticate($postData)
     {
         $form =  $this->getLoginForm()->setInputFilter($this->getLoginModel()->getInputFilter());
@@ -85,12 +82,10 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
             $this->select);
         if((!isset($user)  || $user == null) ||
             ($user['password'] !== md5($postData['password']))){
-
-
-
+                
+              $this->validationMessages[] = self::INVALID_EMAIL;
             return false;
         }
-
         $this->getSessionManager()->getStorage()->offsetSet($this->defaultUserId, $user['id']);
 
         if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
@@ -117,8 +112,12 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
         return true;
     }
 
+    public  function removeUser($userId)
+    {
 
 
+        return $this->getUserRepository()->dropById($userId);
+    }
     /**
      * @return mixed
      */
