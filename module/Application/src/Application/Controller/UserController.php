@@ -10,21 +10,44 @@
 namespace Application\Controller;
 
 
+
+
+
 class UserController extends  AbstractBaseController {
 
-    public function checkUserAction()
-    {
 
-       throw new \Exception("Not Implemented checkUser");
+
+    
+    public function chkUnameAction()
+    {
+        if($this->request->isPost()){
+            $data = $this->request->getQuery();
+            $userFilter = $this->getSignForm()->getInputFilter()->get('username');
+            $userFilter->setValue($data['username']);
+            if(!$userFilter->isValid()){
+                return new \Zend\View\Model\JsonModel($userFilter->getMessages());
+            }
+            return new \Zend\View\Model\JsonModel(array(1));
+        }
+        return new \Zend\View\Model\JsonModel(array(-1));
     }
 
-    public function  checkMailAction()
+    public function  chkEmailAction()
     {
-        throw new \Exception("Not Implemented checkMail");
+        if($this->request->isPost()){
+            $data = $this->request->getQuery();
+            $userFilter = $this->getSignForm()->getInputFilter()->get('email');
+            $userFilter->setValue($data['email']);
+            if(!$userFilter->isValid()){
+                return new \Zend\View\Model\JsonModel($userFilter->getMessages());
+            }
+            return new \Zend\View\Model\JsonModel(array(1));
+        }
+        return new \Zend\View\Model\JsonModel(array(-1));
     }
-
-
-
-
+    public  function getSignForm()
+    {
+        return $this->getServiceLocator()->get('SignForm');
+    }
 
 } 
