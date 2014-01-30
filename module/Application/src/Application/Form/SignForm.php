@@ -30,7 +30,8 @@ class SignForm extends Form{
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true
+                'required' => true,
+                'id' => 'email'
 
             ),
         ));
@@ -45,7 +46,8 @@ class SignForm extends Form{
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true
+                'required' => true,
+                'id' => 'username'
 
             ),
         ));
@@ -54,11 +56,13 @@ class SignForm extends Form{
             'type' => 'Password',
             'options' => array(
                 'label' => 'Password',
+
             ),
 
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true
+                'required' => true,
+                'id' => 'username'
 
             ),
         ));

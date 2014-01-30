@@ -133,7 +133,6 @@ class Module
                        $usernameExistsValidator = new UsernameExists();
                        $usernameExistsValidator->setUserRepository($locator->get('RepositoryAccessor')->users);
                        $emailExistValidator->setUserRepository($locator->get('RepositoryAccessor')->users);
-
                        $signModel->setEmailValidator($emailExistValidator);
                        $signModel->setUsernameValidator($usernameExistsValidator);
 

@@ -13,9 +13,8 @@ namespace Application\Controller;
 use Application\Domain\Entity\RibbitUser;
 
 use Application\Form\LoginForm;
-use Application\Form\SignForm;
-use Application\Model\LoginModel;
-use Zend\Stdlib\Parameters;
+use Zend\Json\Json;
+use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractBaseController
@@ -37,13 +36,11 @@ class IndexController extends AbstractBaseController
 
             if($this->getAuthService()->authenticate($data) == false)
             {
-
-
                 $messages = $this->getAuthService()->getValidationMessages();
                 $failed_form = new LoginForm(true);
                 $failed_form->setData($data);
                 return new ViewModel(array('validation_messages' => $messages,
-                                            'failed_form' => $failed_form));
+                    'failed_form' => $failed_form));
             }
             if($this->getUserPlugin()->hasReturnUri())
             {
@@ -56,42 +53,54 @@ class IndexController extends AbstractBaseController
         {
 
             $this->getUserPlugin()->generateReturnUri($this->getRequest()->getQuery('rt'));
-            
+
         }
-       return new ViewModel();
+        return new ViewModel();
     }
 
     public function signAction()
     {
+     //   $this->layout()->terminate();
 
         if($this->getRequest()->isPost()){
 
-            $data = $this->getRequest()->getPost();
-
-
+           $data = $this->getRequest()->getPost();
 
            $signForm = $this->getServiceLocator()->get('SignForm');
 
             $signForm->setData($data);
-
             if(!$signForm->isValid())
             {
            
-               var_dump($signForm->getMessages());
-                return false;
+             return new ViewModel(array('failed_form' => $signForm));
             }
             $this->getAuthService()->signUp($data);
-
-
         }
 
 
         return new ViewModel();
     }
 
+    public function  apiSignAction()
+    {
+
+        if($this->getRequest()->isPost()){
+
+            $data = $this->getRequest()->getPost();
+            $signForm = $this->getServiceLocator()->get('SignForm');
+
+            $signForm->setData($data);
+
+            if(!$signForm->isValid())
+            {
+                return new JsonModel($signForm->getMessages());
+            }
+        }
+    }
+
     public function logoutAction()
     {
-        $this->layout()->terminate();
+        $this->layout()->terminate(0);
 
         $this->getAuthService()->logout();
 

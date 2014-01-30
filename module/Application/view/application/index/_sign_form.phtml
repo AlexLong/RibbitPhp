@@ -20,16 +20,28 @@ $form->setAttributes(array(
     'action' => $this->Url('index/index_child', array('action' => 'sign'))
 ));
 $form->prepare();
-
 echo $this->form()->openTag($form);
-
 echo $this->formLabel($form->get('username'));
+
 echo $this->formElement($form->get('username'));
 
 echo $this->formLabel($form->get('email'));
+
+
 echo $this->formElement($form->get('email'));
+$this->formElementErrors($form->get('email'));
+
+
+echo $this->formElementErrors()
+    ->setMessageCloseString('</div>')
+    ->setMessageOpenFormat('<div%s>')
+    ->setAttributes(array('class' => 'alert alert-danger'))
+    ->render($form->get('email'));
+           // ->setAttributes(array('class' =>'alert alert-danger' ));
 
 echo $this->formLabel($form->get('password'));
+
+
 echo $this->formElement($form->get('password'));
 
 
@@ -38,10 +50,50 @@ echo $this->formElement($form->get('remember_me'));
 
 
 echo $this->formElement($form->get('sign_token'));
-
-
-echo $this->formElement($form->get('submit'));
-
-echo $this->form()->closeTag();
-
 ?>
+<input type="submit" value="submit">
+
+<?php echo $this->form()->closeTag(); ?>
+
+<input type="text" id="testuser"  class="form-control" placeholder="enter a test user">
+
+<script>
+    $(document).ready(function(){
+        var timer = null;
+        $("#username").on("keyup",function(e){
+            clearTimeout(timer);
+            timer = setTimeout(function(){
+                signRequest();
+            },1200);
+        });
+
+        $("#email").on("keyup",function(e){
+            clearTimeout(timer);
+            timer = setTimeout(function(){
+                signRequest();
+            },1200);
+        });
+    });
+
+    function signRequest(){
+        var formData = $('#sign').serialize();
+        $.ajax({
+            data: formData,
+            type: "POST",
+            url: "<?php echo $this->url('index/index_child', array('action' => 'apiSign'))?>",
+            dataType: "json",
+            cache: false
+        })
+            .done(function(data) {
+            console.log(data);
+        });
+    }
+
+
+
+
+</script>
+
+
+
+

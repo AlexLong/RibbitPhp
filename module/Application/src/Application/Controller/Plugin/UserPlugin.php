@@ -18,6 +18,7 @@ use Zend\Mvc\Controller\Plugin\Redirect;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\SessionManager;
 use Zend\Uri\Uri;
+use Zend\View\Helper\ViewModel;
 
 class UserPlugin extends AbstractPlugin  {
 
@@ -53,6 +54,13 @@ class UserPlugin extends AbstractPlugin  {
 
     }
 
+    public function postOnly()
+    {
+        if(!$this->getRequest()->isPost()){
+            return new ViewModel();
+        }
+        return true;
+    }
 
     public function redirectToAuth()
     {

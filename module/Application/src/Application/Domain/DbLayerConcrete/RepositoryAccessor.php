@@ -15,12 +15,24 @@ use Application\Domain\DbLayerInterfaces\RepositoryInterface;
 
 class RepositoryAccessor {
 
+    /**
+     * @var \Application\Domain\DbLayerInterfaces\RepositoryInterface
+     */
     protected $general_repository;
+
+    /**
+     * @var UserRepository
+     */
     public  $users;
 
+    /**
+     * @param RepositoryInterface $general
+     */
     public  function __construct(RepositoryInterface $general)
     {
+
         $this->general_repository = $general;
         $this->users = new UserRepository($this->general_repository);
     }
+
 }

@@ -9,10 +9,10 @@ return array(
 
     'invokables' => array(
         'Application\Controller\Index' => 'Application\Controller\IndexController',
-        'Application\Controller\Home' => 'Application\Controller\HomeController'
+        'Application\Controller\Home' => 'Application\Controller\HomeController',
+        'Application\Controller\User' => 'Application\Controller\UserController',
     ),
 ),
-
   'router' => array(
     'routes' => array(
         'index' => array(
@@ -42,7 +42,7 @@ return array(
 
 
             ),
-        ), // End Application
+        ), // End Index
         'user_home' => array(
             'type'    => 'Literal',
             'options' => array(
@@ -54,44 +54,39 @@ return array(
             ),
             'may_terminate' => true,
             'child_routes' => array(
+            ),
+        ), // End Home
+
+        'user' => array(
+            'type' => 'Zend\Mvc\Router\Http\Literal',
+            'options' => array(
+                'route'    => '/usr',
+                'defaults' => array(
+                    'controller' => 'Application\Controller\User',
+                    'action' => 'index'
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes' => array(
+                'user_child' => array(
+                    'type'    => 'Segment',
+                    'options' => array(
+                        'route'    => '/[:action]',
+                        'constraints' => array(
+                            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        ),
+                        'defaults' => array(
+
+                        ),
+                    ),
+                ), // End index_child
+                //  'query' => array('type' => 'query'),
+
 
             ),
-
-        ),
-
+        ), // End User
 
 
-
-        /*
-          'application' => array(
-              'type'    => 'Literal',
-              'options' => array(
-                  'route'    => '/application',
-                  'defaults' => array(
-                      '__NAMESPACE__' => 'Application\Controller',
-                      'controller'    => 'Index',
-                      'action'        => 'index',
-                  ),
-              ),
-              'may_terminate' => true,
-              'child_routes' => array(
-                  'default' => array(
-                      'type'    => 'Segment',
-                      'options' => array(
-                          'route'    => '/[:controller[/:action]]',
-                          'constraints' => array(
-                              'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                              'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                          ),
-                          'defaults' => array(
-
-                          ),
-                      ),
-                  ),
-              ),
-          ),
-
-          */
 
     ),
   ),

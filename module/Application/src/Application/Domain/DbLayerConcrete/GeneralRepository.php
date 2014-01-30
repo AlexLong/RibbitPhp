@@ -20,15 +20,32 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInterface {
 
 
+    /**
+     * @var \Zend\Db\Adapter\Adapter
+     */
     protected $dbAdapter;
 
+    /**
+     * @var \Zend\ServiceManager\ServiceManager
+     */
     protected $serviceManager;
 
+    /**
+     * @var
+     */
     protected $entityManager;
 
+    /**
+     * @var \Zend\Db\Sql\Sql
+     */
     protected $sqlManager;
 
-
+    /**
+     * Executes the formed SQL statement.
+     *
+     * @param $statement
+     * @return mixed
+     */
     public  function execute($statement)
     {
         if(is_object($statement)){
@@ -41,6 +58,15 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
         return $this->getDbAdapter()->query($request,Adapter::QUERY_MODE_EXECUTE);
     }
 
+    /**
+     * Find data by specified element.
+     *
+     * @param array
+     * @param $table
+     * @param null $columns
+     * @param int $limit
+     * @return mixed
+     */
     public  function findBy($where = array(),$table,$columns = null,$limit = 1){
 
         if($columns == null)
@@ -65,6 +91,14 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
     }
 
 
+    /**
+     * Add data to the specified form
+     * @param $table
+     * @param array $columns
+     * @param array $values
+     * @param null $where
+     * @return mixed
+     */
     public function AddTo($table, $columns = array(), $values = array(),  $where = null)
     {
 
@@ -78,24 +112,35 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
                 ->where($where)
                 ->values($values));
     }
-    
-   
 
-   public  function setSqlManager(Sql $sql)
+
+    /**
+     * @param Sql $sql
+     */
+    public  function setSqlManager(Sql $sql)
     {
         $this->sqlManager = $sql;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSqlManager()
     {
         return $this->sqlManager;
     }
 
+    /**
+     * @param AdapterInterface $dbAdapter
+     */
     public function setDbAdapter( AdapterInterface $dbAdapter )
     {
         $this->dbAdapter = $dbAdapter;
     }
 
+    /**
+     * @return mixed
+     */
     public  function getDbAdapter()
     {
         return $this->dbAdapter;
@@ -120,11 +165,17 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
        return $this->serviceManager;
     }
 
+    /**
+     * @param $entityManager
+     */
     public function setEntityManager($entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @return mixed
+     */
     public  function  getEntityManager()
     {
         return $this->entityManager;
