@@ -3,6 +3,19 @@ body {
     padding-bottom: 40px;
 }
 
+
+/*
+form#sign > .form-control,form#sign >  .standard-field {
+    width: 42%;
+
+}
+*/
+form#sign >  .standard-field input {
+    width: 340px;
+
+}
+
+
 .zf-green {
     color: #68b604;
 }

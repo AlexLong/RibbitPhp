@@ -57,7 +57,7 @@ return array(
             ),
         ), // End Home
 
-        'user' => array(
+        'usr' => array(
             'type' => 'Zend\Mvc\Router\Http\Literal',
             'options' => array(
                 'route'    => '/usr',
@@ -68,7 +68,7 @@ return array(
             ),
             'may_terminate' => true,
             'child_routes' => array(
-                'user_child' => array(
+                'usr_child' => array(
                     'type'    => 'Segment',
                     'options' => array(
                         'route'    => '/[:action]',
