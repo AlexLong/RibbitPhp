@@ -5,18 +5,16 @@
     <?php
     if(is_array($this->validation_messages))
     {
-        echo($this->validation_messages[0]);
-
+     echo $this->validation_messages[0];
     }else{
         echo $this->validation_messages;
-
     }
 
     }?>
 </div>
 <?php
 
-(isset($this->failed_form)) ? $form = $this->failed_form : $form = $this->renderForm()->login(true);
+(isset($this->failed_form)) ? $form = $this->failed_form : $form = $this->renderForm()->login();
 
 
 $form->setAttributes(array(

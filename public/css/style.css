@@ -4,12 +4,21 @@ body {
 }
 
 
-/*
-form#sign > .form-control,form#sign >  .standard-field {
-    width: 42%;
-
+div.sign-wrapper{
+    width: 605px;
 }
-*/
+
+form#sign >.standard-field > .tip-wrapper{
+    float: right;
+    width: 256px;
+    margin-top: 5px;
+}
+form#sign >.standard-field > .signtip{
+    float: right;
+    position: relative;
+    right: 180px;
+    margin-top: 5px;
+}
 form#sign >  .standard-field input {
     width: 340px;
 

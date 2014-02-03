@@ -22,13 +22,22 @@ class EmailExists extends  AbstractUserValidator {
      */
 
     const ERROR_EMAIL_FOUND    = 'emailFound';
+    const ERROR_EMAIL_NOT_FOUND    = 'emailNotFound';
+    const INVALID_LOGIN    = 'invalidLogin';
 
     protected $messageTemplates = array(
         self::ERROR_EMAIL_FOUND    => "Email address is already in use.",
+        self::ERROR_EMAIL_NOT_FOUND    => "Email Doesn't exist.",
+        self::INVALID_LOGIN   => "Invalid email/password.",
+
     );
+
+    protected $login;
 
     public  function __construct(array $options = null)
     {
+        $this->login =( is_array($options) && array_key_exists('login', $options)) ? $options['login'] :  false;
+
         parent::__construct($options);
     }
 
@@ -51,15 +60,18 @@ class EmailExists extends  AbstractUserValidator {
             array('email'));
 
         if(($user != null) || (is_array($user) && count($user) > 0) ) {
-            $this->error(self::ERROR_EMAIL_FOUND);
+
+            if($this->login){
+                $valid = true;
+            }else{
+                $this->error(self::ERROR_EMAIL_FOUND);
+                $valid = false;
+            }
+        }elseif(true == $this->login && (($user == null) || (is_array($user) && count($user) == 0))){
+
+            $this->error(self::INVALID_LOGIN);
             $valid = false;
         }
         return $valid;
     }
-
-
-
-
-
-
 } 

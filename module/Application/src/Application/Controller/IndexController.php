@@ -33,14 +33,15 @@ class IndexController extends AbstractBaseController
         if($this->getRequest()->isPost()){
 
             $data = $this->getRequest()->getPost();
-
-            if($this->getAuthService()->authenticate($data) == false)
-            {
-                $messages = $this->getAuthService()->getValidationMessages();
-                $failed_form = new LoginForm(true);
-                $failed_form->setData($data);
-                return new ViewModel(array('validation_messages' => $messages,
-                    'failed_form' => $failed_form));
+            $form = $this->getServiceLocator()->get('LoginForm');
+            $form->setData($data);
+            if(!$form->isValid()){
+                return new ViewModel(array('validation_messages' => $form->getDefaultMessage(),
+                    'failed_form' => $form));
+            }elseif(!$this->getAuthService()->authenticate($data)){
+                return new ViewModel(array('validation_messages' =>
+                    $this->getAuthService()->getValidationMessages(),
+                    'failed_form' => $form));
             }
             if($this->getUserPlugin()->hasReturnUri())
             {
@@ -60,23 +61,23 @@ class IndexController extends AbstractBaseController
 
     public function signAction()
     {
-     //   $this->layout()->terminate();
+
 
         if($this->getRequest()->isPost()){
 
            $data = $this->getRequest()->getPost();
 
-           $signForm = $this->getServiceLocator()->get('SignForm');
-
+            $signForm = $this->getServiceLocator()->get('SignForm');
             $signForm->setData($data);
             if(!$signForm->isValid())
             {
-           
              return new ViewModel(array('failed_form' => $signForm));
             }
-            $this->getAuthService()->signUp($data);
+            if($this->getAuthService()->signUp($data)){
+                return $this->getUserPlugin()->redirectToHome();
+            }
+           return new ViewModel();
         }
-
 
         return new ViewModel();
     }

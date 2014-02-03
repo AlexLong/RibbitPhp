@@ -55,35 +55,28 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     public  function signUp($postData, $role = 'user')
     {
-
-        if(array_key_exists('password',$postData)){
-            $postData['password'] = md5($postData['password']);
+        //var_dump($postData);
+        $handing = $postData;
+        if(array_key_exists('password',$handing)){
+            $handing['password'] = md5($handing['password']);
         }
-        $postData['registration_date'] = date("Y-m-d H:i:s");
-        $postData['role'] = $role;
+        $handing['registration_date'] = date("Y-m-d H:i:s");
+        $handing['role'] = $role;
 
-       $this->getUserRepository()->createUser((array)$postData);
+        $this->getUserRepository()->createUser((array)$handing);
 
-        return true;
 
+
+        return $this->authenticate($postData);
     }
     public function authenticate($postData)
     {
-        $form =  $this->getLoginForm()->setInputFilter($this->getLoginModel()->getInputFilter());
 
-        $form->setData($postData);
-
-        if(!$form->isValid())
-        {
-            $this->validationMessages[] = self::INVALID_EMAIL;
-            return false;
-        }
        $user = $this->getUserRepository()->findByEmail($postData['email'],
             $this->select);
-        if((!isset($user)  || $user == null) ||
-            ($user['password'] !== md5($postData['password']))){
-                
-              $this->validationMessages[] = self::INVALID_EMAIL;
+
+        if($user['password'] != md5($postData['password'])){
+            $this->validationMessages[] = self::INVALID_EMAIL;
             return false;
         }
         $this->getSessionManager()->getStorage()->offsetSet($this->defaultUserId, $user['id']);
@@ -91,6 +84,7 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
         if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
            $this->getSessionManager()->rememberMe();
         }
+
 
       return true;
     }

@@ -51,7 +51,6 @@ class SignModel implements  InputFilterAwareInterface{
         
          //   var_dump( $this->getEmailValidator());
             $inputFilter = new InputFilter();
-
             $inputFilter->add(array(
                     'name' => 'username',
                     'required' => true,
@@ -59,7 +58,7 @@ class SignModel implements  InputFilterAwareInterface{
                        $this->getUsernameValidator(),
                         array(
                             'name' => 'NotEmpty',
-                            'break_chain_on_failure' => true,
+
                             'options' => array(
                                 'encoding' => 'UTF-8',
                                 'messages' => array(
@@ -119,17 +118,24 @@ class SignModel implements  InputFilterAwareInterface{
                             'options' => array(
                                 'messages' => array(
                                     \Zend\Validator\EmailAddress::INVALID_FORMAT => 'Please enter a valid email',
-                                    \Zend\Validator\EmailAddress::INVALID => 'Please enter a valid email'
+                                    \Zend\Validator\EmailAddress::INVALID => 'Please enter a valid email',
+                                    \Zend\Validator\EmailAddress::INVALID_HOSTNAME => 'Please enter a valid email',
+                                    \Zend\Validator\EmailAddress::INVALID_SEGMENT => 'Please enter a valid email',
+                                    \Zend\Validator\EmailAddress::DOT_ATOM => 'Please enter a valid email',
+                                    \Zend\Validator\EmailAddress::QUOTED_STRING => 'Please enter a valid email',
+                                    \Zend\Validator\EmailAddress::INVALID_LOCAL_PART => 'Please enter a valid email',
+                                    \Zend\Validator\EmailAddress::LENGTH_EXCEEDED => 'The entered email is too long',
+
 
                                 )
                             )
 
                         ),
+
                         array(
                             'name' => 'StringLength',
 
                             'options' => array(
-
                                 'max' => 50,
                                 'messages' => array(
                                     \Zend\Validator\StringLength::TOO_LONG => 'Your email is too long.',
@@ -162,9 +168,8 @@ class SignModel implements  InputFilterAwareInterface{
                             'options' => array(
 
                                 'min' => 6,
-                                'max' => 150,
+                                'max' => 60,
                                 'messages' => array(
-
                                     \Zend\Validator\StringLength::TOO_LONG => 'Your Password is too long.',
                                     \Zend\Validator\StringLength::TOO_SHORT => 'Password must be at least 6 characters.',
                                 ),

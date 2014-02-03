@@ -30,12 +30,11 @@ class SignForm extends Form{
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true,
+                'autocomplete' => 'off',
                 'id' => 'email'
 
             ),
         ));
-
 
         $this->add(array(
             'name' => 'username',
@@ -46,7 +45,7 @@ class SignForm extends Form{
             ),
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true,
+                'autocomplete' => 'off',
                 'id' => 'username'
 
             ),
@@ -61,8 +60,8 @@ class SignForm extends Form{
 
             'attributes' => array(
                 'class' => 'form-control',
-                'required' => true,
-                'id' => 'username'
+                'autocomplete' => 'off',
+                'id' => 'password'
 
             ),
         ));

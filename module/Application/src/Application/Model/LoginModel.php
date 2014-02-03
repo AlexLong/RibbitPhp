@@ -21,7 +21,10 @@ class LoginModel implements InputFilterAwareInterface {
     public $email;
     public $password;
     public $csrf;
+
+    protected $emailValidator;
     protected $inputFilter;
+
 
     /**
      * Set input filter
@@ -50,9 +53,10 @@ class LoginModel implements InputFilterAwareInterface {
                   'name' => 'email',
                    'required' => true,
                      'validators' => array(
-                         array(
+                         $this->getEmailValidator(),
+                             array(
                              'name' => 'NotEmpty',
-                             'break_chain_on_failure' => true,
+
                              'options' => array(
                                  'encoding' => 'UTF-8',
 
@@ -65,7 +69,7 @@ class LoginModel implements InputFilterAwareInterface {
 
                          array(
                              'name' => 'EmailAddress',
-                             'break_chain_on_failure' => true,
+
                              'options' => array(
                                  'encoding' => 'UTF-8',
 
@@ -102,5 +106,19 @@ class LoginModel implements InputFilterAwareInterface {
         return $this->inputFilter;
     }
 
+    /**
+     * @param mixed $emailValidator
+     */
+    public function setEmailValidator($emailValidator)
+    {
+        $this->emailValidator = $emailValidator;
+    }
 
+    /**
+     * @return mixed
+     */
+    public function getEmailValidator()
+    {
+        return $this->emailValidator;
+    }
 }

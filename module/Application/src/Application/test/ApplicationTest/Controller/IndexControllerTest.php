@@ -124,11 +124,11 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         
         $this->assertEquals($expected, $actual);
     }
-    
+    /************* Sign Form ************/
+
+
     public function testCanBeSignPageAccessed()
     {
-        
-        
         $this->routeMatch->setParam('action', 'sign');
         $this->controller->dispatch($this->request);
         
@@ -141,10 +141,8 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
  
     }
 
-    /************* Sign Form ************/
-    
-    
-    
+
+
     
     public function testCanInputBeValidated()
     {

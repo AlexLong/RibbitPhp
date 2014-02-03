@@ -21,7 +21,9 @@ class RenderFormHelper extends AbstractHelper {
 
    protected $underDev = true;
 
-   protected  $signForm;
+   protected $signForm;
+
+   protected $loginForm;
 
 
     public function __invoke($form = null, $name = null)
@@ -37,7 +39,7 @@ class RenderFormHelper extends AbstractHelper {
     public  function login($underDev = false)
     {
 
-        $form = new LoginForm($underDev);
+        $form = $this->getLoginForm();
         $form->setUnderDev($underDev);
         return $form;
     }
@@ -45,17 +47,11 @@ class RenderFormHelper extends AbstractHelper {
 
     public  function sign()
     {
-        $form = new SignForm();
+        $form = $this->getSignForm();
         $form->setUnderDev($this->underDev);
         return $form;
     }
 
-
-
-    public function renderForm($form, $name = null)
-    {
-        return  FormFactory::CreateForm($form, $name);
-    }
 
     /**
      * @param mixed $signForm
@@ -65,6 +61,7 @@ class RenderFormHelper extends AbstractHelper {
         $this->signForm = $signForm;
     }
 
+
     /**
      * @return mixed
      */
@@ -72,6 +69,23 @@ class RenderFormHelper extends AbstractHelper {
     {
         return $this->signForm;
     }
+
+    /**
+     * @param mixed $loginForm
+     */
+    public function setLoginForm($loginForm)
+    {
+        $this->loginForm = $loginForm;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLoginForm()
+    {
+        return $this->loginForm;
+    }
+
 
 
 

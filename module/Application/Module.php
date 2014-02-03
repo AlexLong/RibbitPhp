@@ -15,6 +15,7 @@ use Application\Form\LoginForm;
 use Application\Form\SignForm;
 use Application\Form\Validator\EmailExists;
 use Application\Form\Validator\UsernameExists;
+use Application\Model\LoginModel;
 use Application\Model\SignModel;
 use Application\Service\User\AuthenticationService;
 use Application\ViewHelpers\Form\RenderFormHelper;
@@ -100,7 +101,7 @@ class Module
                   $locator = $sm->getServiceLocator();
                   $helper = new RenderFormHelper();
                   $helper->setSignForm($locator->get('SignForm'));
-
+                        $helper->setLoginForm($locator->get('LoginForm'));
                   return $helper;
                 },
 
@@ -125,21 +126,38 @@ class Module
 
             'AuthService' => 'Application\Service\User\AuthenticationServiceFactory',
                'SignForm' => function($sm){
-                       $locator = $sm;
                        $signForm = new SignForm();
                        $signModel = new SignModel();
 
                        $emailExistValidator = new EmailExists();
                        $usernameExistsValidator = new UsernameExists();
-                       $usernameExistsValidator->setUserRepository($locator->get('RepositoryAccessor')->users);
-                       $emailExistValidator->setUserRepository($locator->get('RepositoryAccessor')->users);
+                       $usernameExistsValidator->setUserRepository($sm->get('RepositoryAccessor')->users);
+                       $emailExistValidator->setUserRepository($sm->get('RepositoryAccessor')->users);
                        $signModel->setEmailValidator($emailExistValidator);
                        $signModel->setUsernameValidator($usernameExistsValidator);
 
                        $signForm->setInputFilter($signModel->getInputFilter());
                        return $signForm;
-
                    },
+
+               'LoginForm' => function($sm){
+
+                       $loginForm = new LoginForm();
+                       $loginModel = new LoginModel();
+
+                       $emailExistValidator = new EmailExists(array('login' => true));
+
+                       $emailExistValidator->setUserRepository($sm->get('RepositoryAccessor')->users);
+
+                       $loginModel->setEmailValidator($emailExistValidator);
+
+                       $loginForm->setInputFilter($loginModel->getInputFilter());
+
+                       return $loginForm;
+
+                 },
+
+
            'RepositoryAccessor' => function($sm){
                $general_repository = $sm->get('GeneralRepository');
                $repository_accessor = new RepositoryAccessor($general_repository);

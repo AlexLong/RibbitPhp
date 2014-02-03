@@ -92,14 +92,6 @@ class UserPlugin extends AbstractPlugin  {
         return $this;
     }
 
-
-
-    public  function redirectByQuery($query)
-    {
-
-    }
-
-
     public function hasReturnUri()
     {
         return $this->getSessionManager()->getStorage()->offsetExists($this->return_uri);

@@ -13,37 +13,34 @@ namespace Application\Controller;
 
 
 
+use Application\Model\ChkModel;
+
 class UserController extends  AbstractBaseController {
 
-    public function chkUnameAction()
+
+    protected $chkModel;
+
+    public function chkUserAction()
     {
         if($this->request->isPost()){
-            $data = $this->request->getPost();
-            $userFilter = $this->getSignForm()->getInputFilter()->get('username');
-            $userFilter->setValue($data['username']);
-            if(!$userFilter->isValid()){
-                return new \Zend\View\Model\JsonModel($userFilter->getMessages());
-            }
-            return new \Zend\View\Model\JsonModel(array(1));
+           $data = $this->request->getPost();
+         return $this->getChkModel()->buildResponse($data);
         }
         return new \Zend\View\Model\JsonModel(array(-1));
     }
-    public function  chkEmailAction()
+    public function getChkModel()
     {
-        if($this->request->isPost()){
-            $data = $this->request->getPost();
-            $userFilter = $this->getSignForm()->getInputFilter()->get('email');
-            $userFilter->setValue($data['email']);
-            if(!$userFilter->isValid()){
-                return new \Zend\View\Model\JsonModel($userFilter->getMessages());
-            }
-            return new \Zend\View\Model\JsonModel(array(1));
+        if(!$this->chkModel){
+            $this->setChkModel(new ChkModel());
         }
-        return new \Zend\View\Model\JsonModel(array(-1));
+        return $this->chkModel;
     }
-    public  function getSignForm()
-    {
-        return $this->getServiceLocator()->get('SignForm');
+
+    public function setChkModel(ChkModel $model){
+      $model->setLocator($this->getServiceLocator());
+       $this->chkModel = $model;
+        return $this;
     }
+
 
 } 

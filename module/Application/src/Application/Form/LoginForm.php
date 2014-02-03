@@ -16,6 +16,8 @@ class LoginForm extends  Form {
 
     protected $underDev;
 
+    private  $defaultMessage = array("Invalid email/password. Please Try again.");
+
     public function __construct($underDev = true, $data = array())
     {
         parent::__construct('login');
@@ -92,6 +94,14 @@ class LoginForm extends  Form {
 
         ));
 
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultMessage()
+    {
+        return $this->defaultMessage;
     }
 
 
