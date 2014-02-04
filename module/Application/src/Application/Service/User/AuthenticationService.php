@@ -32,36 +32,62 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     protected $userIdentify;
 
-    protected $defaultUserId  = 'user_id';
+    protected $defaultUserId  = 'id';
 
     protected $underDev = false;
 
-    protected $select = array('id','email' ,'password');
+    protected $userCredentials = array();
 
+    protected $requiredUserData = array('id','email','username' ,'password','role');
+
+    protected $availableData =  array('id','email','username','role');
+
+    /**
+     *
+     * Creates a new user based on submitted data.
+     *
+     * @param array $postData
+     * @param string $role
+     * @return bool
+     */
 
     public  function signUp($postData, $role = 'user')
     {
-
         $postData['role'] = $role;
-
         $this->getUserRepository()->createUser((array)$postData);
         return $this->authenticate($postData);
     }
+
+    /**
+     * Authenticates user based on submitted data.
+     *
+     * @param $postData array
+     * @return bool
+     */
     public function authenticate($postData)
     {
 
        $user = $this->getUserRepository()->findByEmail($postData['email'],
-            $this->select);
-        if( ($user == null  || count($user) == 0) ||  $user['password'] != md5($postData['password'])){
+            $this->requiredUserData);
+
+        if( ($user === null  || count($user) == 0) ||  $user['password'] != md5($postData['password'])){
          return false;
         }
-        $this->getSessionManager()->getStorage()->offsetSet($this->defaultUserId, $user['id']);
+
+        foreach($this->availableData as $data){
+            $this->getSessionManager()->getStorage()->offsetSet($data,$user[$data]);
+        }
 
         if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
            $this->getSessionManager()->rememberMe();
         }
       return true;
     }
+    /**
+     * Checks user identity.
+     *
+     * @return bool
+     */
 
     public  function is_identified()
     {
@@ -70,30 +96,62 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
       }
           return true;
     }
+
+    /**
+     * Destroys user id session and returns the result of an operation.
+     *
+     * @param void
+     * @return boolean
+     */
+
     public  function logout()
     {
         if($this->getSessionManager()->getStorage()->offsetExists($this->defaultUserId))
         {
            $this->getSessionStorage()->offsetUnset($this->defaultUserId);
         }
-
         return true;
     }
+
+    /**
+     * Removes userdata based on an id.
+     *
+     * @param $userId int.
+     * @return mixed boolean
+     */
 
     public  function removeUser($userId)
     {
         return $this->getUserRepository()->dropById($userId);
     }
+
     /**
+     * Get User Identity Session based on the key.
+     * If key is null returns an array of user credentials.
+     *
+     * @param $keydata mixed
      * @return mixed
      */
-    public function getUserIdentify()
+    public function getUserIdentify($keydata = null)
     {
         $identity = null;
 
         if($this->is_identified())
         {
-            $identity = $this->getSessionManager()->getStorage()->offsetGet('user_id');
+            if(!is_array($keydata) && $keydata !== null){
+                $identity = $this->getSessionManager()->getStorage()->offsetGet($keydata);
+            }elseif(is_array($keydata)){
+                $identity = array_fill_keys($keydata,array());
+                foreach($keydata as $d){
+                    $identity[$d] = $this->getSessionManager()->getStorage()->offsetGet($d);
+                }
+            }elseif($keydata == null){
+                $identity = array();
+                foreach($this->availableData as $data){
+
+                    $identity[$data] = $this->getSessionManager()->getStorage()->offsetGet($data);
+                }
+            }
         }
         return $identity;
     }

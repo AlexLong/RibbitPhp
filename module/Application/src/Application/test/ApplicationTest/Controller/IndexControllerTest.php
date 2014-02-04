@@ -138,7 +138,6 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
 
     }
-
     public function testCanInputBeValidated()
     {
         $params = new Parameters(array('email' => 'test@test.com','username' => 'test',
@@ -152,11 +151,8 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
         $this->request->setPost($params)
             ->setMethod('Post');
-
        $this->routeMatch->setParam('action', 'sign');
        $this->controller->dispatch($this->request);
-
-
     //  var_dump($this->serviceManager->get('SignForm')->getMessages());
     }
 

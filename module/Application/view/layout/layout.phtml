@@ -50,6 +50,8 @@
                             <?php }?>
 
                             <?php if($this->userIdentity()->isLogged()){?>
+
+
                                 <a href="<?php
 
                                 echo $this->url('index/index_child', array('action' => 'logout'),
@@ -57,10 +59,9 @@
                                     <?php echo $this->translate('Logout')
                                     ?>
                                 </a>
+
                             <?php }?>
                         </li>
-
-
 
                     </ul>
                 </div><!--/.nav-collapse -->

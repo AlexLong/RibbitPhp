@@ -220,8 +220,4 @@ class SignModel implements  InputFilterAwareInterface{
         return $this->emailValidator;
     }
 
-
-
-
-
 } 

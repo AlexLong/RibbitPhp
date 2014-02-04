@@ -15,8 +15,9 @@ use Zend\View\Helper\AbstractHelper;
 
 class UserIdentity extends  AbstractHelper {
 
-
     protected $authService;
+    protected $identity;
+
 
     function __invoke()
     {
@@ -27,12 +28,12 @@ class UserIdentity extends  AbstractHelper {
     {
         return $this->getAuthService()->is_identified();
     }
+
+    public function getIdentity($key = null)
+    {
+        return $this->getAuthService()->getUserIdentify($key);
+    }
     //public  function
-
-
-    /**
-     * @param mixed $authService
-     */
     public function setAuthService(AuthenticationServiceInterface $authService)
     {
         $this->authService = $authService;
