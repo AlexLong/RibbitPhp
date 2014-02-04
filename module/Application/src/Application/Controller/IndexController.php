@@ -31,16 +31,11 @@ class IndexController extends AbstractBaseController
         $this->getUserPlugin()->signedUserRedirect();
 
         if($this->getRequest()->isPost()){
-
             $data = $this->getRequest()->getPost();
             $form = $this->getServiceLocator()->get('LoginForm');
             $form->setData($data);
-            if(!$form->isValid()){
+            if(!$form->isValid() || !$this->getAuthService()->authenticate($data)){
                 return new ViewModel(array('validation_messages' => $form->getDefaultMessage(),
-                    'failed_form' => $form));
-            }elseif(!$this->getAuthService()->authenticate($data)){
-                return new ViewModel(array('validation_messages' =>
-                    $this->getAuthService()->getValidationMessages(),
                     'failed_form' => $form));
             }
             if($this->getUserPlugin()->hasReturnUri())

@@ -102,7 +102,6 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
     public  function  testCanBeAccountSuccessfullyLogged()
     {
-
         $params = new Parameters(array('email' => 'test@test.com',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
@@ -137,20 +136,15 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         
 
         $this->assertEquals($expected, $actual);
-        
- 
+
     }
 
-
-
-    
     public function testCanInputBeValidated()
     {
         $params = new Parameters(array('email' => 'test@test.com','username' => 'test',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
         $res =  $this->userRepository->findByEmail($params['email'], array('id'));
-
 
         if($res){
             $this->authService->removeUser($res['id']);

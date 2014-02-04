@@ -26,14 +26,6 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     protected $sessionManager;
 
-    protected $loginForm;
-
-    protected $signForm;
-
-    protected $signModel;
-
-    protected $loginModel;
-
     protected $validationMessages;
 
     protected $serviceLocator;
@@ -42,31 +34,17 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     protected $defaultUserId  = 'user_id';
 
-    protected $underTesting = false;
+    protected $underDev = false;
 
     protected $select = array('id','email' ,'password');
-
-    protected $underDev;
-
-
-
-    const INVALID_EMAIL = "Invalid email/password. Please Try again.";
 
 
     public  function signUp($postData, $role = 'user')
     {
-        //var_dump($postData);
-        $handing = $postData;
-        if(array_key_exists('password',$handing)){
-            $handing['password'] = md5($handing['password']);
-        }
-        $handing['registration_date'] = date("Y-m-d H:i:s");
-        $handing['role'] = $role;
 
-        $this->getUserRepository()->createUser((array)$handing);
+        $postData['role'] = $role;
 
-
-
+        $this->getUserRepository()->createUser((array)$postData);
         return $this->authenticate($postData);
     }
     public function authenticate($postData)
@@ -74,18 +52,14 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
        $user = $this->getUserRepository()->findByEmail($postData['email'],
             $this->select);
-
-        if($user['password'] != md5($postData['password'])){
-            $this->validationMessages[] = self::INVALID_EMAIL;
-            return false;
+        if( ($user == null  || count($user) == 0) ||  $user['password'] != md5($postData['password'])){
+         return false;
         }
         $this->getSessionManager()->getStorage()->offsetSet($this->defaultUserId, $user['id']);
 
         if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
            $this->getSessionManager()->rememberMe();
         }
-
-
       return true;
     }
 
@@ -108,8 +82,6 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     public  function removeUser($userId)
     {
-
-
         return $this->getUserRepository()->dropById($userId);
     }
     /**
@@ -117,42 +89,13 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
      */
     public function getUserIdentify()
     {
+        $identity = null;
+
         if($this->is_identified())
         {
-            return $this->getSessionManager()->getStorage()->offsetGet('user_id');
+            $identity = $this->getSessionManager()->getStorage()->offsetGet('user_id');
         }
-        return null;
-    }
-    /**
-     * @param mixed $loginForm
-     */
-    public function setLoginForm(LoginForm $loginForm)
-    {
-        $this->loginForm = $loginForm;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLoginForm()
-    {
-        return $this->loginForm;
-    }
-
-    /**
-     * @param mixed $loginModel
-     */
-    public function setLoginModel(LoginModel $loginModel)
-    {
-        $this->loginModel = $loginModel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLoginModel()
-    {
-        return $this->loginModel;
+        return $identity;
     }
 
     /**
@@ -193,22 +136,6 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     }
 
     /**
-     * @param mixed $ValidationMessages
-     */
-    public function setValidationMessages($ValidationMessages)
-    {
-        $this->validationMessages = $ValidationMessages;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValidationMessages()
-    {
-        return $this->validationMessages;
-    }
-
-    /**
      * Set service locator
      *
      * @param ServiceLocatorInterface $serviceLocator
@@ -229,66 +156,23 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     }
 
-
-
     /**
-     * @param boolean $underTesting
-     */
-    public function setUnderTesting($underTesting)
-    {
-        $this->underTesting = $underTesting;
-    }
-
-    /**
-     * @param mixed $underDev
+     * @param boolean $underDev
      */
     public function setUnderDev($underDev)
     {
-        if(!$underDev)
-            $this->underDev = false;
-
         $this->underDev = $underDev;
     }
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getUnderDev()
     {
         return $this->underDev;
     }
 
-    /**
-     * @param mixed $signForm
-     */
-    public function setSignForm($signForm)
-    {
-        $this->signForm = $signForm;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getSignForm()
-    {
-        return $this->signForm;
-    }
-
-    /**
-     * @param mixed $signModel
-     */
-    public function setSignModel($signModel)
-    {
-        $this->signModel = $signModel;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSignModel()
-    {
-        return $this->signModel;
-    }
 
 
 } 

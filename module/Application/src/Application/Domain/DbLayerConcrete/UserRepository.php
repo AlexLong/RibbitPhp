@@ -49,6 +49,11 @@ class UserRepository implements  UserRepositoryInterface {
             if(!in_array($key,$this->insert_columns))
                 unset($values[$key]);
         }
+        if(array_key_exists('password',$values)){
+            $values['password'] = md5($values['password']);
+        }
+        $values['registration_date'] = date("Y-m-d H:i:s");
+
       return  $this->general_repository->AddTo($this->table,$this->insert_columns,
           $values
           );

@@ -53,13 +53,11 @@ class LoginModel implements InputFilterAwareInterface {
                   'name' => 'email',
                    'required' => true,
                      'validators' => array(
-                         $this->getEmailValidator(),
+                      //   $this->getEmailValidator(),
                              array(
                              'name' => 'NotEmpty',
-
                              'options' => array(
                                  'encoding' => 'UTF-8',
-
                                  'messages' => array(
                                     \Zend\Validator\NotEmpty::IS_EMPTY => 'Please enter your email.',
 
@@ -79,6 +77,18 @@ class LoginModel implements InputFilterAwareInterface {
                                  ),
                              ),
                          ),
+                         array(
+                             'name' => 'StringLength',
+                             'options' => array(
+                                 'max' => 50,
+                                 'messages' => array(
+                                     \Zend\Validator\StringLength::TOO_LONG => 'Your email is too long.',
+
+                                 ),
+                             ),
+
+                         ),
+
                      )
                )
              );
@@ -97,6 +107,20 @@ class LoginModel implements InputFilterAwareInterface {
                                  ),
 
                              ),
+                                array(
+                                    'name' => 'StringLength',
+
+                                    'options' => array(
+
+                                        'min' => 6,
+                                        'max' => 60,
+                                        'messages' => array(
+                                            \Zend\Validator\StringLength::TOO_LONG => 'Your Password is too long.',
+                                            \Zend\Validator\StringLength::TOO_SHORT => 'Password must be at least 6 characters.',
+                                        ),
+                                    ),
+
+                                ),
                          )
                         )
                    );
