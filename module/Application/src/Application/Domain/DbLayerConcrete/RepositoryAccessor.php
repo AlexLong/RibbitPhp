@@ -40,7 +40,7 @@ class RepositoryAccessor implements ServiceLocatorAwareInterface {
     }
 
     /**
-     * Checks a repository by specified key
+     * Checks whether a repository exists
      *
      * @param $repository
      * @return bool
