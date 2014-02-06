@@ -25,6 +25,7 @@ use Zend\Db\Sql\Sql;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Session\Container;
+use Zend\Session\Service\SessionManagerFactory;
 use Zend\Session\SessionManager;
 
 class Module
@@ -37,13 +38,6 @@ class Module
 
 
         $eventManager->attach(MvcEvent::EVENT_DISPATCH,function($e){
-
-
-           //$appl = $e->getRouteMatch();
-           // $params = $appl->getParams();
-           //$name =$appl->getMatchedRouteName();
-            //$params = $appl->getParams();
-           // var_dump($params['action']);
 
         },50);
 
@@ -131,8 +125,8 @@ class Module
 
                        $emailExistValidator = new EmailExists();
                        $usernameExistsValidator = new UsernameExists();
-                       $usernameExistsValidator->setUserRepository($sm->get('RepositoryAccessor')->users);
-                       $emailExistValidator->setUserRepository($sm->get('RepositoryAccessor')->users);
+                       $usernameExistsValidator->setUserRepository($sm->get('RepositoryAccessor')->get('users'));
+                       $emailExistValidator->setUserRepository($sm->get('RepositoryAccessor')->get('users'));
                        $signModel->setEmailValidator($emailExistValidator);
                        $signModel->setUsernameValidator($usernameExistsValidator);
 
@@ -141,43 +135,24 @@ class Module
                    },
 
                'LoginForm' => function($sm){
-
                        $loginForm = new LoginForm();
                        $loginModel = new LoginModel();
-
                        $emailExistValidator = new EmailExists(array('login' => true));
-
-                       $emailExistValidator->setUserRepository($sm->get('RepositoryAccessor')->users);
-
+                       $emailExistValidator->setUserRepository($sm->get('RepositoryAccessor')->get('users'));
                        $loginModel->setEmailValidator($emailExistValidator);
-
                        $loginForm->setInputFilter($loginModel->getInputFilter());
 
                        return $loginForm;
 
                  },
-
-
            'RepositoryAccessor' => function($sm){
-               $general_repository = $sm->get('GeneralRepository');
-               $repository_accessor = new RepositoryAccessor($general_repository);
+               $repository_accessor = new RepositoryAccessor();
+                $repository_accessor->setServiceLocator($sm);
                return $repository_accessor;
            },
 
-
-
-         'GeneralRepository' => function($sm){
-                 $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                 $sql = new Sql($dbAdapter);
-                 $repository  = new GeneralRepository();
-                 $repository->setSqlManager($sql);
-                 $repository->setDbAdapter($dbAdapter);
-                 $repository->setEntityManager('doctrine.entitymanager.orm_default');
-                 $repository->setServiceLocator($sm);
-                 return $repository;
-             },
-
                'Zend\Session\SessionManager' => function ($sm) {
+
                        $config = $sm->get('config');
                        if (isset($config['session'])) {
                            $session = $config['session'];

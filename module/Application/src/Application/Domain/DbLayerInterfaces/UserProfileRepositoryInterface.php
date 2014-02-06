@@ -14,15 +14,11 @@ interface UserProfileRepositoryInterface extends RepositoryInterface {
 
 
 
-    function createProfile($user_id, $userdata = null);
+    function createProfile($userData = array());
 
-    function findById($user_id, $columns = array());
+    function findById($user_id,array $columns = null );
 
-    function findWhere($where = array(),$columns = array(), $limit = 1);
-
-    function addUserData($data = array());
-
-    function updateProfile($dataToChange = array());
+    function updateProfile($dataToChange = array(), $where = array());
 
     function deleteUserProfile($user_id);
 

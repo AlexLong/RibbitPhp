@@ -9,61 +9,63 @@
 
 namespace Application\Domain\DbLayerConcrete;
 
-
-use Application\Domain\DbLayerInterfaces\RepositoryInterface;
 use Application\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 
-class UserProfileRepository  extends GeneralRepository implements UserProfileRepositoryInterface {
+class UserProfileRepository  extends AbstractRepository implements UserProfileRepositoryInterface {
 
     protected $table = "ribbit_user_profile";
 
-    protected $general_repository;
-
-
-    public function __construct(RepositoryInterface $repository){
-          $this->general_repository = $repository;
+    public function __construct(ServiceLocatorInterface $sm){
+          parent::__construct($sm);
     }
-
-    function createProfile($user_id, $userdata = null)
+    /**
+     * Creates a User Profile based on passed data.
+     *
+     * @param array $userData
+     * @return mixed
+     */
+    function createProfile($userData = array())
     {
-        if($userdata == null){
-
-            $this->general_repository->AddTo($this->table,array('user_id'),$user_id);
-        }else{
-            $columns = array_keys($userdata);
-
-            $this->general_repository->AddTo($this->table,$columns,$userdata);
-        }
+       return $this->addTo($this->getTable(),$userData);
     }
 
-    function findById($user_id, $columns = null)
+    /**
+     * Finds a user profile based on id
+     *
+     * @param int $user_id
+     * @param array $columns
+     * @return mixed
+     */
+    function findById($user_id,array $columns = null)
     {
-        return $this->general_repository->findBy(array('user_id' => $user_id),$this->table,$columns);
-
+        return $this->findBy(array('user_id' => $user_id),$columns);
     }
 
-    function findWhere($where = array(),$columns = array(), $limit = 1)
+    /**
+     * Ads/Changes data in user profile.
+     *
+     * @param array $dataToChange
+     * @param array $where
+     * @return mixed
+     */
+
+    function updateProfile($dataToChange = array(), $where = array())
     {
-        return $this->general_repository->findBy($where,$this->table,$columns);
-
+        return $this->addTo($dataToChange, $where);
     }
 
-    function addUserData($data = array())
-    {
-        // TODO: Implement addUserData() method.
-    }
-
-    function updateProfile($dataToChange = array())
-    {
-        // TODO: Implement updateProfile() method.
-    }
-
+    /**
+     * Removes a User profile based on passed id.
+     *
+     * @param int $user_id
+     * @return \Zend\Db\Sql\Delete
+     */
     function deleteUserProfile($user_id)
     {
-        // TODO: Implement deleteUserProfile() method.
+       return $this->sqlManager->delete($this->getTable())->where(array('user_id' => $user_id) );
     }
-
 
 
 }

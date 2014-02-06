@@ -50,7 +50,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
 
         $this->adapter = $this->serviceManager->get('Zend\Db\Adapter\Adapter');
-        $this->userRepository = $this->serviceManager->get('RepositoryAccessor')->users;
+        $this->userRepository = $this->serviceManager->get('RepositoryAccessor')->get('users');
 
         $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
         $this->storage = $this->sessionManager->getStorage();

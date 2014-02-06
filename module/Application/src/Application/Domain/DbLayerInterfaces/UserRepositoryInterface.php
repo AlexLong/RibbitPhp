@@ -13,7 +13,7 @@ namespace Application\Domain\DbLayerInterfaces;
  * Interface UserRepositoryInterface
  * @package Application\Domain\DbLayerInterfaces
  */
-interface UserRepositoryInterface
+interface UserRepositoryInterface extends  RepositoryInterface
 {
 
     /**
@@ -29,7 +29,6 @@ interface UserRepositoryInterface
      * @return mixed
      */
     function  findByUsername($username, array $columns = null);
-
     /**
      * @param $email
      * @param array $columns
@@ -42,7 +41,6 @@ interface UserRepositoryInterface
      * @return mixed
      */
     function  createUser($values = array());
-
     /**
      * @param $userId
      * @return mixed

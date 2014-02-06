@@ -11,28 +11,66 @@ namespace Application\Domain\DbLayerConcrete;
 
 
 use Application\Domain\DbLayerInterfaces\RepositoryInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 
-class RepositoryAccessor {
+class RepositoryAccessor implements ServiceLocatorAwareInterface {
+
+
+
+    protected $repositories =
+    array(
+      'users' => 'Application\Domain\DbLayerConcrete\UserRepository',
+      'user_profile' => 'Application\Domain\DbLayerConcrete\UserProfileRepository'
+    );
+
+    protected $serviceLocator;
 
     /**
-     * @var \Application\Domain\DbLayerInterfaces\RepositoryInterface
+     * Get a repository Object.
+     *
+     * @param string $repository
+     * @return  RepositoryInterface
      */
-    protected $general_repository;
-
-    /**
-     * @var UserRepository
-     */
-    public  $users;
-
-    /**
-     * @param RepositoryInterface $general
-     */
-    public  function __construct(RepositoryInterface $general)
+    public function get($repository)
     {
-
-        $this->general_repository = $general;
-        $this->users = new UserRepository($this->general_repository);
+        $repo = $this->repositories[$repository];
+        return new $repo($this->getServiceLocator());
     }
+
+    /**
+     * Checks a repository by specified key
+     *
+     * @param $repository
+     * @return bool
+     */
+
+    public function has($repository){
+
+        return array_key_exists($repository,$this->repositories);
+    }
+
+
+    /**
+     * Set service locator
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+       $this->serviceLocator = $serviceLocator;
+    }
+
+    /**
+     * Get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+       return $this->serviceLocator;
+    }
+
 
 }
