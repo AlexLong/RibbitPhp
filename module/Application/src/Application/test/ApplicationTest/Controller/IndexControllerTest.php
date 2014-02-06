@@ -130,11 +130,8 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     {
         $this->routeMatch->setParam('action', 'sign');
         $this->controller->dispatch($this->request);
-        
         $expected = 200;
         $actual = $this->controller->getResponse()->getStatusCode();
-        
-
         $this->assertEquals($expected, $actual);
 
     }
@@ -142,22 +139,16 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     {
         $params = new Parameters(array('email' => 'test@test.com','username' => 'test',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
-
         $res =  $this->userRepository->findByEmail($params['email'], array('id'));
 
         if($res){
             $this->authService->removeUser($res['id']);
         }
-
         $this->request->setPost($params)
             ->setMethod('Post');
        $this->routeMatch->setParam('action', 'sign');
        $this->controller->dispatch($this->request);
     //  var_dump($this->serviceManager->get('SignForm')->getMessages());
     }
-
-
-
-
 
 } 

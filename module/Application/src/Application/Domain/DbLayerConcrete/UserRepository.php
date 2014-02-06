@@ -13,6 +13,7 @@ namespace Application\Domain\DbLayerConcrete;
 use Application\Domain\DbLayerInterfaces\RepositoryInterface;
 use Application\Domain\DbLayerInterfaces\UserRepositoryInterface;
 use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 
 class UserRepository implements  UserRepositoryInterface {
@@ -54,13 +55,11 @@ class UserRepository implements  UserRepositoryInterface {
         }
         $values['registration_date'] = date("Y-m-d H:i:s");
 
-      return  $this->general_repository->AddTo($this->table,$this->insert_columns,
+      return $this->general_repository->AddTo($this->table,$this->insert_columns,
           $values
           );
-
     }
 
-    
     function dropById($userId)
     {
 
@@ -72,7 +71,6 @@ class UserRepository implements  UserRepositoryInterface {
     }
         $statement = $this->general_repository->getSqlManager()->delete($this->table)
             ->where(array('id' => $userId));
-
         $this->general_repository->execute($statement);
 
      return true;

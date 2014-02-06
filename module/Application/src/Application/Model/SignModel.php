@@ -55,32 +55,34 @@ class SignModel implements  InputFilterAwareInterface{
                     'name' => 'username',
                     'required' => true,
                     'validators' => array(
-                       $this->getUsernameValidator(),
+
                         array(
                             'name' => 'NotEmpty',
-
+                            'break_chain_on_failure' => true,
                             'options' => array(
                                 'encoding' => 'UTF-8',
                                 'messages' => array(
                                     \Zend\Validator\NotEmpty::IS_EMPTY => 'Please enter your username.',
 
                                 ),
+
                             ),
                         ),
                         array(
                             'name' => 'Regex',
+                            'break_chain_on_failure' => true,
                             'options' => array(
-                               'pattern' => '/[a-zA-Z0-9_]/',
+                               'pattern' => '/^[a-zA-Z0-9-_]+$/',
                                 'messages' => array(
-                                    \Zend\Validator\Regex::INVALID => 'Please use latin alphanumeric characters  for your username.',
-                                     \Zend\Validator\Regex::NOT_MATCH => 'Please use latin alphanumeric characters  for your username.'
+                                    \Zend\Validator\Regex::INVALID => 'Please use latin alphanumeric characters without space.',
+                                     \Zend\Validator\Regex::NOT_MATCH => 'Please use latin alphanumeric characters without space.'
                                 )
                             )
 
                         ),
                         array(
                             'name' => 'StringLength',
-
+                            'break_chain_on_failure' => true,
                             'options' => array(
 
                                 'min' => 2,
@@ -92,6 +94,7 @@ class SignModel implements  InputFilterAwareInterface{
                             ),
 
                         ),
+                        $this->getUsernameValidator(),
                     )
                 )
             );
@@ -101,7 +104,7 @@ class SignModel implements  InputFilterAwareInterface{
                     'name' => 'email',
                     'required' => true,
                     'validators' => array(
-                    $this->getEmailValidator(),
+
                         array(
                             'name' => 'NotEmpty',
                             'break_chain_on_failure' => true,
@@ -115,6 +118,7 @@ class SignModel implements  InputFilterAwareInterface{
                         ),
                         array(
                             'name' => 'EmailAddress',
+                            'break_chain_on_failure' => true,
                             'options' => array(
                                 'messages' => array(
                                     \Zend\Validator\EmailAddress::INVALID_FORMAT => 'Please enter a valid email',
@@ -126,15 +130,13 @@ class SignModel implements  InputFilterAwareInterface{
                                     \Zend\Validator\EmailAddress::INVALID_LOCAL_PART => 'Please enter a valid email',
                                     \Zend\Validator\EmailAddress::LENGTH_EXCEEDED => 'The entered email is too long',
 
-
                                 )
                             )
 
                         ),
-
                         array(
                             'name' => 'StringLength',
-
+                            'break_chain_on_failure' => true,
                             'options' => array(
                                 'max' => 50,
                                 'messages' => array(
@@ -144,6 +146,7 @@ class SignModel implements  InputFilterAwareInterface{
                             ),
 
                         ),
+                        $this->getEmailValidator(),
                     )
                 )
             );

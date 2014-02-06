@@ -52,7 +52,7 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
             
             $request = $this->getSqlManager()->getSqlStringForSqlObject($statement);
         }  else {
-            $request=$statement;
+            $request= $statement;
         }
         
         return $this->getDbAdapter()->query($request,Adapter::QUERY_MODE_EXECUTE);
@@ -67,8 +67,7 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
      * @param int $limit
      * @return mixed
      */
-    public  function findBy($where = array(),$table,$columns = null,$limit = 1){
-
+    public  function findBy($where = array(),$table,$columns = array(),$limit = 1){
         if($columns == null)
         {
             $select = $this->getSqlManager()
@@ -76,7 +75,7 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
                 ->from($table)
                 ->where($where)
                 ->limit($limit);
-        }elseif($columns)
+        }elseif(is_array($columns))
         {
                $select = $this->getSqlManager()
                 ->select()
@@ -86,13 +85,31 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
                 ->limit($limit);
         }
         $result = $this->execute($select)->toArray();
-
         return  (count($result) == 1 ) ? $result[0] : $result;
     }
 
+    public function  findAll($table, $columns = array(), $limit = 1){
+
+        if($columns == null)
+        {
+            $select = $this->getSqlManager()
+                    ->select()
+                    ->from($table)
+                    ->limit($limit);
+        }elseif(is_array($columns)){
+            $select = $this->getSqlManager()
+                ->select()
+                ->from($table)
+                ->columns($columns)
+                ->limit($limit);
+        }
+
+        $result = $this->execute($select)->toArray();
+        return  (count($result) == 1 ) ? $result[0] : $result;
+    }
 
     /**
-     * Add data to the specified form
+     * Add data to the specified table.
      * @param $table
      * @param array $columns
      * @param array $values
@@ -103,15 +120,15 @@ class GeneralRepository implements  RepositoryInterface, ServiceLocatorAwareInte
     {
 
         if($where == null){
-           return $this->execute( $this->sqlManager->insert($table)
+           return $this->execute($this->sqlManager->insert($table)
                 ->columns($columns)
                 ->values($values));
         }
-         return  $this->execute($this->sqlManager->insert($table)
-                ->columns($columns)
-                ->where($where)
-                ->values($values));
+
+       return $this->sqlManager->update($table)->set($values)->where($where);
     }
+
+
 
 
     /**

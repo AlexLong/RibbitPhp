@@ -57,8 +57,7 @@ class IndexController extends AbstractBaseController
     public function signAction()
     {
 
-
-        if($this->getRequest()->isPost()){
+       if($this->getRequest()->isPost()){
 
            $data = $this->getRequest()->getPost();
 

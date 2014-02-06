@@ -22,11 +22,6 @@
     ));
     $form->prepare();
     echo $this->form()->openTag($form);
-    echo $this->formElementErrors()
-    ->setMessageCloseString('</div>')
-->setMessageOpenFormat('<div%s>')
-->setAttributes(array('class' => 'alert alert-danger'))
-->render($form->get('email'));
 // ->setAttributes(array('class' =>'alert alert-danger' ));
 ?>
 
@@ -37,6 +32,14 @@
 
     <div class="tip-wrapper">
         <div class="signtip" data-target="username">
+
+            <?php
+            echo $this->formElementErrors()
+                ->setMessageCloseString('')
+                ->setMessageOpenFormat('')
+                ->setAttributes(array('class' => ''))
+                ->render($form->get('username'));
+            ?>
 
         </div>
     </div>
@@ -51,7 +54,13 @@
 <div class="standard-field">
     <div class="tip-wrapper">
         <div class="signtip" data-target="email">
-
+            <?php
+            echo $this->formElementErrors()
+                ->setMessageCloseString('')
+                ->setMessageOpenFormat('')
+                ->setAttributes(array('class' => 'alert alert-danger'))
+                ->render($form->get('email'));
+            ?>
         </div>
     </div>
     <?php echo $this->formElement($form->get('email'));?>
@@ -68,7 +77,13 @@
 
     <div class="tip-wrapper">
         <div class="signtip" data-target="password">
-
+            <?php
+            echo $this->formElementErrors()
+                ->setMessageCloseString('')
+                ->setMessageOpenFormat('')
+                ->setAttributes(array('class' => ''))
+                ->render($form->get('password'));
+            ?>
         </div>
     </div>
 

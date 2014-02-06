@@ -96,7 +96,6 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
       }
           return true;
     }
-
     /**
      * Destroys user id session and returns the result of an operation.
      *
