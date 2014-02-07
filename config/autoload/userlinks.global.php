@@ -17,11 +17,9 @@ return array(
              'action' => 'index'
          ),
          'login_form' =>  array(
-             'route' => 'index/index_child',
+             'route' => 'u/u_child',
              'action' => 'login'
          ),
-
-
 
      )
 

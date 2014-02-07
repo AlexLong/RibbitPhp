@@ -14,13 +14,12 @@ return array(
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
             'error/form_error'         => __DIR__ . '/../view/error/form_error.phtml',
 
-            'index/login_form' =>  __DIR__ . '/../view/application/index/_login_form.phtml',
-            'index/sign_form' =>  __DIR__ . '/../view/application/index/_sign_form.phtml',
+            'index/login_form' =>  __DIR__ . '/../view/application/user/_login_form.phtml',
+            'index/sign_form' =>  __DIR__ . '/../view/application/user/_sign_form.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
-
         'strategies' => array(
             'ViewJsonStrategy',
         ),

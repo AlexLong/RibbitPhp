@@ -26,23 +26,21 @@ return array(
             ),
             'may_terminate' => true,
             'child_routes' => array(
-                'index_child' => array(
+                'usr_child' => array(
                     'type'    => 'Segment',
                     'options' => array(
-                        'route'    => ':action',
+                        'route'    => ':user[/]',
                         'constraints' => array(
-                            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            'user'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                         ),
                         'defaults' => array(
-
+                            'controller' => 'Application\Controller\Index',
+                            'action' => 'index',
                         ),
                     ),
-                ), // End index_child
-              //  'query' => array('type' => 'query'),
-
-
+                ),
             ),
-        ), // End Index
+        ),
         'user_home' => array(
             'type'    => 'Literal',
             'options' => array(
@@ -55,12 +53,11 @@ return array(
             'may_terminate' => true,
             'child_routes' => array(
             ),
-        ), // End Home
-
-        'usr' => array(
+        ),
+        'u' => array(
             'type' => 'Zend\Mvc\Router\Http\Literal',
             'options' => array(
-                'route'    => '/usr',
+                'route'    => '/u',
                 'defaults' => array(
                     'controller' => 'Application\Controller\User',
                     'action' => 'index'
@@ -68,7 +65,7 @@ return array(
             ),
             'may_terminate' => true,
             'child_routes' => array(
-                'usr_child' => array(
+                'u_child' => array(
                     'type'    => 'Segment',
                     'options' => array(
                         'route'    => '/[:action]',
@@ -76,17 +73,13 @@ return array(
                             'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                         ),
                         'defaults' => array(
-
+                            'controller' => 'Application\Controller\User',
+                            'action' => 'index',
                         ),
                     ),
-                ), // End index_child
-                //  'query' => array('type' => 'query'),
-
-
+                ),
             ),
         ), // End User
-
-
 
     ),
   ),

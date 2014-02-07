@@ -29,7 +29,7 @@ class UserPlugin extends AbstractPlugin  {
 
     protected $authService;
 
-    protected $authPath = array('route' => "index/index_child", 'action' => 'login');
+    protected $authPath = array('route' => "u/u_child", 'action' => 'login');
 
     protected $userLinks;
 

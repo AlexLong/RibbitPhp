@@ -55,7 +55,6 @@ class UserProfileRepository  extends AbstractRepository implements UserProfileRe
     {
         return $this->addTo($dataToChange, $where);
     }
-
     /**
      * Removes a User profile based on passed id.
      *

@@ -42,7 +42,7 @@
                         <li class="active">
                             <?php if(!$this->userIdentity()->isLogged()){?>
                                 <a href="<?php
-                                echo $this->url('index/index_child', array('action' => 'login'),
+                                echo $this->url('u/u_child', array('action' => 'login'),
                                     array('query' => array('rt' => $this->ServerUrl(true)))) ?>">
                                     <?php echo $this->translate('Login')
                                     ?>
@@ -50,11 +50,9 @@
                             <?php }?>
 
                             <?php if($this->userIdentity()->isLogged()){?>
-
-
                                 <a href="<?php
 
-                                echo $this->url('index/index_child', array('action' => 'logout'),
+                                echo $this->url('u/u_child', array('action' => 'logout'),
                                     array('query' => array('rt' => $this->ServerUrl(true)))) ?>">
                                     <?php echo $this->translate('Logout')
                                     ?>
