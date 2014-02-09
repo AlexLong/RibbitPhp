@@ -22,6 +22,4 @@ interface AuthenticationServiceInterface {
 
      function removeUser($userId);
 
-
-
 } 

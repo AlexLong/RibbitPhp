@@ -25,7 +25,6 @@ class RenderFormHelper extends AbstractHelper {
 
    protected $loginForm;
 
-
     public function __invoke($form = null, $name = null)
     {
         if(!$form)

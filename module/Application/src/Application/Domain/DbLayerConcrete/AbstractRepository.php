@@ -78,7 +78,7 @@ abstract class AbstractRepository implements RepositoryInterface {
             // Is a pain statement.
             $result = $this->getDbAdapter()->query($statement,Adapter::QUERY_MODE_EXECUTE);
         }
-        return $result;
+        return  $result;
     }
 
 
@@ -92,6 +92,7 @@ abstract class AbstractRepository implements RepositoryInterface {
      */
     public  function findBy($where = array(),array $columns = null,$limit = 1){
         $select = null;
+
         if($columns == null)
         {
             $select = $this->getSqlManager()
@@ -109,6 +110,7 @@ abstract class AbstractRepository implements RepositoryInterface {
                 ->limit($limit);
         }
         $result = $this->execute($select)->toArray();
+
         return  (count($result) == 1 ) ? $result[0] : $result;
     }
 

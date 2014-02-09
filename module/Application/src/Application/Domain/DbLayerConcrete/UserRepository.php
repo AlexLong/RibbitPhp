@@ -1,20 +1,14 @@
 <?php
-/**
- * 
- * User: Windows
- * Date: 1/9/14
- * Time: 1:34 PM
- * 
- */
 
 namespace Application\Domain\DbLayerConcrete;
 
 
 
-use Application\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
+use Application\Domain\DbLayerConcrete\AbstractRepository;
 use Application\Domain\DbLayerInterfaces\UserRepositoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+
 
 class UserRepository extends AbstractRepository implements  UserRepositoryInterface, ServiceLocatorAwareInterface {
 
@@ -22,7 +16,6 @@ class UserRepository extends AbstractRepository implements  UserRepositoryInterf
     protected $table = 'ribbit_user';
 
     protected $userProfile;
-
 
     protected $insert_columns = array('email', 'username', 'password',
         'registration_date', 'role');
@@ -36,6 +29,7 @@ class UserRepository extends AbstractRepository implements  UserRepositoryInterf
     }
     function  findByUsername($username, array $columns = null)
     {
+
         return $this->findBy(array('username' => $username),$columns);
     }
     function  findByEmail($email, array $columns = null)
@@ -55,42 +49,31 @@ class UserRepository extends AbstractRepository implements  UserRepositoryInterf
         }
         $values['registration_date'] = date("Y-m-d H:i:s");
 
-      return $this->addTo($values);
+        if($this->addTo($values)){
+
+       $id = $this->findByUsername($values['username'], array('id'));
+
+       $this->getServiceLocator()->get('RepositoryAccessor')->get('user_profile')->createProfile(
+           array('user_id' => is_array($id) ? $id['id'] : $id));
+
+       }else{
+            return false;
+        }
+
+      return true;
     }
 
     function dropById($userId)
     {
 
     if(!$this->findById($userId, array('id'))) return false;
-
         $statement = array();
         $statement[] = $this->getSqlManager()->delete($this->table)->where(array('id' => $userId));
-        $statement[] = $this->getUserProfile()->deleteUserProfile($userId);
+        $statement[] = $this->getServiceLocator()->get('RepositoryAccessor')->get('user_profile')->deleteUserProfile($userId);
         $this->execute($statement);
      return  true;
     
     }
-    /**
-     * @param mixed $userProfile
-     */
-    public function setUserProfile(UserProfileRepositoryInterface $userProfile)
-    {
-        $this->userProfile = $userProfile;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserProfile()
-    {
-        if(!$this->userProfile){
-            $this->setUserProfile(new UserProfileRepository($this->getServiceLocator()));
-        }
-
-        return $this->userProfile;
-    }
-
 
 
 

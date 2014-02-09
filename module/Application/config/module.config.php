@@ -15,8 +15,6 @@ return array(
                     'Application\Domain\Entity' => 'application_entities'
                 )
             ))),
-
-
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',

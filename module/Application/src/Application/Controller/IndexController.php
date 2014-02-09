@@ -22,6 +22,9 @@ class IndexController extends AbstractBaseController
 
    public function indexAction()
    {
+
+      // $this->getResponse()->
+
        /*
        $request = $this->getEvent()->getRouteMatch()->getParams();
        var_dump(isset($request['user']) ? $request['user'] : '');
@@ -29,4 +32,14 @@ class IndexController extends AbstractBaseController
 
         return new ViewModel();
    }
+    public function userAction(){
+
+        $request = $this->getEvent()->getRouteMatch()->getParams();
+        var_dump(isset($request['user']) ? $request['user'] : '');
+
+        $user = $this->serviceLocator->get('UserService')->getUserProfileByUsername($request['user']);
+        var_dump($user);
+        throw new \Exception("Not Implemented ");
+
+    }
 }

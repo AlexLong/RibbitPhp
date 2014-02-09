@@ -12,6 +12,7 @@
 namespace ApplicationTest;
 
 
+use Application\Controller\UserController;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use Application\Controller\IndexController;
 use Zend\Http\Request;
@@ -43,7 +44,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     {
        $this->serviceManager = Bootstrap::getServiceManager();
 
-        $this->controller = new IndexController();
+        $this->controller = new UserController();
       //  $this->controller->getResponse()
 
         $this->request    = new Request();
@@ -135,12 +136,12 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $this->assertEquals($expected, $actual);
 
     }
-    public function testCanInputBeValidated()
+    public function testCanUserSignUp()
     {
         $params = new Parameters(array('email' => 'test@test.com','username' => 'test',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
-        $res =  $this->userRepository->findByEmail($params['email'], array('id'));
 
+        $res = $this->userRepository->findByUsername($params['username'], array('id'));
         if($res){
             $this->authService->removeUser($res['id']);
         }
@@ -148,7 +149,19 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
             ->setMethod('Post');
        $this->routeMatch->setParam('action', 'sign');
        $this->controller->dispatch($this->request);
+
+       $this->assertEquals(302,$this->controller->getResponse()->getStatusCode());
     //  var_dump($this->serviceManager->get('SignForm')->getMessages());
     }
+
+    public function testCanGetAMockProfile(){
+
+
+   $user_profile = $this->serviceManager->get('UserService')->getUserProfileByUsername('test');
+    $this->assertNotNull($user_profile);
+
+    }
+
+
 
 } 

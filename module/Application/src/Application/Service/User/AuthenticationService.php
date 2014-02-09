@@ -55,8 +55,11 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     {
         $postData['role'] = $role;
         $this->getUserRepository()->createUser((array)$postData);
+
+
         return $this->authenticate($postData);
     }
+
     /**
      * Authenticates user based on submitted data.
      *

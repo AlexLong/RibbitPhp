@@ -28,7 +28,6 @@ class UserIdentityFactory implements FactoryInterface{
         if($services->has('AuthService')){
             $helper->setAuthService($services->get('AuthService'));
         }
-
         return $helper;
      }
 

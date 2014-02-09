@@ -17,15 +17,14 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class RepositoryAccessor implements ServiceLocatorAwareInterface {
 
-
-
-    protected $repositories =
-    array(
-      'users' => 'Application\Domain\DbLayerConcrete\UserRepository',
-      'user_profile' => 'Application\Domain\DbLayerConcrete\UserProfileRepository'
-    );
+    protected $repositories = array();
 
     protected $serviceLocator;
+
+
+    public function __construct($rep = array()){
+        $this->repositories = $rep;
+    }
 
     /**
      * Get a repository Object.
@@ -71,6 +70,7 @@ class RepositoryAccessor implements ServiceLocatorAwareInterface {
     {
        return $this->serviceLocator;
     }
+
 
 
 }

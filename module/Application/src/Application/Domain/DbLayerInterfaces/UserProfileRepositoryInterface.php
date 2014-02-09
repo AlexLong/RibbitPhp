@@ -2,17 +2,17 @@
 /**
  * 
  * User: Windows
- * Date: 2/6/14
- * Time: 12:55 PM
+ * Date: 2/7/14
+ * Time: 5:44 PM
  * 
  */
 
 namespace Application\Domain\DbLayerInterfaces;
 
 
-interface UserProfileRepositoryInterface extends RepositoryInterface {
+use Application\Domain\DbLayerInterfaces\RepositoryInterface;
 
-
+interface UserProfileRepositoryInterface extends  RepositoryInterface {
 
     function createProfile($userData = array());
 

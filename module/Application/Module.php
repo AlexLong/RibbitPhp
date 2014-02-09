@@ -18,12 +18,14 @@ use Application\Form\Validator\UsernameExists;
 use Application\Model\LoginModel;
 use Application\Model\SignModel;
 use Application\Service\User\AuthenticationService;
+use Application\Service\User\UserService;
 use Application\ViewHelpers\Form\RenderFormHelper;
 use Composer\Console\Application;
 use Zend\Config\Config;
 use Zend\Db\Sql\Sql;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceManager;
 use Zend\Session\Container;
 use Zend\Session\Service\SessionManagerFactory;
 use Zend\Session\SessionManager;
@@ -49,7 +51,6 @@ class Module
         $session = $e->getApplication()
                     ->getServiceManager()
                     ->get('Zend\Session\SessionManager');
-
         $session->start();
 
         $container = new Container('initialized');
@@ -62,6 +63,8 @@ class Module
 
     public function getConfig()
     {
+
+
         $conf = array_merge(
             include __DIR__ . '/config/template.config.php',
             include __DIR__ . '/config/module.config.php'
@@ -102,7 +105,6 @@ class Module
                 'UserIdentity' => 'Application\ViewHelpers\Service\UserIdentityFactory',
 
 
-
             ),
 
 
@@ -119,10 +121,17 @@ class Module
            'factories' => array(
 
             'AuthService' => 'Application\Service\User\AuthenticationServiceFactory',
+            'CacheService' => 'Zend\Cache\Service\StorageCacheFactory',
+             'UserService' => function($sm){
+                     $user_service = new UserService();
+                     $user_service->setServiceLocator($sm);
+                     return $user_service;
+
+              },
                'SignForm' => function($sm){
+
                        $signForm = new SignForm();
                        $signModel = new SignModel();
-
                        $emailExistValidator = new EmailExists();
                        $usernameExistsValidator = new UsernameExists();
                        $usernameExistsValidator->setUserRepository($sm->get('RepositoryAccessor')->get('users'));
@@ -146,7 +155,11 @@ class Module
 
                  },
            'RepositoryAccessor' => function($sm){
-               $repository_accessor = new RepositoryAccessor();
+
+               $config = $sm->get('Config');
+               $repository_accessor = new RepositoryAccessor(
+                   isset($config['repositories']) ? $config['repositories'] : array()
+               );
                 $repository_accessor->setServiceLocator($sm);
                return $repository_accessor;
            },
@@ -156,7 +169,6 @@ class Module
                        $config = $sm->get('config');
                        if (isset($config['session'])) {
                            $session = $config['session'];
-
                            $sessionConfig = null;
                            if (isset($session['config'])) {
                                $class = isset($session['config']['class'])  ? $session['config']['class'] : 'Zend\Session\Config\SessionConfig';

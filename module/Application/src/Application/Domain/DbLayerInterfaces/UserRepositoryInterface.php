@@ -7,15 +7,20 @@
  * 
  */
 
+
+
 namespace Application\Domain\DbLayerInterfaces;
+
+
+use Application\Domain\DbLayerInterfaces\RepositoryInterface;
+
 
 /**
  * Interface UserRepositoryInterface
  * @package Application\Domain\DbLayerInterfaces
  */
-interface UserRepositoryInterface extends  RepositoryInterface
+interface UserRepositoryInterface extends RepositoryInterface
 {
-
     /**
      * @param $id
      * @param array $columns

@@ -112,8 +112,6 @@ class SignForm extends Form{
 
     }
 
-
-
     /**
      * @param boolean $underDev
      */

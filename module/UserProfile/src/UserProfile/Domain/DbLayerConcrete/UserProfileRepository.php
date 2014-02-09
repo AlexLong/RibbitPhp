@@ -2,18 +2,20 @@
 /**
  * 
  * User: Windows
- * Date: 2/7/14
- * Time: 5:44 PM
+ * Date: 2/9/14
+ * Time: 1:48 PM
  * 
  */
 
-namespace Application\Domain\DbLayerConcrete;
+namespace UserProfile\Domain\DbLayerConcrete;
+
 
 use Application\Domain\DbLayerConcrete\AbstractRepository;
-use Application\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
+use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserProfileRepository  extends AbstractRepository implements UserProfileRepositoryInterface {
+class UserProfile extends  AbstractRepository implements UserProfileRepositoryInterface{
+
 
     protected $table = "ribbit_user_profile";
 
@@ -65,3 +67,5 @@ class UserProfileRepository  extends AbstractRepository implements UserProfileRe
     }
 
 }
+
+
