@@ -9,25 +9,11 @@
 
 namespace Application;
 
-use Application\Domain\DbLayerConcrete\GeneralRepository;
-use Application\Domain\DbLayerConcrete\RepositoryAccessor;
-use Application\Form\LoginForm;
-use Application\Form\SignForm;
-use Application\Form\Validator\EmailExists;
-use Application\Form\Validator\UsernameExists;
-use Application\Model\LoginModel;
-use Application\Model\SignModel;
-use Application\Service\User\AuthenticationService;
-use Application\Service\User\UserService;
-use Application\ViewHelpers\Form\RenderFormHelper;
-use Composer\Console\Application;
 use Zend\Config\Config;
-use Zend\Db\Sql\Sql;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceManager;
 use Zend\Session\Container;
-use Zend\Session\Service\SessionManagerFactory;
+
 use Zend\Session\SessionManager;
 
 class Module
@@ -37,8 +23,6 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-
-
         $eventManager->attach(MvcEvent::EVENT_DISPATCH,function($e){
 
         },50);
@@ -94,15 +78,7 @@ class Module
 
             ),
             'factories' => array(
-                'renderForm' => function($sm){
-                  $locator = $sm->getServiceLocator();
-                  $helper = new RenderFormHelper();
-                  $helper->setSignForm($locator->get('SignForm'));
-                        $helper->setLoginForm($locator->get('LoginForm'));
-                  return $helper;
-                },
 
-                'UserIdentity' => 'Application\ViewHelpers\Service\UserIdentityFactory',
 
 
             ),
@@ -110,8 +86,6 @@ class Module
 
         );
     }
-
-
     public  function  getServiceConfig()
     {
         return array(
@@ -119,50 +93,6 @@ class Module
 
             ),
            'factories' => array(
-
-            'AuthService' => 'Application\Service\User\AuthenticationServiceFactory',
-            'CacheService' => 'Zend\Cache\Service\StorageCacheFactory',
-             'UserService' => function($sm){
-                     $user_service = new UserService();
-                     $user_service->setServiceLocator($sm);
-                     return $user_service;
-
-              },
-               'SignForm' => function($sm){
-
-                       $signForm = new SignForm();
-                       $signModel = new SignModel();
-                       $emailExistValidator = new EmailExists();
-                       $usernameExistsValidator = new UsernameExists();
-                       $usernameExistsValidator->setUserRepository($sm->get('RepositoryAccessor')->get('users'));
-                       $emailExistValidator->setUserRepository($sm->get('RepositoryAccessor')->get('users'));
-                       $signModel->setEmailValidator($emailExistValidator);
-                       $signModel->setUsernameValidator($usernameExistsValidator);
-
-                       $signForm->setInputFilter($signModel->getInputFilter());
-                       return $signForm;
-                   },
-
-               'LoginForm' => function($sm){
-                       $loginForm = new LoginForm();
-                       $loginModel = new LoginModel();
-                       $emailExistValidator = new EmailExists(array('login' => true));
-                       $emailExistValidator->setUserRepository($sm->get('RepositoryAccessor')->get('users'));
-                       $loginModel->setEmailValidator($emailExistValidator);
-                       $loginForm->setInputFilter($loginModel->getInputFilter());
-
-                       return $loginForm;
-
-                 },
-           'RepositoryAccessor' => function($sm){
-
-               $config = $sm->get('Config');
-               $repository_accessor = new RepositoryAccessor(
-                   isset($config['repositories']) ? $config['repositories'] : array()
-               );
-                $repository_accessor->setServiceLocator($sm);
-               return $repository_accessor;
-           },
 
                'Zend\Session\SessionManager' => function ($sm) {
 

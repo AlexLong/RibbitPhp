@@ -10,7 +10,7 @@ return array(
     'invokables' => array(
         'Application\Controller\Index' => 'Application\Controller\IndexController',
         'Application\Controller\Home' => 'Application\Controller\HomeController',
-        'Application\Controller\User' => 'Application\Controller\UserController',
+        'UserProfile\Controller\User' => 'UserProfile\Controller\UserController',
     ),
 ),
   'router' => array(
@@ -59,7 +59,7 @@ return array(
             'options' => array(
                 'route'    => '/u',
                 'defaults' => array(
-                    'controller' => 'Application\Controller\User',
+                    'controller' => 'UserProfile\Controller\User',
                     'action' => 'index'
                 ),
             ),
@@ -73,7 +73,7 @@ return array(
                             'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                         ),
                         'defaults' => array(
-                            'controller' => 'Application\Controller\User',
+                            'controller' => 'UserProfile\Controller\User',
                             'action' => 'index',
                         ),
                     ),

@@ -13,6 +13,7 @@ namespace ApplicationTest;
 
 
 use Application\Controller\UserController;
+use UserProfile\Domain\DbLayerConcrete\UserProfile;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use Application\Controller\IndexController;
 use Zend\Http\Request;
@@ -49,9 +50,8 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
         $this->request    = new Request();
 
-
         $this->adapter = $this->serviceManager->get('Zend\Db\Adapter\Adapter');
-        $this->userRepository = $this->serviceManager->get('RepositoryAccessor')->get('users');
+       // $this->userRepository = $this->serviceManager->get('user_repository');
 
         $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
         $this->storage = $this->sessionManager->getStorage();
@@ -141,10 +141,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $params = new Parameters(array('email' => 'test@test.com','username' => 'test',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
-        $res = $this->userRepository->findByUsername($params['username'], array('id'));
-        if($res){
-            $this->authService->removeUser($res['id']);
-        }
+
         $this->request->setPost($params)
             ->setMethod('Post');
        $this->routeMatch->setParam('action', 'sign');
@@ -157,8 +154,11 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     public function testCanGetAMockProfile(){
 
 
-   $user_profile = $this->serviceManager->get('UserService')->getUserProfileByUsername('test');
-    $this->assertNotNull($user_profile);
+  // $user_profile = $this->serviceManager->get('UserService')->getUserProfileByUsername('test');
+      // $user_profile = $this->serviceManager->get('user_profile_repository');
+       // var_dump($user_profile->getUserProfileByUsername('test'));
+       // $user_profile = new UserProfile($this->serviceManager);
+  //  $this->assertNotNull($user_profile);
 
     }
 

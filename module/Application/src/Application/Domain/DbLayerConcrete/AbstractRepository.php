@@ -1,10 +1,10 @@
 <?php
 /**
- * 
+ *
  * User: Windows
  * Date: 2/6/14
  * Time: 3:01 PM
- * 
+ *
  */
 
 namespace Application\Domain\DbLayerConcrete;
@@ -46,7 +46,6 @@ abstract class AbstractRepository implements RepositoryInterface {
         $sql = new Sql($dbAdapter);
         $this->setSqlManager($sql);
         $this->setDbAdapter($dbAdapter);
-        $this->setEntityManager('doctrine.entitymanager.orm_default');
         $this->setServiceLocator($sm);
     }
 
@@ -67,18 +66,18 @@ abstract class AbstractRepository implements RepositoryInterface {
             $result = array();
             foreach($statement as $st){
                 if(is_object($st)){
-                  $request = $this->getSqlManager()->getSqlStringForSqlObject($st);
-                  $result[] = $this->getDbAdapter()->query($request,Adapter::QUERY_MODE_EXECUTE);
+                    $request = $this->getSqlManager()->getSqlStringForSqlObject($st);
+                    $result[] = $this->getDbAdapter()->query($request,Adapter::QUERY_MODE_EXECUTE);
                 }else{
                     // Is a pain statement.
-                  $result[] = $this->getDbAdapter()->query($st,Adapter::QUERY_MODE_EXECUTE);
+                    $result[] = $this->getDbAdapter()->query($st,Adapter::QUERY_MODE_EXECUTE);
                 }
             }
         }else{
             // Is a pain statement.
             $result = $this->getDbAdapter()->query($statement,Adapter::QUERY_MODE_EXECUTE);
         }
-        return  $result;
+        return $result;
     }
 
 
@@ -92,7 +91,6 @@ abstract class AbstractRepository implements RepositoryInterface {
      */
     public  function findBy($where = array(),array $columns = null,$limit = 1){
         $select = null;
-
         if($columns == null)
         {
             $select = $this->getSqlManager()
@@ -110,7 +108,6 @@ abstract class AbstractRepository implements RepositoryInterface {
                 ->limit($limit);
         }
         $result = $this->execute($select)->toArray();
-
         return  (count($result) == 1 ) ? $result[0] : $result;
     }
 

@@ -9,19 +9,15 @@
 
 namespace UserProfile\Domain\DbLayerConcrete;
 
-
 use Application\Domain\DbLayerConcrete\AbstractRepository;
 use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserProfile extends  AbstractRepository implements UserProfileRepositoryInterface{
+class UserProfileRepository extends  AbstractRepository implements UserProfileRepositoryInterface{
 
 
     protected $table = "ribbit_user_profile";
 
-    public function __construct(ServiceLocatorInterface $sm){
-        parent::__construct($sm);
-    }
     /**
      * Creates a User Profile based on passed data.
      *
@@ -65,6 +61,7 @@ class UserProfile extends  AbstractRepository implements UserProfileRepositoryIn
     {
         return $this->sqlManager->delete($this->getTable())->where(array('user_id' => $user_id) );
     }
+
 
 }
 

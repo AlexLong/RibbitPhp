@@ -2,7 +2,7 @@
 
 return array(
   'repositories' => array(
-      'users' => 'Application\Domain\DbLayerConcrete\UserRepository',
-      'user_profile' => 'Application\Domain\DbLayerConcrete\UserProfileRepository'
+      'user_repository' => 'Application\Domain\DbLayerConcrete\UserRepository',
+      'user_profile_repository' => 'Application\Domain\DbLayerConcrete\UserProfileRepository'
   )
 );

@@ -10,14 +10,10 @@
 namespace Application\Controller;
 
 
-use Application\Domain\Entity\RibbitUser;
-
-use Application\Form\LoginForm;
-use Zend\Json\Json;
-use Zend\View\Model\JsonModel;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractBaseController
+class IndexController extends AbstractActionController
 {
 
    public function indexAction()
@@ -30,16 +26,17 @@ class IndexController extends AbstractBaseController
        var_dump(isset($request['user']) ? $request['user'] : '');
        */
 
+
+
         return new ViewModel();
    }
     public function userAction(){
 
-        $request = $this->getEvent()->getRouteMatch()->getParams();
-        var_dump(isset($request['user']) ? $request['user'] : '');
 
-        $user = $this->serviceLocator->get('UserService')->getUserProfileByUsername($request['user']);
-        var_dump($user);
-        throw new \Exception("Not Implemented ");
+
+        //var_dump(isset($request['user']) ? $request['user'] : '');
+
+       // throw new \Exception("Not Implemented ");
 
     }
 }

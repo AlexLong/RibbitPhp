@@ -2,19 +2,6 @@
 
 return array(
 
-    'doctrine' => array(
-        'driver' => array(
-            'application_entities' => array(
-                'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(__DIR__ . '/../src/Application/Domain/Entity')
-            ),
-
-            'orm_default' => array(
-                'drivers' => array(
-                    'Application\Domain\Entity' => 'application_entities'
-                )
-            ))),
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
