@@ -20,8 +20,6 @@ class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
 
     protected $serviceLocator;
 
-
-
     protected $userProfile;
 
     protected $userRepository;
