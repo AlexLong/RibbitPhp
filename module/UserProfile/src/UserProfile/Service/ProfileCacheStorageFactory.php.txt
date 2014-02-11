@@ -1,0 +1,33 @@
+<?php
+/**
+ * 
+ * User: Windows
+ * Date: 2/11/14
+ * Time: 12:40 PM
+ * 
+ */
+
+namespace UserProfile\Service;
+
+
+use Zend\Cache\StorageFactory;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
+class ProfileCacheStorageFactory implements FactoryInterface{
+    /**
+     * Create service
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @return mixed
+     */
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $config = $serviceLocator->get('Config');
+        $cacheConfig = isset($config['user_profile_cache']) ? $config['user_profile_cache'] : array();
+        $cache = StorageFactory::factory($cacheConfig);
+        return $cache;
+    }
+
+
+} 
