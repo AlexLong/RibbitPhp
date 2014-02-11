@@ -85,7 +85,6 @@ class UserController extends  AbstractUserController {
             if($this->getAuthService()->signUp($data)){
                 return $this->getUserPlugin()->redirectToHome();
             }
-            return new ViewModel();
         }
 
         return new ViewModel();

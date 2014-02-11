@@ -35,9 +35,9 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     protected $userCredentials = array();
 
-    protected $requiredUserData = array('id','email','username' ,'password','role');
+    protected $requiredUserData = array('id','email','username' ,'password');
 
-    protected $availableData =  array('id','email','username','role');
+    protected $availableData =  array('id','email','username');
 
     /**
      *
@@ -48,9 +48,8 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
      * @return bool
      */
 
-    public  function signUp($postData, $role = 'user')
+    public  function signUp($postData)
     {
-        $postData['role'] = $role;
         $this->getUserRepository()->createUser((array)$postData);
 
 
@@ -66,21 +65,23 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     public function authenticate($postData)
     {
 
+       $result = false;
        $user = $this->getUserRepository()->findByEmail($postData['email'],
             $this->requiredUserData);
 
-        if( ($user === null  || count($user) == 0) ||  $user['password'] != md5($postData['password'])){
-         return false;
+        if( $user['password'] == md5($postData['password'])){
+            foreach($this->availableData as $data){
+                $this->getSessionManager()->getStorage()->offsetSet($data,$user[$data]);
+            }
+
+            if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
+                $this->getSessionManager()->rememberMe();
+            }
+            $result = true;
         }
 
-        foreach($this->availableData as $data){
-            $this->getSessionManager()->getStorage()->offsetSet($data,$user[$data]);
-        }
 
-        if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
-           $this->getSessionManager()->rememberMe();
-        }
-      return true;
+      return $result;
     }
     /**
      * Checks user identity.

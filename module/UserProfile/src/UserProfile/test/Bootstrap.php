@@ -7,7 +7,7 @@
  * 
  */
 
-namespace ApplicationTest;
+namespace UserProfileTest;
 
 use Zend\Loader\AutoloaderFactory;
 use Zend\Mvc\Service\ServiceManagerConfig;

@@ -8,7 +8,8 @@ use UserProfile\Form\Validator\EmailExists;
 use UserProfile\Form\Validator\UsernameExists;
 use UserProfile\Model\LoginModel;
 use UserProfile\Model\SignModel;
-use UserProfile\Service\User\UserService;
+use UserProfile\Service\UserProfileCacheService;
+use UserProfile\Service\UserService;
 use UserProfile\ViewHelpers\Form\RenderFormHelper;
 use Zend\Config\Config;
 
@@ -17,8 +18,8 @@ class Module
     public function getConfig()
     {
         $conf = array_merge(
-            include __DIR__ . '/config/template.config.php',
-            include __DIR__ . '/config/module.config.php'
+            include __DIR__ . '/config/module.config.php',
+            include __DIR__ . '/config/template.config.php'
         );
 
         return new Config($conf);
@@ -63,10 +64,20 @@ class Module
 
             ),
             'factories' => array(
-                'AuthService' => 'UserProfile\Service\AuthenticationServiceFactory',
-                'CacheService' => 'Zend\Cache\Service\StorageCacheFactory',
-
-
+              'AuthService' => 'UserProfile\Service\AuthenticationServiceFactory',
+                'UserProfileCacheService' => function($sm){
+                      $userProfileCache = new UserProfileCacheService();
+                      $userProfileCache->setServiceLocator($sm);
+                      $userProfileCache->setCacheService($sm->get('GlobalCacheService'));
+                      $userProfileCache->setNamespace("user_profile_");
+                      return $userProfileCache;
+                 },
+                'UserService' => function($sm){
+                        $user_service = new \UserProfile\Service\UserService();
+                        $user_service->setProfileCacheService($sm->get('UserProfileCacheService'));
+                        $user_service->setServiceLocator($sm);
+                        return $user_service;
+                },
                 'SignForm' => function($sm){
                         $signForm = new SignForm();
                         $signModel = new SignModel();
@@ -91,12 +102,6 @@ class Module
 
                     },
 
-
-                'UserService' => function($sm){
-                        $user_service = new UserService();
-                        $user_service->setServiceLocator($sm);
-                        return $user_service;
-                 },
                 'user_repository' => function($sm){
                     $rep = new \UserProfile\Domain\DbLayerConcrete\UserRepository($sm);
                     return $rep;

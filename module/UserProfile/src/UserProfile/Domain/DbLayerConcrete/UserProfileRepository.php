@@ -24,6 +24,10 @@ class UserProfileRepository extends  AbstractRepository implements UserProfileRe
      * @param array $userData
      * @return mixed
      */
+    public function __construct(ServiceLocatorInterface $sm){
+        parent::__construct($sm);
+    }
+
     function createProfile($userData = array())
     {
         return $this->addTo($userData);

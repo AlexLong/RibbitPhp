@@ -9,13 +9,10 @@
 
 
 
-namespace ApplicationTest;
+namespace UserProfileTest;
 
-
-use Application\Controller\UserController;
-use UserProfile\Domain\DbLayerConcrete\UserProfile;
+use UserProfile\Controller\UserController;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
-use Application\Controller\IndexController;
 use Zend\Http\Request;
 use Zend\Http\Response;
 use Zend\Mvc\MvcEvent;
@@ -46,7 +43,6 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
        $this->serviceManager = Bootstrap::getServiceManager();
 
         $this->controller = new UserController();
-      //  $this->controller->getResponse()
 
         $this->request    = new Request();
 
@@ -106,7 +102,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $params = new Parameters(array('email' => 'test@test.com',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
-      $id =  $this->userRepository->findByEmail($params['email'], array('id'));
+      $id =  $this->serviceManager->get('UserRepository')->findByEmail($params['email'], array('id'));
 
         if(!$id){
             $this->authService->signUp($this->mock_user);
@@ -114,7 +110,6 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
         $this->request->setPost($params)
             ->setMethod('Post');
-
         $this->routeMatch->setParam('action','login');
         $this->controller->dispatch($this->request);
         
@@ -142,6 +137,10 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
 
+       $result = $this->serviceManager->get('user_repository')->findByUsername($params['username']);
+        if($result){
+            $this->serviceManager->get('user_repository')->dropById($result['id']);
+        }
         $this->request->setPost($params)
             ->setMethod('Post');
        $this->routeMatch->setParam('action', 'sign');

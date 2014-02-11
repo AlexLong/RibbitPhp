@@ -7,7 +7,7 @@
  * 
  */
 
-namespace UserProfile\Service\User;
+namespace UserProfile\Service;
 
 
 use UserProfile\Service\Interfaces\UserServiceInterface;
@@ -20,21 +20,26 @@ class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
 
     protected $serviceLocator;
 
-
+    protected $profileCacheService;
 
     protected $userProfile;
 
     protected $userRepository;
 
-    function getUserProfileByUsername($username)
+    function getUserProfile($username, $fromCache = true)
     {
-        $id = $this->getUserRepository()->findByUsername($username,array('id'));
         $result = null;
-        if($id){
-            $user_table = $this->getUserRepository()->getTable();
-            $profile_table = $this->getUserProfileRepository()->getTable();
-            $query = "select $user_table.id,
-                  $user_table.username,
+        if($fromCache){
+         $result = $this->getProfileCacheService()->getUserProfile($username);
+        }
+       if(!$result){
+           $id = $this->getUserRepository()->findByUsername($username,array('id'));
+           if($id){
+               $user_table = $this->getUserRepository()->getTable();
+               $profile_table = $this->getUserProfileRepository()->getTable();
+               $query = "select
+                 $user_table.id,
+                 $user_table.username,
                  $user_table.email,
                  $profile_table.first_name,
                  $profile_table.last_name,
@@ -42,9 +47,16 @@ class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
                  from $user_table
                  join $profile_table on ($user_table.id = $profile_table.user_id )
                  where $user_table.username = '$username'
+                 limit 1
              ";
-            $result = $this->getUserRepository()->getDbAdapter()->query($query,Adapter::QUERY_MODE_EXECUTE);
-        }
+               $result = $this->getUserRepository()->getDbAdapter()->query($query,Adapter::QUERY_MODE_EXECUTE);
+               if(is_object($result) && $fromCache){
+                   $data = $result->toArray();
+                   $result = $data;
+                   $this->getProfileCacheService()->setUserProfile($data[0]['username'], $data);
+               }
+           }
+       }
         return  is_object($result) ? $result->toArray() : $result;
     }
     /**
@@ -81,6 +93,23 @@ class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
     public function getUserRepository()
     {
         return  $this->getServiceLocator()->get('user_repository');
+    }
+
+
+    /**
+     * @param mixed $globalCacheService
+     */
+    public function setProfileCacheService($profileCacheService)
+    {
+        $this->profileCacheService = $profileCacheService;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProfileCacheService()
+    {
+        return $this->profileCacheService;
     }
 
 } 

@@ -13,7 +13,7 @@ namespace UserProfile\Service\Interfaces;
 interface UserServiceInterface {
 
 
-    function getUserProfileByUsername($username);
+    function getUserProfile($username);
 
 
 } 

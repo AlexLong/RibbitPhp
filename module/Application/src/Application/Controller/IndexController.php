@@ -10,7 +10,9 @@
 namespace Application\Controller;
 
 
+use Zend\Cache\Storage\Adapter\Filesystem;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Server\Cache;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
@@ -18,19 +20,20 @@ class IndexController extends AbstractActionController
 
    public function indexAction()
    {
-
-      // $this->getResponse()->
-
-       /*
-       $request = $this->getEvent()->getRouteMatch()->getParams();
-       var_dump(isset($request['user']) ? $request['user'] : '');
-       */
-
-
-
         return new ViewModel();
    }
     public function userAction(){
+        $user = $this->getEvent()->getRouteMatch()->getParam('user');
+        $userService =  $this->getServiceLocator()->get('UserService');
+
+       $result = $userService->getUserProfile($user);
+
+
+        if($result){
+           return new ViewModel(array('user' => $result));
+       }
+
+        return $this->notFoundAction();
 
 
 

@@ -81,6 +81,7 @@ class Module
 
 
 
+
             ),
 
 
@@ -89,13 +90,10 @@ class Module
     public  function  getServiceConfig()
     {
         return array(
-            'invokables' => array(
-
-            ),
+            'invokables' => array(),
            'factories' => array(
-
+               'GlobalCacheService' => 'Zend\Cache\Service\StorageCacheFactory',
                'Zend\Session\SessionManager' => function ($sm) {
-
                        $config = $sm->get('config');
                        if (isset($config['session'])) {
                            $session = $config['session'];

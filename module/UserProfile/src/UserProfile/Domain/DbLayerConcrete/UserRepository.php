@@ -17,7 +17,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
     protected $userProfile;
 
     protected $insert_columns = array('email', 'username', 'password',
-        'registration_date', 'role');
+        'registration_date');
 
     public function __construct(ServiceLocatorInterface $sm){
         parent::__construct($sm);
@@ -28,7 +28,6 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
     }
     function  findByUsername($username, array $columns = null)
     {
-
         return $this->findBy(array('username' => $username),$columns);
     }
     function  findByEmail($email, array $columns = null)
@@ -48,30 +47,13 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
         }
         $values['registration_date'] = date("Y-m-d H:i:s");
 
-        if($this->addTo($values)){
-
-       $id = $this->findByUsername($values['username'], array('id'));
-
-       $this->getServiceLocator()->get('user_profile_repository')->createProfile(
-           array('user_id' => is_array($id) ? $id['id'] : $id));
-
-       }else{
-            return false;
-        }
-
-      return true;
+      return $this->addTo($values);
     }
 
     function dropById($userId)
     {
-
-    if(!$this->findById($userId, array('id'))) return false;
-        $statement = array();
-        $statement[] = $this->getSqlManager()->delete($this->table)->where(array('id' => $userId));
-        $statement[] = $this->getServiceLocator()->get('user_profile_repository')->deleteUserProfile($userId);
-        $this->execute($statement);
-     return  true;
-    
+      $statement = $this->getSqlManager()->delete($this->table)->where(array('id' => $userId));
+     return   $this->execute($statement);
     }
 
 
