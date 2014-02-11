@@ -47,13 +47,17 @@ class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
                  from $user_table
                  join $profile_table on ($user_table.id = $profile_table.user_id )
                  where $user_table.username = '$username'
-                 limit 1
+
              ";
+
                $result = $this->getUserRepository()->getDbAdapter()->query($query,Adapter::QUERY_MODE_EXECUTE);
-               if(is_object($result) && $fromCache){
+               if($fromCache){
                    $data = $result->toArray();
-                   $result = $data;
-                   $this->getProfileCacheService()->setUserProfile($data[0]['username'], $data);
+                   if(!empty($data)){
+                       $result = $data;
+                       $this->getProfileCacheService()->setUserProfile($data[0]['username'], $data);
+                   }
+
                }
            }
        }
