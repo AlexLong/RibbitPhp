@@ -12,10 +12,11 @@ use Application\Domain\DbLayerInterfaces\RepositoryInterface;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Sql;
+use Zend\Db\TableGateway\TableGateway;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 
-abstract class AbstractRepository implements RepositoryInterface {
+abstract class AbstractRepository  extends  TableGateway implements RepositoryInterface {
 
 
     protected $table = null;
@@ -47,6 +48,8 @@ abstract class AbstractRepository implements RepositoryInterface {
         $this->setSqlManager($sql);
         $this->setDbAdapter($dbAdapter);
         $this->setServiceLocator($sm);
+
+        parent::__construct($this->getTable(),$dbAdapter);
     }
 
     /**
@@ -57,6 +60,8 @@ abstract class AbstractRepository implements RepositoryInterface {
      */
     public function execute($statement)
     {
+
+
         $result = null;
 
         if(is_object($statement)){
