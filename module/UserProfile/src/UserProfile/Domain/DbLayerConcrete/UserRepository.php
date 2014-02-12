@@ -3,25 +3,13 @@
 namespace UserProfile\Domain\DbLayerConcrete;
 
 use Application\Domain\DbLayerConcrete\AbstractRepository;
-use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
 use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
-
-class UserRepository extends AbstractRepository implements UserRepositoryInterface, ServiceLocatorAwareInterface {
-
-
-    protected $table = 'ribbit_user';
-
-    protected $userProfile;
+class UserRepository extends AbstractRepository implements UserRepositoryInterface {
 
     protected $insert_columns = array('email', 'username', 'password',
         'registration_date');
 
-    public function __construct(ServiceLocatorInterface $sm){
-        parent::__construct($sm);
-    }
     function  findById($id, array $columns = null)
     {
          return $this->findBy(array('id' => $id),$columns);
@@ -52,7 +40,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
 
     function dropById($userId)
     {
-      $statement = $this->getSqlManager()->delete($this->table)->where(array('id' => $userId));
+     $statement = $this->getSql()->delete()->where(array('id' => $userId));
      return   $this->execute($statement);
     }
 

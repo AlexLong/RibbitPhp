@@ -15,19 +15,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class UserProfileRepository extends  AbstractRepository implements UserProfileRepositoryInterface{
 
-
-    protected $table = "ribbit_user_profile";
-
-    /**
-     * Creates a User Profile based on passed data.
-     *
-     * @param array $userData
-     * @return mixed
-     */
-    public function __construct(ServiceLocatorInterface $sm){
-        parent::__construct($sm);
-    }
-
     function createProfile($userData = array())
     {
         return $this->addTo($userData);
@@ -63,7 +50,7 @@ class UserProfileRepository extends  AbstractRepository implements UserProfileRe
      */
     function deleteUserProfile($user_id)
     {
-        return $this->sqlManager->delete($this->getTable())->where(array('user_id' => $user_id) );
+        return $this->getSql()->delete()->where(array('user_id' => $user_id) );
     }
 
 

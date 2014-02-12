@@ -103,11 +103,11 @@ class Module
                     },
 
                 'user_repository' => function($sm){
-                    $rep = new \UserProfile\Domain\DbLayerConcrete\UserRepository($sm);
+                    $rep = new \UserProfile\Domain\DbLayerConcrete\UserRepository("ribbit_user",$sm->get('Zend\Db\Adapter\Adapter'));
                     return $rep;
                  },
                 'user_profile_repository' => function($sm){
-                 $rep = new  \UserProfile\Domain\DbLayerConcrete\UserProfileRepository($sm);
+                 $rep = new  \UserProfile\Domain\DbLayerConcrete\UserProfileRepository("ribbit_user_profile",$sm->get('Zend\Db\Adapter\Adapter'));
                  return $rep;
                 },
             )

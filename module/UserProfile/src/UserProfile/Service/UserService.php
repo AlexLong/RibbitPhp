@@ -50,7 +50,7 @@ class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
 
              ";
 
-               $result = $this->getUserRepository()->getDbAdapter()->query($query,Adapter::QUERY_MODE_EXECUTE);
+               $result = $this->getUserRepository()->getAdapter()->query($query,Adapter::QUERY_MODE_EXECUTE);
                if($fromCache){
                    $data = $result->toArray();
                    if(!empty($data)){
