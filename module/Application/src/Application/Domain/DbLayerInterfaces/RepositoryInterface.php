@@ -27,7 +27,7 @@ interface RepositoryInterface {
      * @param int $limit
      * @return array
      */
-    function findBy($where = array(),array $columns = null,$limit = 1);
+    function findBy(array $where,array $columns,$limit = 1);
 
     /**
      * @param array $columns
@@ -35,7 +35,7 @@ interface RepositoryInterface {
      * @param null $where
      * @return mixed
      */
-    function addTo($values = array(),array $where = null);
+    function addTo(array $values);
     /**
      * Returns entire data in the specified table.
      *
@@ -43,6 +43,6 @@ interface RepositoryInterface {
      * @param int $limit
      * @return array
      */
-    function  findAll($columns = array(),$limit = 1);
+    function  findAll(array $include_columns, $limit = 1);
 
 } 

@@ -28,7 +28,6 @@ abstract class AbstractRepository extends TableGateway implements RepositoryInte
     public function execute($statement)
     {
         $result = null;
-
         if(is_object($statement)){
             $request = $this->getSql()->getSqlStringForSqlObject($statement);
             $result = $this->getAdapter()->query($request,Adapter::QUERY_MODE_EXECUTE);
@@ -59,79 +58,54 @@ abstract class AbstractRepository extends TableGateway implements RepositoryInte
      * @param int $limit
      * @return array
      */
-    public  function findBy($where = array(),array $columns = null,$limit = 1){
-        $select = null;
+    public  function findBy(array $where,array $columns,$limit = 1){
         $result = array();
-
-        if($columns == null)
-        {
-            $select = $this->getSql()
+        $select = $this->getSql()
                 ->select()
                 ->where($where)
                 ->limit($limit);
+        if(is_object($select)){
+            if($limit == 1){
+                $result = $this->executeSelect($select)->current();
+            }else{
+                $result = $this->executeSelect($select);
+            }
 
-        }elseif(is_array($columns))
-        {
-
-            $select = $this->getSql()
-                ->select()
-                ->columns($columns)
-                ->where($where)
-                ->limit($limit);
         }
-        if($select){
-            $result = $this->executeSelect($select)->toArray();
-        }
-        return  (count($result) == 1 ) ? $result[0] : $result;
+        return $result;
     }
     /**
      * Gets entire data
      *
-     * @param array $columns
+     * @param array $include_columns
      * @param int $limit
      * @return array
      */
-    public function  findAll($columns = array(), $limit = 1){
-
-
-        $select = null;
+   public function findAll(array $include_columns, $limit = 1){
         $result = array();
-        if($columns == null)
-        {
-            $select = $this->getSql()
+        $select = $this->getSql()
                 ->select()
+                ->columns($include_columns)
                 ->limit($limit);
-        }elseif(is_array($columns)){
-            $select = $this->getSql()
-                ->select()
-                ->columns($columns)
-                ->limit($limit);
+        if(is_object($select)){
+            if($limit == 1){
+                $result = $this->executeSelect($select)->current();
+            }else{
+                $result = $this->executeSelect($select);
+            }
         }
-
-        if($select){
-            $result = $this->executeSelect($select)->toArray();
-        }
-
-        return  (count($result) == 1 ) ? $result[0] : $result;
+        return  $result;
     }
-
-
     /**
      *  Adds data to the specified table.
      *
      * @param array $values
-     * @param array $where
-     * @return mixed|\Zend\Db\Sql\Select
+     *
+     * @return mixed
      */
-    public function addTo($values = array(), array $where = null)
+    public function addTo(array $values)
     {
-
-        if($where == null){
-            return $this->execute($this->getSql()->insert()
+       return $this->execute($this->getSql()->insert()
                 ->values($values));
-        }
-        return $this->getSql()->update()->set($values)->where($where);
     }
-
-
 } 
