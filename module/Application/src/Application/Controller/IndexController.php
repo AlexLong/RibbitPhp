@@ -23,11 +23,11 @@ class IndexController extends AbstractActionController
         return new ViewModel();
    }
     public function userAction(){
+
         $user = $this->getEvent()->getRouteMatch()->getParam('user');
-        $userService =  $this->getServiceLocator()->get('UserService');
+        $userService = $this->getServiceLocator()->get('UserService');
 
        $result = $userService->getUserProfile($user);
-
 
         if($result){
            return new ViewModel(array('user' => $result));

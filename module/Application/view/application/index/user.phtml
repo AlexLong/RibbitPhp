@@ -1,4 +1,16 @@
 <?php
-var_dump($this->user);
 
+$data = $this->user;
+foreach($data as $key=>$val)
+{
+    if(is_array($val))
+    {  echo "<ul>";
+        foreach($val as $k => $b){
+            if(empty($b))
+                continue;
+          echo "<li>$k => $b</li>";
+        }
+        echo "</ul>";
+    }
+}
 ?>

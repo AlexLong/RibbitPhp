@@ -62,6 +62,7 @@ abstract class AbstractRepository extends TableGateway implements RepositoryInte
         $result = array();
         $select = $this->getSql()
                 ->select()
+                 ->columns($columns)
                 ->where($where)
                 ->limit($limit);
         if(is_object($select)){

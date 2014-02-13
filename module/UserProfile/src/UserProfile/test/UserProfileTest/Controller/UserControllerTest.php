@@ -136,7 +136,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $params = new Parameters(array('email' => 'test@test.com','username' => 'test',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
-       $result = $this->serviceManager->get('user_repository')->findByUsername($params['username']);
+       $result = $this->serviceManager->get('user_repository')->findByUsername($params['username'],array('id'));
         if($result){
             $this->serviceManager->get('user_repository')->dropById($result['id']);
         }

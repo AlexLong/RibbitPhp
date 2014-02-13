@@ -36,9 +36,9 @@ class UserController extends  AbstractUserController {
     }
 
     public function setChkModel(ChkModel $model){
-      $model->setLocator($this->getServiceLocator());
-       $this->chkModel = $model;
-        return $this;
+      $model->setSignForm($this->getServiceLocator()->get('SignForm'));
+      $this->chkModel = $model;
+      return $this;
     }
 
     public function loginAction()

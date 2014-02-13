@@ -10,34 +10,38 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
     protected $insert_columns = array('email', 'username', 'password',
         'registration_date');
 
-    function  findById($id, array $columns = null)
+    function  findById($id, array $columns)
     {
          return $this->findBy(array('id' => $id),$columns);
     }
-    function  findByUsername($username, array $columns = null)
+    function  findByUsername($username, array $columns)
     {
         return $this->findBy(array('username' => $username),$columns);
     }
-    function  findByEmail($email, array $columns = null)
+    function  findByEmail($email, array $columns)
     {
         return $this->findBy(array('email' => $email),$columns);
     }
 
-    function createUser($values = array())
+    function createUser(array $values )
     {
+        $result = null;
         foreach($values as $key => $v)
         {
             if(!in_array($key,$this->insert_columns))
                 unset($values[$key]);
         }
-        if(array_key_exists('password',$values)){
+        if(isset($values['password'])){
             $values['password'] = md5($values['password']);
         }
         $values['registration_date'] = date("Y-m-d H:i:s");
 
-      return $this->addTo($values);
+        if($this->addTo($values)){
+            $result = $this->findByUsername(
+                $values['username'], array('id'));
+        }
+      return $result;
     }
-
     function dropById($userId)
     {
      $statement = $this->getSql()->delete()->where(array('id' => $userId));

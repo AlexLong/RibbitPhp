@@ -50,10 +50,16 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
 
     public  function signUp($postData)
     {
-        $this->getUserRepository()->createUser((array)$postData);
-
-
-        return $this->authenticate($postData);
+        $result = $this->getUserRepository()->createUser((array)$postData);
+        $completed = false;
+        if(!empty($result)){
+          $completed =  $this->getServiceLocator()->get('user_profile_repository')
+                                  ->createProfile(array('user_id' => $result['id']));
+          if($completed){
+              $completed = $this->authenticate($postData);
+          }
+        }
+        return $completed;
     }
 
     /**

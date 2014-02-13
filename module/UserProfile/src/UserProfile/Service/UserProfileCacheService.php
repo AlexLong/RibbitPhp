@@ -1,11 +1,4 @@
 <?php
-/**
- * 
- * User: Windows
- * Date: 2/11/14
- * Time: 4:00 PM
- * 
- */
 
 namespace UserProfile\Service;
 
@@ -22,6 +15,7 @@ class UserProfileCacheService extends  AbstractCacheService implements ServiceLo
 
     function setUserProfile($username,$value)
     {
+
         $this->getCacheService()->setItem($this->getNamespace().strtolower($username), $value);
     }
     /**

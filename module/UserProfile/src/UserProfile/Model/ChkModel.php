@@ -14,8 +14,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class ChkModel {
 
-    protected $locator;
-
     protected $signForm;
 
     public function  buildResponse($data){
@@ -32,29 +30,20 @@ class ChkModel {
         }
         return new \Zend\View\Model\JsonModel(array(1));
     }
-    /**
-     * @param mixed $locator
-     */
-    public function setLocator($locator)
-    {
-        $this->locator = $locator;
-    }
 
-    /**
-     * @return mixed
-     */
-    protected  function getLocator()
-    {
-        return $this->locator;
-    }
     /**
      * @return mixed
      */
     protected  function getSignForm()
     {
-        return $this->getLocator()->get('SignForm');
+
+        return $this->signForm;
     }
 
+    public function setSignForm($signForm)
+    {
+        $this->signForm = $signForm;
+    }
 
 
 

@@ -15,7 +15,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class UserProfileRepository extends  AbstractRepository implements UserProfileRepositoryInterface{
 
-    function createProfile($userData = array())
+    function createProfile(array $userData )
     {
         return $this->addTo($userData);
     }
@@ -26,7 +26,7 @@ class UserProfileRepository extends  AbstractRepository implements UserProfileRe
      * @param array $columns
      * @return mixed
      */
-    function findById($user_id,array $columns = null)
+    function findByUserId($user_id,array $columns = null)
     {
         return $this->findBy(array('user_id' => $user_id),$columns);
     }

@@ -24,26 +24,26 @@ interface UserRepositoryInterface extends RepositoryInterface
      * @param array $columns
      * @return mixed
      */
-    function  findById($id, array $columns = null);
+    function  findById($id, array $columns);
 
     /**
      * @param $username
      * @param array $columns
      * @return mixed
      */
-    function  findByUsername($username, array $columns = null);
+    function  findByUsername($username, array $columns);
     /**
      * @param $email
      * @param array $columns
      * @return mixed
      */
-    function  findByEmail($email, array $columns = null);
+    function  findByEmail($email, array $columns);
 
     /**
      * @param array $values
      * @return mixed
      */
-    function  createUser($values = array());
+    function  createUser(array $values);
     /**
      * @param $userId
      * @return mixed
