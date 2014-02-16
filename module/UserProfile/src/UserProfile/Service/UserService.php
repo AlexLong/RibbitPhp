@@ -10,10 +10,12 @@
 namespace UserProfile\Service;
 
 
+use UserProfile\Entity\UserProfile;
 use UserProfile\Service\Interfaces\UserServiceInterface;
 use Zend\Db\Adapter\Adapter;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\ArrayUtils;
 
 class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
 
@@ -48,15 +50,14 @@ class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
                  join $profile_table on ($user_table.id = $profile_table.user_id )
                  where $user_table.username = '$username'
                  Limit 1";
-                   $result = $this->getUserRepository()->execute($query);
-                   $data = $result->toArray();
-                   if(!empty($data)){
-                       $result = $data;
-                       $this->getProfileCacheService()->setUserProfile($data[0]['username'], $data);
-                   }
+
+                  $result = $this->getUserRepository()->execute($query)->toArray();
+                  $dd = new UserProfile($result[0]);
+                  $result = get_object_vars($dd);
+                  $this->getProfileCacheService()->setUserProfile($result['username'], $result);
            }
        }
-        return  is_object($result) ? $result->toArray() : $result;
+        return  $result;
     }
     /**
      * Set service locator

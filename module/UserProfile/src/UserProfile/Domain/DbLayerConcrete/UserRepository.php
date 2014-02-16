@@ -45,7 +45,7 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
     function dropById($userId)
     {
      $statement = $this->getSql()->delete()->where(array('id' => $userId));
-     return   $this->execute($statement);
+     return   $this->executeDelete($statement);
     }
 
 

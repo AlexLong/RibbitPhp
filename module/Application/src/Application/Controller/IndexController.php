@@ -20,26 +20,18 @@ class IndexController extends AbstractActionController
 
    public function indexAction()
    {
+
         return new ViewModel();
    }
     public function userAction(){
 
         $user = $this->getEvent()->getRouteMatch()->getParam('user');
         $userService = $this->getServiceLocator()->get('UserService');
-
        $result = $userService->getUserProfile($user);
 
         if($result){
            return new ViewModel(array('user' => $result));
        }
-
         return $this->notFoundAction();
-
-
-
-        //var_dump(isset($request['user']) ? $request['user'] : '');
-
-       // throw new \Exception("Not Implemented ");
-
     }
 }

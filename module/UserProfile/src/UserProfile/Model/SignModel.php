@@ -72,24 +72,23 @@ class SignModel implements  InputFilterAwareInterface{
                             'name' => 'Regex',
                             'break_chain_on_failure' => true,
                             'options' => array(
-                               'pattern' => '/^[a-zA-Z0-9-_]+$/',
+                               'pattern' => '/^[0-9]*[a-zA-Z][a-zA-Z0-9_-]*$/',
                                 'messages' => array(
                                     \Zend\Validator\Regex::INVALID => 'Please use latin alphanumeric characters without space.',
                                      \Zend\Validator\Regex::NOT_MATCH => 'Please use latin alphanumeric characters without space.'
                                 )
                             )
-
                         ),
                         array(
                             'name' => 'StringLength',
                             'break_chain_on_failure' => true,
                             'options' => array(
-
-                                'min' => 2,
+                                'min' => 3,
                                 'max' => 20,
                                 'messages' => array(
+
                                     \Zend\Validator\StringLength::TOO_LONG => 'Your username is too long.',
-                                    \Zend\Validator\StringLength::TOO_SHORT => 'Your username must be at least 2 characters.',
+                                    \Zend\Validator\StringLength::TOO_SHORT => 'Your username must be at least 3 characters.',
                                 ),
                             ),
 

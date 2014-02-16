@@ -33,6 +33,12 @@ abstract class AbstractCacheService {
         return $this->cacheService;
     }
 
+
+    public function formatKey($key)
+    {
+        $escaped_key = strtolower(preg_replace('/[^a-z0-9_\+\-]+/',"",$key));
+        return $this->getNamespace().$escaped_key;
+    }
     /**
      * @param null $namespace
      */

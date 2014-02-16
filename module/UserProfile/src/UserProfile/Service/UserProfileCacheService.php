@@ -15,8 +15,8 @@ class UserProfileCacheService extends  AbstractCacheService implements ServiceLo
 
     function setUserProfile($username,$value)
     {
-
-        $this->getCacheService()->setItem($this->getNamespace().strtolower($username), $value);
+        $key = $this->formatKey($username);
+        $this->getCacheService()->setItem($key, $value);
     }
     /**
      * @param string $username
@@ -24,7 +24,8 @@ class UserProfileCacheService extends  AbstractCacheService implements ServiceLo
      */
     function getUserProfile($username)
     {
-       return $this->getCacheService()->getItem($this->getNamespace().strtolower($username));
+       $key = $this->formatKey($username);
+       return $this->getCacheService()->getItem($key);
     }
 
     /**
@@ -33,7 +34,8 @@ class UserProfileCacheService extends  AbstractCacheService implements ServiceLo
      */
     function removeUserProfile($username)
     {
-        return $this->getCacheService()->removeItem($this->namespace.strtolower($username));
+        $key = $this->formatKey($username);
+        return $this->getCacheService()->removeItem($key);
     }
 
     /**

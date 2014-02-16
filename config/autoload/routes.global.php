@@ -10,7 +10,6 @@ return array(
     'invokables' => array(
         'Application\Controller\Index' => 'Application\Controller\IndexController',
         'Application\Controller\Home' => 'Application\Controller\HomeController',
-        'UserProfile\Controller\User' => 'UserProfile\Controller\UserController',
     ),
 ),
   'router' => array(
@@ -31,7 +30,7 @@ return array(
                     'options' => array(
                         'route'    => ':user[/]',
                         'constraints' => array(
-                            'user'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            'user'     => '[0-9]*[a-zA-Z][a-zA-Z0-9_-]*',
                         ),
                         'defaults' => array(
                             'controller' => 'Application\Controller\Index',
@@ -54,32 +53,6 @@ return array(
             'child_routes' => array(
             ),
         ),
-        'u' => array(
-            'type' => 'Zend\Mvc\Router\Http\Literal',
-            'options' => array(
-                'route'    => '/u',
-                'defaults' => array(
-                    'controller' => 'UserProfile\Controller\User',
-                    'action' => 'index'
-                ),
-            ),
-            'may_terminate' => true,
-            'child_routes' => array(
-                'u_child' => array(
-                    'type'    => 'Segment',
-                    'options' => array(
-                        'route'    => '/[:action]',
-                        'constraints' => array(
-                            'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        ),
-                        'defaults' => array(
-                            'controller' => 'UserProfile\Controller\User',
-                            'action' => 'index',
-                        ),
-                    ),
-                ),
-            ),
-        ), // End User
 
     ),
   ),
