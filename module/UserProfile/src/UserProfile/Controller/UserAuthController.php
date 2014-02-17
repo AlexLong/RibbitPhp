@@ -14,7 +14,7 @@ use Zend\View\Model\ViewModel;
 
 use UserProfile\Model\ChkModel;
 
-class UserController extends  AbstractUserController {
+class UserAuthController extends  AbstractUserController {
 
 
     protected $chkModel;

@@ -1,21 +1,35 @@
 <?php
 return array(
     'controllers' => array(
-        //
 
         'invokables' => array(
-          'UserProfile\Controller\User' => 'UserProfile\Controller\UserController',
+          'UserProfile\Controller\UserAuth' => 'UserProfile\Controller\UserAuthController',
           'UserProfile\Controller\UserRest' => 'UserProfile\Controller\UserRestController',
+          'UserProfile\Controller\UserProfile' => 'UserProfile\Controller\UserProfileController',
         ),
     ),
     'router' => array(
         'routes' => array(
+            'user_profile' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                 'options' => array(
+                     'route'    => '/:user[/]',
+                     'constraints' => array(
+                         'user'     => '[0-9]*[a-zA-Z][a-zA-Z0-9_-]*',
+                     ),
+                     'defaults' => array(
+                         'controller' => 'UserProfile\Controller\UserProfile',
+                         'action' => 'index',
+                     ),
+                 ),
+
+            ),
             'u' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/u',
                     'defaults' => array(
-                        'controller' => 'UserProfile\Controller\User',
+                        'controller' => 'UserProfile\Controller\UserAuth',
                         'action' => 'index'
                     ),
                 ),
@@ -29,7 +43,7 @@ return array(
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
-                                'controller' => 'UserProfile\Controller\User',
+                                'controller' => 'UserProfile\Controller\UserAuth',
                                 'action' => 'index',
                             ),
 

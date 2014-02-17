@@ -20,8 +20,6 @@ class UserRestController extends AbstractRestfulController{
 
     public function getList()
     {
-
-
        $user = $this->getEvent()->getRouteMatch()->getParam("user");
        $result = $this->getUserService()->getUserProfile($user);
        if(!$result){

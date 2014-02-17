@@ -22,9 +22,11 @@ class UserProfile {
 
     public $email = null;
 
-    function __construct(array $data)
+    function __construct(array $data =null)
     {
-        $this->exchangeArray($data);
+        if($data){
+            $this->exchangeArray($data);
+        }
     }
     public function exchangeArray(array $data){
         $user_prop = get_object_vars($this);

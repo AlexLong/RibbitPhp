@@ -59,6 +59,19 @@ class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
        }
         return  $result;
     }
+
+    public function isProfileOwner($user_id){
+
+     $owner = false;
+
+     $auth_service =  $this->getServiceLocator()->get('AuthService');
+
+        if($user_id && $auth_service->is_identified()){
+            $id =  $auth_service->getUserIdentify("id");
+            if($id == $user_id) $owner = true;
+        }
+    return $owner;
+    }
     /**
      * Set service locator
      *

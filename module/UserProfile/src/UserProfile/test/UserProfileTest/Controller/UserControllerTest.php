@@ -11,7 +11,7 @@
 
 namespace UserProfileTest;
 
-use UserProfile\Controller\UserController;
+use UserProfile\Controller\UserAuthController;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use Zend\Http\Request;
 use Zend\Http\Response;
@@ -42,7 +42,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     {
        $this->serviceManager = Bootstrap::getServiceManager();
 
-        $this->controller = new UserController();
+        $this->controller = new UserAuthController();
 
         $this->request    = new Request();
 

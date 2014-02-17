@@ -10,6 +10,7 @@
 namespace UserProfile\Service;
 
 use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
+use UserProfile\Entity\UserProfile;
 use UserProfile\Service\Interfaces\AuthenticationServiceInterface;
 use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -140,7 +141,6 @@ class AuthenticationService   implements  AuthenticationServiceInterface, Servic
     public function getUserIdentify($keydata = null)
     {
         $identity = null;
-
         if($this->is_identified())
         {
             if(!is_array($keydata) && $keydata !== null){
