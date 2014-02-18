@@ -12,7 +12,6 @@ return array(
         'routes' => array(
             'timeline' => array(
                 'type' => 'Literal',
-
                 'options' => array(
                     'route'    => '/tmln',
                     'constraints' => array(

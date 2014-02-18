@@ -14,6 +14,7 @@ return array(
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
             'error/form_error'         => __DIR__ . '/../view/error/form_error.phtml',
 
+
             'layout/html_head' => __DIR__ . '/../view/layout/_html_head.phtml',
             'layout/navbar' => __DIR__ . '/../view/layout/_body_navbar.phtml',
 

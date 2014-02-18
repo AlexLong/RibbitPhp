@@ -15,6 +15,19 @@ class Module
         return new Config($conf);
     }
 
+    public function getViewHelperConfig(){
+
+        return array(
+            'invokables' => array(
+                'ShareMoodForm' => 'UserTimeline\ViewHelpers\ShareMoodHelper'
+            ),
+
+            'factories' => array(
+
+            )
+        );
+    }
+
     public function getAutoloaderConfig()
     {
         return array(
