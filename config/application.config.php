@@ -12,7 +12,8 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'BjyProfiler',
-        'UserProfile'
+        'UserProfile',
+        'UserTimeline',
         ),
     'module_listener_options' => array(
         'module_paths' => array(
