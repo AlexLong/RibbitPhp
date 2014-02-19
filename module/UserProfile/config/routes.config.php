@@ -10,38 +10,6 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'user_profile' => array(
-                'type' => 'Literal',
-                 'options' => array(
-                     'route'    => '/r/',
-                     'constraints' => array(
-                     ),
-
-                     'defaults' => array(
-                         'controller' => 'UserProfile\Controller\UserProfile',
-                         'action' => 'index',
-                     ),
-                 ),
-
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'profile_child' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/:user[/]',
-                            'constraints' => array(
-                                'action'     => '[0-9]*[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                                'controller' => 'UserProfile\Controller\UserProfile',
-                                'action' => 'index',
-                            ),
-
-                        ),
-                    ),
-                ),
-
-            ),
             'u' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(

@@ -23,6 +23,7 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+
                     'tmln_child' => array(
                         'type'    => 'Segment',
                         'options' => array(
@@ -31,12 +32,13 @@ return array(
                                 'action'     => '[a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
-                                'controller' => 'UserProfile\Controller\UserProfile',
+                                'controller' => 'UserTimeline\Controller\Index',
                                 'action' => 'index',
                             ),
 
                         ),
                     ),
+
                 ),
             ),
         )

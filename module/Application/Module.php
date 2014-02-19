@@ -23,9 +23,7 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH,function($e){
 
-        },50);
 
         $this->bootstrapSession($e);
     }
@@ -47,8 +45,6 @@ class Module
 
     public function getConfig()
     {
-
-
         $conf = array_merge(
             include __DIR__ . '/config/template.config.php',
             include __DIR__ . '/config/module.config.php'
@@ -75,11 +71,10 @@ class Module
         return array(
             'invokables' => array(
 
-
             ),
             'factories' => array(
 
-
+                'AssetResolver' => 'Application\ViewHelpers\Service\AssetResolverFactory'
 
 
             ),

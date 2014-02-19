@@ -54,9 +54,9 @@
 
 
  <?php
-if($this->isOwner){
 
- echo  $this->partial("timeline/index");
-   // var_dump($this->ShareMoodForm()->get());
-}
+
+ echo  $this->partial("timeline/index", $this->isOwner);
+
+
 ?>

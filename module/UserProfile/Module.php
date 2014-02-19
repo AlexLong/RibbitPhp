@@ -38,12 +38,14 @@ class Module
 
     public function getViewHelperConfig()
     {
+
         return array(
             'invokables' => array(
 
             ),
             'factories' => array(
                 'UserIdentity' => 'UserProfile\ViewHelpers\Service\UserIdentityFactory',
+
                 'renderForm' => function($sm){
                         $locator = $sm->getServiceLocator();
                         $helper = new RenderFormHelper();

@@ -16,5 +16,7 @@ return array(
                 'ViewJsonStrategy',
             ),
 
+
+    //'asset_directory' => $this->basePath() . '/st/tmln',
     ),
 );

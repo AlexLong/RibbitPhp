@@ -2,9 +2,14 @@
 namespace UserTimeline;
 
 use Zend\Config\Config;
+use Zend\ModuleManager\ModuleEvent;
+use Zend\Mvc\MvcEvent;
+use Zend\Stdlib\ArrayObject;
 
 class Module
 {
+
+    protected  $someData = array();
     public function getConfig()
     {
         $conf = array_merge(
@@ -13,6 +18,16 @@ class Module
         );
 
         return new Config($conf);
+    }
+
+
+    public function onBootstrap(MvcEvent $e)
+    {
+        $eventManager        = $e->getApplication()->getEventManager();
+
+
+
+
     }
 
     public function getViewHelperConfig(){

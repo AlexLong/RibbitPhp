@@ -17,7 +17,6 @@ class UserIdentity extends  AbstractHelper {
     protected $authService;
     protected $identity;
 
-
     function __invoke()
     {
         return $this;
