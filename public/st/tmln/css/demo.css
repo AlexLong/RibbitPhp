@@ -32,7 +32,7 @@
     *zoom: 1;
 }
 */
-.user_timeline {
+.wall_cover {
     font-family: 'Lato', Calibri, Arial, sans-serif;
     background: #c2edf4;
     font-weight: 300;
@@ -42,17 +42,17 @@
     overflow-x: hidden;
 }
 
-.user_timeline a {
+.wall_cover a {
 	color: #555;
 	text-decoration: none;
 }
 
-.user_timeline.container {
+.wall_cover.container {
 	width: 100%;
 	position: relative;
 }
 
-.user_timeline.container > header,
+.wall_cover.container > header,
 .main {
 	width: 100%;
 	max-width: 1060px;
@@ -60,12 +60,12 @@
 	padding: 0 30px;
 }
 
-.user_timeline.container > header {
+.wall_cover.container > header {
 	padding: 30px 30px 0px 30px;
 	font-family: 'Gorditas', Arial, sans-serif;
 }
 
-.user_timeline.container > header h1 {
+.wall_cover.container > header h1 {
 	margin: 0;
 	font-weight: 400;
 	color: #41838e;
@@ -73,11 +73,11 @@
 	text-shadow: 0 1px 1px rgba(255,255,255,0.4);
 }
 
-.user_timeline.container > header h1 span {
+.wall_cover.container > header h1 span {
 	color: #F26328;
 }
 
-.user_timeline.container > header h2 {
+.wall_cover.container > header h2 {
 	padding: 10px 0;
 	margin: 0;
 	font-size: 62px;
@@ -89,7 +89,7 @@
 	text-shadow: 4px 4px 0px #41838e;
 }
 
-.user_timeline.container > header h2 span {
+.wall_cover.container > header h2 span {
 	display: block;
 	font-weight: 700;
 	text-transform: uppercase;

@@ -55,7 +55,7 @@
 
  <?php
 
- echo  $this->partial("timeline/index", array( 'isOwner' => $this->isOwner));
+echo  $this->partial("timeline/index", array( 'isOwner' => $this->isOwner,"user_id" => $this->user["user_id"]));
 
 
 ?>

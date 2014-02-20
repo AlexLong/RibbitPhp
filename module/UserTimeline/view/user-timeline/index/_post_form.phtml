@@ -1,0 +1,28 @@
+<script>
+    $(document).ready(function(){
+        function isEmpty(input){
+            var $data = $(input);
+            return ($data.val().length == 0)
+
+        }
+        $("#user_post").on('submit',function(e){
+            var $post_area = $("#post_area");
+            if($post_area.val().length == 0){
+                e.preventDefault();
+                $post_area.focus();
+            }else{
+                $(this).submit();
+                $post_area.clean();
+            }
+        });
+
+    });
+</script>
+
+<div class="well">
+    <form id="user_post" action="" method="post">
+        <textarea id="post_area" onfocus="$('#submit_post_button').removeClass('hidden');" name="post_area" placeholder="Post something" class="form-control" rows="3"></textarea>
+        <input id="submit_post_button" type="submit"  class="btn hidden btn-primary" value="Post">
+    </form>
+</div>
+

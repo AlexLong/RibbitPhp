@@ -47,7 +47,6 @@ class UserPlugin extends AbstractPlugin  {
         }
 
         return false;
-
     }
 
     public function postOnly()

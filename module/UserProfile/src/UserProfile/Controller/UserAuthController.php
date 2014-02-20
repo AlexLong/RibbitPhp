@@ -16,7 +16,6 @@ use UserProfile\Model\ChkModel;
 
 class UserAuthController extends  AbstractUserController {
 
-
     protected $chkModel;
 
     public function chkUserAction()

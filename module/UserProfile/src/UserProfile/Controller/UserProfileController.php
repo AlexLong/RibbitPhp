@@ -19,9 +19,9 @@ class UserProfileController extends AbstractProfileController
         return $this->notFoundAction();
     }
 
-
-
-
+    public function friendsAction(){
+        throw new \Exception("Not Implemented");
+    }
 
 }
 

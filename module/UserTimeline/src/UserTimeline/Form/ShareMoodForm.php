@@ -29,7 +29,7 @@ class ShareMoodForm extends  Form {
             'attributes' => array(
                 'class' => 'form-control',
                 'required' => true,
-                'placeholder' => 'Share your mood'
+                'placeholder' => 'Post something'
 
             ),
         ));
