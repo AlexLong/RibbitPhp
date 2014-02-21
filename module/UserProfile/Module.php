@@ -52,8 +52,8 @@ class Module
                       $userProfileCache->setNamespace("user_profile_");
                       return $userProfileCache;
                  },
-                'UserService' => function($sm){
-                        $user_service = new \UserProfile\Service\UserService();
+                'UserProfileService' => function($sm){
+                        $user_service = new \UserProfile\Service\UserProfileService();
                         $user_service->setProfileCacheService($sm->get('UserProfileCacheService'));
                         $user_service->setServiceLocator($sm);
                         return $user_service;

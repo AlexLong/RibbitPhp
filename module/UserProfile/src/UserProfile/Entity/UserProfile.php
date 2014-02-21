@@ -22,6 +22,8 @@ class UserProfile {
 
     public $email = null;
 
+    public $profile_picture = null;
+
     function __construct(array $data =null)
     {
         if($data){

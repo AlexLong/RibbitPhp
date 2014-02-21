@@ -11,13 +11,13 @@ namespace UserProfile\Service;
 
 
 use UserProfile\Entity\UserProfile;
-use UserProfile\Service\Interfaces\UserServiceInterface;
+use UserProfile\Service\Interfaces\UserProfileServiceInterface;
 use Zend\Db\Adapter\Adapter;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ArrayUtils;
 
-class UserService implements ServiceLocatorAwareInterface, UserServiceInterface{
+class UserProfileService implements ServiceLocatorAwareInterface, UserProfileServiceInterface{
 
 
     protected $serviceLocator;

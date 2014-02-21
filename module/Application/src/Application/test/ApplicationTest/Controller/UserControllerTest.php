@@ -154,7 +154,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     public function testCanGetAMockProfile(){
 
 
-  // $user_profile = $this->serviceManager->get('UserService')->getUserProfileByUsername('test');
+  // $user_profile = $this->serviceManager->get('UserProfileService')->getUserProfileByUsername('test');
       // $user_profile = $this->serviceManager->get('user_profile_repository');
        // var_dump($user_profile->getUserProfileByUsername('test'));
        // $user_profile = new UserProfile($this->serviceManager);

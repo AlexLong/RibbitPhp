@@ -5,8 +5,8 @@ return array(
     'service_manager' => array(
         'factories' => array(
 
-            'UserService' => function($sm){
-                    $user_service = new \UserProfile\Service\UserService();
+            'UserProfileService' => function($sm){
+                    $user_service = new \UserProfile\Service\UserProfileService();
                     $user_service->setServiceLocator($sm);
                     return $user_service;
                 },

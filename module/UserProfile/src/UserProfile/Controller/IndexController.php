@@ -11,10 +11,10 @@ class IndexController extends AbstractProfileController
     public function userAction()
     {
         $user = $this->getEvent()->getRouteMatch()->getParam('user');
-        $result = $this->getUserService()->getUserProfile($user);
+        $result = $this->getUserProfileService()->getUserProfile($user);
         if($result){
             return new ViewModel(array('user' => $result,
-                'isOwner' => $this->getUserService()->isProfileOwner($result['user_id'])));
+                'isOwner' => $this->getUserProfileService()->isProfileOwner($result['user_id'])));
         }
         return $this->notFoundAction();
     }

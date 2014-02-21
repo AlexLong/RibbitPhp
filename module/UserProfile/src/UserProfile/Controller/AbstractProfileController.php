@@ -10,34 +10,34 @@
 namespace UserProfile\Controller;
 
 
-use UserProfile\Service\Interfaces\UserServiceInterface;
+use UserProfile\Service\Interfaces\UserProfileServiceInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class AbstractProfileController extends AbstractActionController{
 
 
-   protected  $userService;
+   protected  $UserProfileService;
 
     /**
-     * @param mixed $userService
+     * @param mixed $UserProfileService
      */
-    public function setUserService(UserServiceInterface $userService)
+    public function setUserProfileService(UserProfileServiceInterface $UserProfileService)
     {
-        $this->userService = $userService;
+        $this->UserProfileService = $UserProfileService;
     }
 
     /**
      * @return mixed
      */
-    public function getUserService()
+    public function getUserProfileService()
     {
-        if(!$this->userService){
+        if(!$this->UserProfileService){
 
-            $userService = $this->getServiceLocator()->get('UserService');
-            $this->setUserService($userService);
+            $UserProfileService = $this->getServiceLocator()->get('UserProfileService');
+            $this->setUserProfileService($UserProfileService);
         }
 
-        return $this->userService;
+        return $this->UserProfileService;
     }
 
 

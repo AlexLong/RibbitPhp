@@ -21,7 +21,7 @@ class UserRestController extends AbstractRestfulController{
     public function getList()
     {
        $user = $this->getEvent()->getRouteMatch()->getParam("user");
-       $result = $this->getUserService()->getUserProfile($user);
+       $result = $this->getUserProfileService()->getUserProfile($user);
        if(!$result){
 
           return new JsonModel(array('errors' => array("code" => 404, "message" => "user not found")));
@@ -37,9 +37,9 @@ class UserRestController extends AbstractRestfulController{
     /**
      * @return mixed
      */
-    public function getUserService()
+    public function getUserProfileService()
     {
-        return $this->getServiceLocator()->get('UserService');
+        return $this->getServiceLocator()->get('UserProfileService');
     }
 
 
