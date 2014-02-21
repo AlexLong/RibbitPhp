@@ -12,11 +12,10 @@
             <ul class="nav navbar-nav pull-right">
                 <li><a href="<?php echo $this->url('index') ?>"><?php echo $this->translate('Home') ?></a></li>
 
-
                 <li>
                     <?php if(!$this->userIdentity()->isLogged()){?>
                         <a href="<?php
-                        echo $this->url('u/u_child', array('action' => 'login'),
+                        echo $this->url('auc/auc_child', array('action' => 'login'),
                             array('query' => array('rt' => $this->ServerUrl(true)))) ?>">
                             <?php echo $this->translate('Login')
                             ?>
@@ -25,7 +24,7 @@
 
                     <?php if($this->userIdentity()->isLogged()){?>
                         <a href="<?php
-                        echo $this->url('u/u_child', array('action' => 'logout'),
+                        echo $this->url('auc/auc_child', array('action' => 'logout'),
                             array('query' => array('rt' => $this->ServerUrl(true)))) ?>">
                             <?php echo $this->translate('Logout')
                             ?>

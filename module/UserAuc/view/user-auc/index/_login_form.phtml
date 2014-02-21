@@ -1,0 +1,49 @@
+
+<?php if($this->validation_messages){?>
+
+<div class="alert alert-danger">
+    <?php
+    if(is_array($this->validation_messages))
+    {
+     echo $this->validation_messages[0];
+    }else{
+        echo $this->validation_messages;
+    }
+
+    }?>
+</div>
+<?php
+
+(isset($this->failed_form)) ? $form = $this->failed_form : $form = $this->renderForm()->login();
+
+
+$form->setAttributes(array(
+    'method' => 'post',
+    'action' => $this->Url('auc/auc_child', array('action' => 'login'))
+));
+
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+echo $this->formLabel($form->get('email'));
+echo $this->formElement($form->get('email'));
+
+echo $this->formLabel($form->get('password'));
+echo $this->formElement($form->get('password'));
+
+
+echo $this->formLabel($form->get('remember_me'));
+echo $this->formElement($form->get('remember_me'));
+
+
+echo $this->formElement($form->get('auth_token'));
+
+
+
+echo $this->formElement($form->get('submit'));
+
+
+echo $this->form()->closeTag();
+
+?>

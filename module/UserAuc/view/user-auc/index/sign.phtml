@@ -1,0 +1,14 @@
+<h1>Register a new account.</h1>
+<div class="container">
+    <?php
+
+    echo $this->partial('user-auc/sign_form',array(
+            'validation_messages' => $this->validation_messages,
+            'failed_form' => $this->failed_form
+        )
+    );
+    ?>
+    Already have an account? <a href="<?php echo $this->Url('auc/auc_child', array('action' => 'login'))?>">Login.</a>
+</div>
+
+

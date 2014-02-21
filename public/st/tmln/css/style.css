@@ -11,8 +11,6 @@
 	font-weight: normal;
 	font-style: normal;
 }
-
-
 #wall {
     float: left;
     width: 600px;
@@ -23,6 +21,12 @@
 }
 #wall .well{
     margin-left: 55px;
+}
+
+.wall_cover .userWall .status {
+    width: 100%;
+    padding-left: 65px;
+
 }
 #user_post #post_area:focus{
 
@@ -42,10 +46,7 @@
     box-shadow: inset 0 1px 3px rgba(0,0,0,.05),0 1px 0 rgba(255,255,255,.1);
 }
 
-.wall_cover .userWall .status {
-    width: 100%;
-    padding-left: 65px;
-}
+
 .bs-example {
     position: relative;
     padding: 45px 15px 15px;
@@ -114,12 +115,6 @@
     margin-bottom: 5px;
 }
 
-/* The .status div container */
-
-.wall_cover .userWall .status{
-    width:420px;
-    padding-left:65px;
-}
 
 /* Link share attachment */
 

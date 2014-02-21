@@ -59,7 +59,6 @@ class AbstractUserController extends AbstractActionController
     public function setUserPlugin(UserPlugin $userPlugin)
     {
         $user_links = $this->getConfig();
-
         $this->userPlugin = $userPlugin;
         $this->userPlugin->setAuthService($this->getAuthService());
         $this->userPlugin->setRedirect($this->redirect());
