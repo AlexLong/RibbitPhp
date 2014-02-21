@@ -18,6 +18,7 @@ class IndexController extends AbstractProfileController
         }
         return $this->notFoundAction();
     }
+
     public function friendsAction(){
         return new ViewModel();
     }
