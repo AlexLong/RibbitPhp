@@ -17,7 +17,7 @@ interface AuthenticationServiceInterface {
 
      function is_identified();
 
-     function getUserIdentify();
+     function getUserIdentify($keydata = null);
 
      function removeUser($userId);
 } 

@@ -29,9 +29,6 @@ class ChkModel {
         return new \Zend\View\Model\JsonModel(array(1));
     }
 
-    /**
-     * @return mixed
-     */
     protected  function getSignForm()
     {
 

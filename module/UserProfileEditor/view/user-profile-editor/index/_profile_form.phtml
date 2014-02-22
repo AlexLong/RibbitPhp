@@ -1,0 +1,109 @@
+
+<?php if($this->validation_messages){?>
+
+<div class="alert alert-danger">
+    <?php
+    if(is_array($this->validation_messages))
+    {
+        echo($this->validation_messages[0]);
+
+    }else{
+        echo $this->validation_messages;
+    }
+    }?>
+</div>
+<div class="sign-wrapper">
+    <?php
+
+
+    (isset($this->failed_form)) ? $form = $this->failed_form : $form = $this->profile_form;
+
+
+    $form->setAttributes(array(
+        'method' => 'post',
+        'action' => $this->Url('private_profile/prof_edit_child', array('action' => 'updateProfile'))
+    ));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    // ->setAttributes(array('class' =>'alert alert-danger' ));
+    ?>
+
+
+    <?php echo $this->formLabel($form->get('first_name'));?>
+
+    <div class="standard-field">
+
+        <div class="tip-wrapper">
+            <div class="signtip" data-target="first_name">
+
+                <?php
+                echo $this->formElementErrors()
+                    ->setMessageCloseString('')
+                    ->setMessageOpenFormat('')
+                    ->setAttributes(array('class' => ''))
+                    ->render($form->get('first_name'));
+                ?>
+
+            </div>
+        </div>
+
+        <?php echo $this->formElement($form->get('first_name'));?>
+
+    </div>
+
+
+    <?php echo $this->formLabel($form->get('last_name'));?>
+
+    <div class="standard-field">
+        <div class="tip-wrapper">
+            <div class="signtip" data-target="last_name">
+                <?php
+                echo $this->formElementErrors()
+                    ->setMessageCloseString('')
+                    ->setMessageOpenFormat('')
+                    ->setAttributes(array('class' => 'alert alert-danger'))
+                    ->render($form->get('last_name'));
+                ?>
+            </div>
+        </div>
+        <?php echo $this->formElement($form->get('last_name'));?>
+
+    </div>
+
+
+
+    <?php echo $this->formLabel($form->get('profile_picture'));?>
+
+
+    <div class="standard-field">
+
+        <div class="tip-wrapper">
+            <div class="signtip" data-target="profile_picture">
+                <?php
+                echo $this->formElementErrors()
+                    ->setMessageCloseString('')
+                    ->setMessageOpenFormat('')
+                    ->setAttributes(array('class' => ''))
+                    ->render($form->get('profile_picture'));
+                ?>
+            </div>
+        </div>
+
+        <?php echo $this->formElement($form->get('profile_picture'));?>
+
+    </div>
+
+
+
+    <?php echo $this->formElement($form->get('edit_token'));?>
+
+    <input type="submit" value="submit">
+
+    <?php echo $this->form()->closeTag(); ?>
+
+
+
+</div>
+
+
+

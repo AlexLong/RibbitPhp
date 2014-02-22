@@ -14,7 +14,8 @@ return array(
         'BjyProfiler',
         'UserProfile',
         'UserTimeline',
-        'UserAuc'
+        'UserAuc',
+        'UserProfileEditor'
         ),
     'module_listener_options' => array(
         'module_paths' => array(

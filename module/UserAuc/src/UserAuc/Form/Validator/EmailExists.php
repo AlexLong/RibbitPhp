@@ -16,11 +16,6 @@ use Zend\Validator\Exception;
 
 class EmailExists extends  AbstractUserValidator {
 
-
-    /**
-     * Error constants
-     */
-
     const ERROR_EMAIL_FOUND    = 'emailFound';
     const ERROR_EMAIL_NOT_FOUND    = 'emailNotFound';
     const INVALID_LOGIN    = 'invalidLogin';
@@ -36,7 +31,7 @@ class EmailExists extends  AbstractUserValidator {
 
     public  function __construct(array $options = null)
     {
-        $this->login =( is_array($options) && array_key_exists('login', $options)) ? $options['login'] :  false;
+        $this->login =(is_array($options) && array_key_exists('login', $options)) ? $options['login'] :  false;
 
         parent::__construct($options);
     }
