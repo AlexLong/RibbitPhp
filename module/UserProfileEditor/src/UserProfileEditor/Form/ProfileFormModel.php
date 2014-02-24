@@ -10,6 +10,7 @@
 namespace UserProfileEditor\Form;
 
 
+use Zend\InputFilter\FileInput;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
@@ -17,6 +18,7 @@ use Zend\InputFilter\InputFilterInterface;
 class ProfileFormModel implements InputFilterAwareInterface {
 
     protected $inputFilter;
+    protected $fileInputFilter;
 
     protected $changeEmailValidator;
     protected $changeUsernameValidator;
@@ -45,6 +47,16 @@ class ProfileFormModel implements InputFilterAwareInterface {
 
             //   var_dump( $this->getEmailValidator());
             $inputFilter = new InputFilter();
+
+            $fileInput = new FileInput();
+            $fileInput->getValidatorChain()
+                       ->attachByName("filesize",array('max' => '5MB' ))
+                       ->attachByName('filemimetype',  array('mimeType' =>
+                                    'image/png,image/x-png,image/gif,
+                                    image/jpeg,image/bmp'))
+                ->attachByName('fileimagesize', array('maxWidth' => 5000, 'maxHeight' => 5000));
+          //  $fileInput->getFilterChain()->attachByName();
+
             $inputFilter->add(array(
                     'name' => 'first_name',
                     'required' => true,
@@ -93,18 +105,25 @@ class ProfileFormModel implements InputFilterAwareInterface {
                     )
                 )
             );
+
+
             $inputFilter->add(array(
                     'name' => 'profile_picture',
+
+                    /*
                     'validators' => array(
                         array(
                             'name' =>'IsImage',
-                            'mimeType' => array(
-                                'image/gif',
-                                'image/jpeg',
-                                'image/bmp',
-                                'image/png',
-                                'image/x-png',
+                            'options' => array(
+                                'mimeType' => array(
+                                    'image/gif',
+                                    'image/jpeg',
+                                    'image/bmp',
+                                    'image/png',
+                                    'image/x-png',
+                                )
                             )
+
                         ),
                         array(
                             'name' =>'Upload',
@@ -120,6 +139,7 @@ class ProfileFormModel implements InputFilterAwareInterface {
 
                         //  $this->getUsernameValidator(),
                     )
+                    */
                 )
             );
 

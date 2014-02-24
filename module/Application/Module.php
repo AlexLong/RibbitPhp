@@ -47,6 +47,7 @@ class Module
     {
         $conf = array_merge(
             include __DIR__ . '/config/template.config.php',
+            include __DIR__ . '/config/routes.config.php',
             include __DIR__ . '/config/module.config.php'
         );
 
@@ -88,6 +89,8 @@ class Module
             'invokables' => array(),
            'factories' => array(
                'GlobalCacheService' => 'Zend\Cache\Service\StorageCacheFactory',
+               'userFolderManager' => 'Application\Service\UserFolderServiceFactory',
+
                'Zend\Session\SessionManager' => function ($sm) {
                        $config = $sm->get('config');
                        if (isset($config['session'])) {

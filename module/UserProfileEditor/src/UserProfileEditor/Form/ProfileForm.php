@@ -24,6 +24,8 @@ class ProfileForm extends Form {
 
         parent::__construct('Profile');
 
+
+
         $this->add(array(
             'name' => 'profile_picture',
             'type' => 'File',
