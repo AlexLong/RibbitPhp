@@ -12,6 +12,7 @@ return array(
         ),
         'strategies' => array(
             'ViewJsonStrategy',
+            'ImageStrategy'
         ),
         //'asset_directory' => $this->basePath() . '/st/tmln',
     ),

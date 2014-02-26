@@ -7,13 +7,13 @@
  * 
  */
 
-namespace Application\Service;
+namespace UserProfileEditor\Service;
 
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserFolderServiceFactory implements FactoryInterface {
+class UserDirServiceFactory implements FactoryInterface {
 
     /**
      * Create service
@@ -24,7 +24,7 @@ class UserFolderServiceFactory implements FactoryInterface {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('Config');
-        return new UserFolderService($config['user_file_manager']);
+        return new UserDirService($config['user_file_manager']);
     }
 
 

@@ -10,6 +10,10 @@
 namespace UserProfileEditor\Form;
 
 
+use Application\Service\UserFolderServiceInterface;
+use UserAuc\Service\AuthenticationService;
+use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
+use UserProfileEditor\Service\UserDirServiceInterface;
 use Zend\InputFilter\FileInput;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
@@ -19,42 +23,48 @@ class ProfileFormModel implements InputFilterAwareInterface {
 
     protected $inputFilter;
     protected $fileInputFilter;
+    protected $user_dir_service;
+    protected $user_id;
+    protected $profile_pic;
+    protected $dir_service;
+    protected $user_auc;
+    protected $pic_name = "av.jpg";
 
-    protected $changeEmailValidator;
-    protected $changeUsernameValidator;
-    /**
-     * Set input filter
-     *
-     * @param  InputFilterInterface $inputFilter
-     * @return InputFilterAwareInterface
-     */
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
 
         throw new \Exception("Not used");
     }
 
-    /**
-     * Retrieve input filter
-     *
-     * @return InputFilterInterface
-     */
+
     public function getInputFilter()
     {
-
         if(!$this->inputFilter){
-
-
             //   var_dump( $this->getEmailValidator());
             $inputFilter = new InputFilter();
+            $fileInput = new FileInput('profile_picture');
+            $fileInput->breakOnFailure();
+            $fileInput->setAllowEmpty(true);
 
-            $fileInput = new FileInput();
             $fileInput->getValidatorChain()
                        ->attachByName("filesize",array('max' => '5MB' ))
                        ->attachByName('filemimetype',  array('mimeType' =>
                                     'image/png,image/x-png,image/gif,
-                                    image/jpeg,image/bmp'))
-                ->attachByName('fileimagesize', array('maxWidth' => 5000, 'maxHeight' => 5000));
+                                    image/jpeg'))
+                ->attachByName('fileimagesize', array('maxWidth' => 5000,
+                    'maxHeight' => 5000));
+
+            $fileInput->getFilterChain()
+                      ->attachByName(
+                        'filerenameupload',
+                        array(
+                            'target' => $this->targetPath(),
+                            'randomize' => true,
+                            'overwrite' =>true
+                        )
+                );
+            $inputFilter->add($fileInput);
+
           //  $fileInput->getFilterChain()->attachByName();
 
             $inputFilter->add(array(
@@ -106,49 +116,58 @@ class ProfileFormModel implements InputFilterAwareInterface {
                 )
             );
 
-
-            $inputFilter->add(array(
-                    'name' => 'profile_picture',
-
-                    /*
-                    'validators' => array(
-                        array(
-                            'name' =>'IsImage',
-                            'options' => array(
-                                'mimeType' => array(
-                                    'image/gif',
-                                    'image/jpeg',
-                                    'image/bmp',
-                                    'image/png',
-                                    'image/x-png',
-                                )
-                            )
-
-                        ),
-                        array(
-                            'name' =>'Upload',
-
-                        ),
-                        array(
-                           'name' => 'Size',
-                            'options' => array(
-                               'max' => '5MB'
-                            )
-                        )
-
-
-                        //  $this->getUsernameValidator(),
-                    )
-                    */
-                )
-            );
-
-
             $this->inputFilter = $inputFilter;
         }
+     //   var_dump($this->inputFilter);
         return $this->inputFilter;
     }
 
+
+    public function targetPath(){
+
+        $path = join(DIRECTORY_SEPARATOR,array(
+            $this->getDirService()->profilePicPath($this->getUserId()),
+            $this->pic_name
+        ));
+        return $path;
+    }
+
+    /**
+     * @param mixed $dir_service
+     */
+    public function setDirService(UserDirServiceInterface $dir_service)
+    {
+        $this->dir_service = $dir_service;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDirService()
+    {
+        return $this->dir_service;
+    }
+
+    /**
+     * @param mixed $user_auc
+     */
+    public function setUserAuc(AuthenticationServiceInterface $user_auc)
+    {
+        $this->user_auc = $user_auc;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserAuc()
+    {
+        return $this->user_auc;
+    }
+
+    public function getUserId(){
+
+        return $this->getUserAuc()->getUserIdentify('id');
+    }
 
 
 } 

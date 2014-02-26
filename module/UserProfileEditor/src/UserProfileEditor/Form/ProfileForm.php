@@ -17,12 +17,17 @@ use Zend\Form\Form;
 class ProfileForm extends Form {
 
 
-    protected $underDev = true;
+    protected $underDev = false;
+
+
+    protected $profileModel;
+
 
 
     public function __construct(){
 
         parent::__construct('Profile');
+
 
 
 
@@ -100,5 +105,15 @@ class ProfileForm extends Form {
         ));
 
     }
+
+    /**
+     * @param mixed $profileModel
+     */
+    public function setProfileModel($profileModel)
+    {
+        $this->profileModel = $profileModel;
+    }
+
+
 
 } 

@@ -7,10 +7,10 @@
  * 
  */
 
-namespace Application\Service;
+namespace UserProfileEditor\Service;
 
 
-class UserFolderService{
+class UserDirService implements UserDirServiceInterface{
 
     protected $public_directory;
 
@@ -26,23 +26,35 @@ class UserFolderService{
         $this->setDirectoryPermission($options['directory_permission']);
     }
 
+
+    public function createProfileDir($user_id){
+        $path = $this->profileDirPath($user_id);
+        if(is_dir($path)) return true;
+        if(!mkdir($path,$this->getDirectoryPermission())){
+            throw new \Exception('Unable to create a directory by path: '. $path);
+        }
+        return true;
+    }
+
     public function createProfileImageDir($user_id){
-            $path = $this->BuildProfileDirPath($user_id);
+            $path = $this->profilePicPath($user_id);
             if(is_dir($path)) return true;
             if(!mkdir($path,$this->getDirectoryPermission())){
                 throw new \Exception('Unable to create a directory by path: '. $path);
             }
         return true;
     }
-    public function BuildProfileDirPath($user_id){
-       $path = join(DIRECTORY_SEPARATOR,array($this->getPublicDirectory(),$user_id,$this->profile_image_folder));
+    public function profileDirPath($user_id){
+       $path = join(DIRECTORY_SEPARATOR,array($this->getPublicDirectory(),$user_id));
         return rtrim($path,DIRECTORY_SEPARATOR);
     }
 
-    public function BuildProfilePicPath($user_id){
-        $path = join(DIRECTORY_SEPARATOR,array($this->getPublicDirectory(),$user_id,$this->getProfileImageFolder()));
+    public function profilePicPath($user_id){
+        $path = join(DIRECTORY_SEPARATOR,array($this->profileDirPath($user_id),$this->getProfileImageFolder()));
         return rtrim($path,DIRECTORY_SEPARATOR);
     }
+
+
 
 
     /**
@@ -88,9 +100,6 @@ class UserFolderService{
         $this->public_directory = $public_directory;
 
         return $this;
-
-
-
       //  $this->public_directory = $public_directory;
     }
 
@@ -125,7 +134,6 @@ class UserFolderService{
     {
         $this->directory_permission = $directory_permission;
     }
-
     /**
      * @return mixed
      */
@@ -133,12 +141,5 @@ class UserFolderService{
     {
         return $this->directory_permission;
     }
-
-
-
-
-
-
-
 
 } 

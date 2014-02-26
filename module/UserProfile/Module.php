@@ -3,14 +3,14 @@ namespace UserProfile;
 
 
 
-use UserProfile\Service\UserProfileCacheService;
+use UserProfile\Service\ProfileCacheService;
 use Zend\Config\Config;
 
 class Module
 {
     public function getConfig()
     {
-        $conf = array_merge(
+        $conf = array_merge_recursive(
             include __DIR__ . '/config/module.config.php',
             include __DIR__ . '/config/routes.config.php',
             include __DIR__ . '/config/template.config.php'
@@ -45,8 +45,8 @@ class Module
 
             ),
             'factories' => array(
-                'UserProfileCacheService' => function($sm){
-                      $userProfileCache = new UserProfileCacheService();
+                'profileCacheService' => function($sm){
+                      $userProfileCache = new ProfileCacheService();
                       $userProfileCache->setServiceLocator($sm);
                       $userProfileCache->setCacheService($sm->get('GlobalCacheService'));
                       $userProfileCache->setNamespace("user_profile_");
@@ -54,7 +54,7 @@ class Module
                  },
                 'UserProfileService' => function($sm){
                         $user_service = new \UserProfile\Service\UserProfileService();
-                        $user_service->setProfileCacheService($sm->get('UserProfileCacheService'));
+                        $user_service->setProfileCacheService($sm->get('profileCacheService'));
                         $user_service->setServiceLocator($sm);
                         return $user_service;
                 },

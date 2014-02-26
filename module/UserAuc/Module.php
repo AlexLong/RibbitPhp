@@ -14,7 +14,7 @@ class Module
 {
     public function getConfig()
     {
-        $conf = array_merge(
+        $conf = array_merge_recursive(
             include __DIR__ . '/config/module.config.php',
             include __DIR__ . '/config/routes.config.php',
             include __DIR__ . '/config/template.config.php'

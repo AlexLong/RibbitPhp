@@ -5,10 +5,16 @@ namespace UserProfileEditor\Controller;
 use UserProfile\Controller\AbstractUserController;
 use UserProfileEditor\Form\ProfileForm;
 use UserProfileEditor\Form\ProfileFormModel;
+use Zend\Form\Form;
+use Zend\Http\Response;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractUserController
 {
+
+    protected $profileForm;
+
+
 
     public function indexAction()
     {
@@ -17,49 +23,46 @@ class IndexController extends AbstractUserController
     }
 
     public function getFolderManager(){
-        return $this->serviceLocator->get('userFolderManager');
+        return $this->serviceLocator->get('userDirManager');
     }
 
     public function profileAction(){
 
         $this->getUserPlugin()->requireAuth();
+        $user = $this->getAuthService()->getUserIdentify('username');
+        $user_profile = $this->getServiceLocator()->get('UserProfileService')->getUserProfile($user);
 
-        $this->getFolderManager()->createProfileImageDir(12555487);
-
-      $user =  $this->getAuthService()->getUserIdentify('username');
-      $user_profile = $this->getServiceLocator()->get('UserProfileService')->getUserProfile($user);
-        $profile_form = new ProfileForm();
-        $profileModel = new ProfileFormModel();
-        $profile_form->setInputFilter($profileModel->getInputFilter());
+        $profile_form = $this->getProfileForm();
         $profile_form->setData($user_profile);
 
-        //var_dump($profile_form);
 
         return new ViewModel(array('profile_form' => $profile_form));
 
     }
-
     function updateProfileAction(){
         $this->getUserPlugin()->requireAuth();
-
-        if($this->getRequest()->isPost()){
-            $request = $this->getRequest();
-            $post = array_merge_recursive(
-               $request->getPost()->toArray(),
-                $request->getPost()->getFiles()->toArray()
-            );
-            $profile_form = new ProfileForm();
-            $profile_form->setData($post);
-            $profile_model = new ProfileFormModel();
-            $profile_form->setInputFilter($profile_model->getInputFilter());
-            $viewModel = new ViewModel(array('profile_form' => $profile_form));
-            $viewModel->setTemplate('user-profile-editor/index/profile');
-          return $viewModel;
+        $profile_form = $this->getProfileForm();
+        $rpg = $this->fileprg($profile_form);
+        $tmpFile = null;
+        // Repg Will redirect back to action once uploading filtering of a file is done.
+        if($rpg instanceof Response) return $rpg;
+            elseif(is_array($rpg)){
+                if($profile_form->isValid()){
+                }else{
+                  $element = $profile_form->get('profile_picture');
+                    $errorMessages = $element->getMessages();
+                    if(empty($errorMessages)){
+                        $tmpFile = $element->getValue();
+                    }
+                }
         }
-
-        throw new \Exception("Not Implemented");
+        $viewModel = new ViewModel(array('profile_form' => $profile_form, 'tmp_file' => $tmpFile));
+        $viewModel->setTemplate('user-profile-editor/index/profile');
+       return $viewModel;
     }
-
+    public function getProfileForm(){
+        return $this->serviceLocator->get('profileEditForm');
+    }
 
 
 
