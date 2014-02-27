@@ -35,30 +35,40 @@ class IndexController extends AbstractUserController
         $profile_form = $this->getProfileForm();
         $profile_form->setData($user_profile);
 
+        $url =  $this->url()->fromRoute("private_profile/p_child",array('action' => 'updateProfile'));
+        $rpg = $this->fileprg($profile_form,$url);
+        $tmpFile = null;
+        // Repg Will redirect back to action once uploading filtering of a file is done.
+        if($rpg instanceof Response) return $rpg;
+        elseif(is_array($rpg)){
+            if($profile_form->isValid()){
+                $element = $profile_form->get('profile_picture');
+               // var_dump($profile_form->getData());
+                $tmpFile = $element->getValue();
 
-        return new ViewModel(array('profile_form' => $profile_form));
+            }else{
+                $element = $profile_form->get('profile_picture');
+                $errorMessages = $element->getMessages();
+                if(empty($errorMessages)){
+                    $tmpFile = $element->getValue();
+                }
+            }
+        }
+
+
+        return new ViewModel(array('profile_form' => $profile_form, 'tmp_file' => $tmpFile));
 
     }
     function updateProfileAction(){
         $this->getUserPlugin()->requireAuth();
-        $profile_form = $this->getProfileForm();
-        $rpg = $this->fileprg($profile_form);
-        $tmpFile = null;
-        // Repg Will redirect back to action once uploading filtering of a file is done.
-        if($rpg instanceof Response) return $rpg;
-            elseif(is_array($rpg)){
-                if($profile_form->isValid()){
-                }else{
-                  $element = $profile_form->get('profile_picture');
-                    $errorMessages = $element->getMessages();
-                    if(empty($errorMessages)){
-                        $tmpFile = $element->getValue();
-                    }
-                }
+
+      $profile_form = $this->getProfileForm();
+      $url =  $this->url()->fromRoute("private_profile/p_child",array('action' => 'profile'));
+      $rpg = $this->fileprg($profile_form,$url,true);
+        if($rpg instanceof Response){
+            return $rpg;
         }
-        $viewModel = new ViewModel(array('profile_form' => $profile_form, 'tmp_file' => $tmpFile));
-        $viewModel->setTemplate('user-profile-editor/index/profile');
-       return $viewModel;
+            return $this->notFoundAction();
     }
     public function getProfileForm(){
         return $this->serviceLocator->get('profileEditForm');

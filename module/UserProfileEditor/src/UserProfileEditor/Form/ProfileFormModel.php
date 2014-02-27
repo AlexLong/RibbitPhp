@@ -13,6 +13,7 @@ namespace UserProfileEditor\Form;
 use Application\Service\UserFolderServiceInterface;
 use UserAuc\Service\AuthenticationService;
 use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
+use UserProfileEditor\Form\Filter\ImageFilter;
 use UserProfileEditor\Service\UserDirServiceInterface;
 use Zend\InputFilter\FileInput;
 use Zend\InputFilter\InputFilter;
@@ -53,7 +54,13 @@ class ProfileFormModel implements InputFilterAwareInterface {
                                     image/jpeg'))
                 ->attachByName('fileimagesize', array('maxWidth' => 5000,
                     'maxHeight' => 5000));
-
+            $fileInput->getFilterChain()->attach(new ImageFilter(array(
+                'dir_path' => $this->dirPath(),
+                'target' => $this->target(),
+                'randomize' => true,
+                'overwrite' =>true
+            )),1);
+            /*
             $fileInput->getFilterChain()
                       ->attachByName(
                         'filerenameupload',
@@ -62,7 +69,8 @@ class ProfileFormModel implements InputFilterAwareInterface {
                             'randomize' => true,
                             'overwrite' =>true
                         )
-                );
+                    );
+            */
             $inputFilter->add($fileInput);
 
           //  $fileInput->getFilterChain()->attachByName();
@@ -123,12 +131,15 @@ class ProfileFormModel implements InputFilterAwareInterface {
     }
 
 
-    public function targetPath(){
-
+    public function target(){
         $path = join(DIRECTORY_SEPARATOR,array(
             $this->getDirService()->profilePicPath($this->getUserId()),
             $this->pic_name
         ));
+        return $path;
+    }
+    public function dirPath(){
+        $path = $this->getDirService()->profilePicPath($this->getUserId());
         return $path;
     }
 

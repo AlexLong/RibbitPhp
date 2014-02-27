@@ -56,6 +56,8 @@ class ImageRenderer implements RendererInterface {
 
     }
 
+
+
     /**
      * Processes a view script and returns the output.
      *

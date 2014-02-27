@@ -3,7 +3,7 @@
     <?php
 
     $form = $this->profile_form;
-// var_dump($this->tmp_file);
+
     $form->setAttributes(array(
         'method' => 'post',
         'action' => $this->Url('private_profile/p_child', array('action' => 'updateProfile'))
@@ -56,7 +56,9 @@
 
 
     <?php if($this->tmp_file) {
-        $url = $this->url('prof_asset/profile_img',$this->profileImgResolver()->get($this->tmp_file)); ?>
+
+
+        $url = $this->url('prof_asset/profile_img',$this->profileImgResolver()->get($this->tmp_file,$this->user_id)); ?>
 
      <img src="<?php echo $url?>" alt="Your profile image"/>
 

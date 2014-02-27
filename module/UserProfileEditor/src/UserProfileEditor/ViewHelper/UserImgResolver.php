@@ -23,13 +23,12 @@ class UserImgResolver extends AbstractHelper {
         return $this;
 
     }
-    public function get($tmp_file){
+    public function get($tmp_file, $user_id){
 
         if(!$tmp_file) return false;
         $pic = explode('.',preg_filter('/.*[^'.$this->image_suffix.'\w+\.]/','',$tmp_file['tmp_name']));
         $pic_name = $pic[0];
         $format = $pic[1];
-        $user_id = 163;
         $url = array(
             'action' => 'profileImg',
             'format' => $format,

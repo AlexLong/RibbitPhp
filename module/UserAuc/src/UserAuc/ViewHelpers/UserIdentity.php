@@ -17,8 +17,11 @@ class UserIdentity extends  AbstractHelper {
     protected $authService;
     protected $identity;
 
-    function __invoke()
+    function __invoke($key = null)
     {
+        if($key){
+            return $this->getIdentity($key);
+        }
         return $this;
     }
     public  function isLogged()

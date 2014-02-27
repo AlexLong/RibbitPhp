@@ -21,6 +21,7 @@ class Module
 
     public function onBootstrap(MvcEvent $e){
 
+
       //  $sharedManager = $e->getEventManager()->getSharedEventManager();
     }
     public function getViewHelperConfig()
@@ -32,7 +33,6 @@ class Module
                 'profileImgResolver' => 'UserProfileEditor\ViewHelper\UserImgResolver'
             ),
             'factories' => array(
-
 
             ),
         );
