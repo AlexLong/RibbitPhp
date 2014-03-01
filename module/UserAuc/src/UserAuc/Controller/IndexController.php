@@ -59,7 +59,6 @@ class IndexController extends  AbstractUserController {
             }
             return  $this->getUserPlugin()->redirectToHome();
         }
-
         if($this->getRequest()->getQuery('rt') != null)
         {
 
@@ -105,28 +104,7 @@ class IndexController extends  AbstractUserController {
                 return  $this->redirect()->toUrl($rt);
             }
         }
-
         return $this->getUserPlugin()->redirectToIndex();
     }
-
-    /*
-    public function  apiSignAction()
-    {
-
-        if($this->getRequest()->isPost()){
-
-            $data = $this->getRequest()->getPost();
-            $signForm = $this->getServiceLocator()->get('SignForm');
-
-            $signForm->setData($data);
-
-            if(!$signForm->isValid())
-            {
-                return new JsonModel($signForm->getMessages());
-            }
-        }
-    }
-*/
-
 
 } 

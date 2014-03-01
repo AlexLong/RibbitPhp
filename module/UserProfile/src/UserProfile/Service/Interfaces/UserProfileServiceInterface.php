@@ -12,7 +12,6 @@ namespace UserProfile\Service\Interfaces;
 
 interface UserProfileServiceInterface {
 
-
     function getUserProfile($username, $fromCache = true);
 
     function isProfileOwner($user_id);

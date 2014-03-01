@@ -34,7 +34,6 @@ class IndexController extends AbstractUserController
 
         $profile_form = $this->getProfileForm();
         $profile_form->setData($user_profile);
-
         $url =  $this->url()->fromRoute("private_profile/p_child",array('action' => 'updateProfile'));
         $rpg = $this->fileprg($profile_form,$url);
         $tmpFile = null;
@@ -42,8 +41,11 @@ class IndexController extends AbstractUserController
         if($rpg instanceof Response) return $rpg;
         elseif(is_array($rpg)){
             if($profile_form->isValid()){
+                var_dump($profile_form->getData());
+
                 $element = $profile_form->get('profile_picture');
-               // var_dump($profile_form->getData());
+
+
                 $tmpFile = $element->getValue();
 
             }else{
@@ -54,7 +56,6 @@ class IndexController extends AbstractUserController
                 }
             }
         }
-
 
         return new ViewModel(array('profile_form' => $profile_form, 'tmp_file' => $tmpFile));
 

@@ -7,6 +7,7 @@ use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
 
 class UserRepository extends AbstractRepository implements UserRepositoryInterface {
 
+
     protected $insert_columns = array('email', 'username', 'password',
         'registration_date');
 
@@ -47,6 +48,8 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
      $statement = $this->getSql()->delete()->where(array('id' => $userId));
      return   $this->executeDelete($statement);
     }
+
+
 
 
 

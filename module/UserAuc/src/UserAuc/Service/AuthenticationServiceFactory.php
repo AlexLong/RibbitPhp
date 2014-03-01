@@ -25,7 +25,7 @@ class AuthenticationServiceFactory implements FactoryInterface {
     {
 
         $authService = new AuthenticationService();
-        $user_repository = $serviceLocator->get('user_repository');
+        $user_repository = $serviceLocator->get('userAggregate')->getUser();
         $sessionManager = $serviceLocator->get('Zend\Session\SessionManager');
         $config = $serviceLocator->get('Config');
         $authService->setUnderDev(isset($config['dev_mode']['under_dev']) ? $config['dev_mode']['under_dev'] : false);

@@ -24,7 +24,8 @@ class UserProfile {
 
     public $profile_picture = null;
 
-    function __construct(array $data =null)
+
+    function __construct(array $data = null)
     {
         if($data){
             $this->exchangeArray($data);

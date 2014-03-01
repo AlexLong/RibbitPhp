@@ -109,4 +109,5 @@ abstract class AbstractRepository extends TableGateway implements RepositoryInte
        return $this->execute($this->getSql()->insert()
                 ->values($values));
     }
+
 } 

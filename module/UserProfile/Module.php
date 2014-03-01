@@ -45,6 +45,7 @@ class Module
 
             ),
             'factories' => array(
+                'userAggregate' => 'UserProfile\Domain\DbLayerConcrete\UserAggregateFactory',
                 'profileCacheService' => function($sm){
                       $userProfileCache = new ProfileCacheService();
                       $userProfileCache->setServiceLocator($sm);
@@ -58,14 +59,9 @@ class Module
                         $user_service->setServiceLocator($sm);
                         return $user_service;
                 },
-                'user_repository' => function($sm){
-                    $rep = new \UserProfile\Domain\DbLayerConcrete\UserRepository("ribbit_user",$sm->get('Zend\Db\Adapter\Adapter'));
-                    return $rep;
-                 },
-                'user_profile_repository' => function($sm){
-                 $rep = new  \UserProfile\Domain\DbLayerConcrete\UserProfileRepository("ribbit_user_profile",$sm->get('Zend\Db\Adapter\Adapter'));
-                 return $rep;
-                },
+
+
+
             )
         );
     }

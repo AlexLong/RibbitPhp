@@ -9,13 +9,16 @@
 
 namespace UserAuc\Service;
 
+use UserAuc\Entity\LoginEntity;
 use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
+use UserProfile\Entity\User;
 use UserProfile\Entity\UserProfile;
 use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
 use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\SessionManager;
+use Zend\Stdlib\ArrayObject;
 
 
 class AuthenticationService  implements  AuthenticationServiceInterface, ServiceLocatorAwareInterface {
@@ -28,17 +31,12 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
 
     protected $serviceLocator;
 
-    protected $userIdentify;
-
     protected $defaultUserId  = 'id';
 
     protected $underDev = false;
 
     protected $userCredentials = array();
 
-    protected $requiredUserData = array('id','email','username' ,'password');
-
-    protected $availableData =  array('id','email','username');
 
     /**
      *
@@ -54,7 +52,7 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
         $result = $this->getUserRepository()->createUser((array)$postData);
         $completed = false;
         if(!empty($result)){
-          $completed =  $this->getServiceLocator()->get('user_profile_repository')
+          $completed =  $this->getServiceLocator()->get('userAggregate')->getProfile()
                                   ->createProfile(array('user_id' => $result['id']));
           if($completed){
               $completed = $this->authenticate($postData);
@@ -71,24 +69,26 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
      */
     public function authenticate($postData)
     {
+       $login_set = array_keys(get_object_vars(new User()));
 
-       $auth = false;
+       $user_profile_set = array_keys(get_object_vars(new UserProfile()));
+
+
        $user = $this->getUserRepository()->findByEmail($postData['email'],
-            $this->requiredUserData);
+           $login_set);
 
-        if( $user['password'] == md5($postData['password'])){
-            foreach($this->availableData as $data){
-                $this->getSessionManager()->getStorage()->offsetSet($data,$user[$data]);
+
+
+       if(!$user || $user['password'] != md5($postData['password'])) return false;
+
+            foreach($login_set as $key){
+                $this->getSessionManager()->getStorage()->offsetSet($key,$user[$key]);
             }
 
             if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
                 $this->getSessionManager()->rememberMe();
             }
-            $auth = true;
-        }
-
-
-      return $auth;
+      return true;
     }
     /**
      * Checks user identity.

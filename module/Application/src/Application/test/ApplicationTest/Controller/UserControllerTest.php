@@ -51,7 +51,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $this->request    = new Request();
 
         $this->adapter = $this->serviceManager->get('Zend\Db\Adapter\Adapter');
-       // $this->userRepository = $this->serviceManager->get('user_repository');
+       // $this->userRepository = $this->serviceManager->get('userAggregate')->getUser();
 
         $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
         $this->storage = $this->sessionManager->getStorage();
@@ -155,7 +155,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
 
 
   // $user_profile = $this->serviceManager->get('UserProfileService')->getUserProfileByUsername('test');
-      // $user_profile = $this->serviceManager->get('user_profile_repository');
+      // $user_profile = $this->serviceManager->get('userAggregate')->getProfile();
        // var_dump($user_profile->getUserProfileByUsername('test'));
        // $user_profile = new UserProfile($this->serviceManager);
   //  $this->assertNotNull($user_profile);

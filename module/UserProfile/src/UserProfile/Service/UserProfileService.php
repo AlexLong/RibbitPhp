@@ -10,12 +10,12 @@
 namespace UserProfile\Service;
 
 
+use UserProfile\Domain\DbLayerConcrete\ProfileQueryFactory;
 use UserProfile\Entity\UserProfile;
 use UserProfile\Service\Interfaces\UserProfileServiceInterface;
-use Zend\Db\Adapter\Adapter;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\ArrayUtils;
+
 
 class UserProfileService implements ServiceLocatorAwareInterface, UserProfileServiceInterface{
 
@@ -28,6 +28,8 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
 
     protected $userRepository;
 
+    protected $queryFactory;
+
     function getUserProfile($username, $fromCache = true)
     {
         $result = null;
@@ -35,42 +37,23 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
          $result = $this->getProfileCacheService()->getUserProfile($username);
         }
        if(!$result){
-           $id = $this->getUserRepository()->findByUsername($username,array('id'));
-           if($id){
-               $user_table = $this->getUserRepository()->getTable();
-               $profile_table = $this->getUserProfileRepository()->getTable();
-               $query = "select
-                 $user_table.id,
-                 $user_table.username,
-                 $user_table.email,
-                 $profile_table.first_name,
-                 $profile_table.last_name,
-                 $profile_table.user_id
-                 from $user_table
-                 join $profile_table on ($user_table.id = $profile_table.user_id )
-                 where $user_table.username = '$username'
-                 Limit 1";
-
-                  $result = $this->getUserRepository()->execute($query)->toArray();
+           $id = $this->getUserAggregate()->getUser()->findByUsername($username,array('id'));
+           if(!$id) return $result;
+                  $result = $this->getQueryFactory()->resolveUserProfile($username);
                   $dd = new UserProfile($result[0]);
                   $result = get_object_vars($dd);
                   $this->getProfileCacheService()->setUserProfile($result['username'], $result);
-           }
        }
         return  $result;
     }
-
     public function isProfileOwner($user_id){
-
      $owner = false;
-
      $auth_service =  $this->getServiceLocator()->get('AuthService');
-
         if($user_id && $auth_service->is_identified()){
             $id =  $auth_service->getUserIdentify("id");
             if($id == $user_id) $owner = true;
         }
-    return $owner;
+        return $owner;
     }
     /**
      * Set service locator
@@ -93,21 +76,11 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
         return $this->serviceLocator;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getUserProfileRepository()
-    {
-        return $this->getServiceLocator()->get('user_profile_repository');
-    }
-    /**
-     * @return mixed
-     */
-    public function getUserRepository()
-    {
-        return  $this->getServiceLocator()->get('user_repository');
-    }
 
+    public function getUserAggregate(){
+
+        return  $this->getServiceLocator()->get('userAggregate');
+    }
 
     /**
      * @param mixed $globalCacheService
@@ -124,5 +97,19 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
     {
         return $this->profileCacheService;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getQueryFactory()
+    {
+        if(!$this->queryFactory){
+            $this->queryFactory = new ProfileQueryFactory($this->getUserAggregate());
+        }
+        return $this->queryFactory;
+    }
+
+
+
 
 } 

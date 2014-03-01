@@ -1,0 +1,9 @@
+
+<?php
+echo $this->partial('profile_editor/profile',array(
+    'user_profile' => $this->user_profile,
+    'profile_form' => $this->profile_form,
+    'tmp_file' => $this->tmp_file,
+    'user_id' => $this->UserIdentity('id')
+));
+
