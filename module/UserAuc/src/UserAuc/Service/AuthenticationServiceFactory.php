@@ -23,16 +23,10 @@ class AuthenticationServiceFactory implements FactoryInterface {
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-
         $authService = new AuthenticationService();
-        $user_repository = $serviceLocator->get('userAggregate')->getUser();
         $sessionManager = $serviceLocator->get('Zend\Session\SessionManager');
-        $config = $serviceLocator->get('Config');
-        $authService->setUnderDev(isset($config['dev_mode']['under_dev']) ? $config['dev_mode']['under_dev'] : false);
-        unset($config);
+        $authService->setUnderDev(true);
         $authService->setSessionManager($sessionManager);
-        $authService->setUserRepository($user_repository);
-      $authService->setUserRepository($user_repository);
         return $authService;
     }
 

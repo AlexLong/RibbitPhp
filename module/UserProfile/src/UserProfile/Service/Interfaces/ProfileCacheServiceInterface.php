@@ -10,15 +10,14 @@
 namespace UserProfile\Service\Interfaces;
 
 
-interface UserProfileCacheServiceInterface {
+interface ProfileCacheServiceInterface {
+
 
     /**
-     * @param string $username
-     * @param mixed $value
-     * @return mixed
+     * @param array $result
+     * @return void
      */
-
-    function setUserProfile($username, $value);
+    function setUserProfile($result);
     /**
      * @param string $username
      * @return array

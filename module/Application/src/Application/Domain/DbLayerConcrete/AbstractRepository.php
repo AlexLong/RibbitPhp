@@ -19,6 +19,9 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 abstract class AbstractRepository extends TableGateway implements RepositoryInterface {
 
 
+    protected $columns = null;
+
+    protected $entity;
     /**
      * Executes statement and returns a result of a request.
      *
@@ -108,6 +111,18 @@ abstract class AbstractRepository extends TableGateway implements RepositoryInte
     {
        return $this->execute($this->getSql()->insert()
                 ->values($values));
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getColumns()
+    {
+
+        if(!$this->columns){
+            $this->columns = array_keys(get_object_vars($this->entity));
+        }
+        return $this->columns;
     }
 
 } 

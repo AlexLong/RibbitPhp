@@ -11,7 +11,7 @@ namespace UserProfile\Service;
 
 
 use UserProfile\Domain\DbLayerConcrete\ProfileQueryFactory;
-use UserProfile\Entity\UserProfile;
+use UserProfile\Domain\DbLayerConcrete\UserAggregate;
 use UserProfile\Service\Interfaces\UserProfileServiceInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -33,17 +33,16 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
     function getUserProfile($username, $fromCache = true)
     {
         $result = null;
+
         if($fromCache){
          $result = $this->getProfileCacheService()->getUserProfile($username);
         }
        if(!$result){
-           $id = $this->getUserAggregate()->getUser()->findByUsername($username,array('id'));
-           if(!$id) return $result;
-                  $result = $this->getQueryFactory()->resolveUserProfile($username);
-                  $dd = new UserProfile($result[0]);
-                  $result = get_object_vars($dd);
-                  $this->getProfileCacheService()->setUserProfile($result['username'], $result);
-       }
+          $id = $this->getUserAggregate()->getUser()->findByUsername($username,array('id'));
+          if(!$id) return $result;
+          $result = $this->getQueryFactory()->resolveUserProfile($username); // Resolving the complex query
+          $this->getProfileCacheService()->setUserProfile($result); // Caching result
+        }
         return  $result;
     }
     public function isProfileOwner($user_id){
@@ -53,7 +52,7 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
             $id =  $auth_service->getUserIdentify("id");
             if($id == $user_id) $owner = true;
         }
-        return $owner;
+      return $owner;
     }
     /**
      * Set service locator
@@ -76,7 +75,9 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
         return $this->serviceLocator;
     }
 
-
+    /**
+     * @return UserAggregate
+     */
     public function getUserAggregate(){
 
         return  $this->getServiceLocator()->get('userAggregate');

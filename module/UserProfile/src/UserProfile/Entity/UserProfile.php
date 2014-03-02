@@ -10,11 +10,12 @@
 namespace UserProfile\Entity;
 
 
+
+use Zend\Stdlib\Hydrator\ArraySerializable;
+
 class UserProfile {
 
     public $user_id = null;
-
-    public $username = null;
 
     public $first_name = null;
 
@@ -24,18 +25,6 @@ class UserProfile {
 
     public $profile_picture = null;
 
-
-    function __construct(array $data = null)
-    {
-        if($data){
-            $this->exchangeArray($data);
-        }
-    }
-    public function exchangeArray(array $data){
-        $user_prop = get_object_vars($this);
-        foreach($user_prop as $key => $v){
-            $this->{$key} = $data[$key];
-        }
-    }
+    public $profile_url = null;
 
 } 

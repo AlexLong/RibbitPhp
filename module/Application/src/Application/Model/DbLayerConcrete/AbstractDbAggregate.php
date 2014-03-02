@@ -11,7 +11,7 @@ namespace Application\Model\DbLayerConcrete;
 
 
 use Application\Model\DbLayerInterfaces\AggregateDbInterface;
-
+use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterInterface;
 
 abstract class AbstractDbAggregate  extends  AggregateDbInterface{
@@ -22,17 +22,25 @@ abstract class AbstractDbAggregate  extends  AggregateDbInterface{
     protected $dbAdapter;
 
     public function __construct(AdapterInterface $adapter){
+
         $this->dbAdapter = $adapter;
     }
 
     /**
-     * @return mixed
+     * @return Adapter
      */
     public function getDbAdapter()
     {
         return $this->dbAdapter;
     }
 
+    /**
+     * @return array
+     */
+    public function getTable($name)
+    {
+        return $this->tables[$name];
+    }
 
 
 } 

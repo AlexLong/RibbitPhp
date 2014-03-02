@@ -4,23 +4,40 @@ namespace UserProfile\Domain\DbLayerConcrete;
 
 use Application\Domain\DbLayerConcrete\AbstractRepository;
 use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
+use UserProfile\Entity\User;
+use Zend\Db\Adapter\AdapterInterface;
 
 class UserRepository extends AbstractRepository implements UserRepositoryInterface {
 
-
-    protected $insert_columns = array('email', 'username', 'password',
+   protected $insert_columns = array('email', 'username', 'password',
         'registration_date');
 
-    function  findById($id, array $columns)
+
+
+    public function __construct($table,AdapterInterface $adapter,User $user){
+        parent::__construct($table,$adapter);
+        $this->entity = $user;
+    }
+
+    function  findById($id, array $columns = null)
     {
+        if($columns == null){
+            $columns = $this->getColumns();
+        }
          return $this->findBy(array('id' => $id),$columns);
     }
-    function  findByUsername($username, array $columns)
+    function  findByUsername($username, array $columns = null)
     {
+        if($columns == null){
+            $columns = $this->getColumns();
+        }
         return $this->findBy(array('username' => $username),$columns);
     }
-    function  findByEmail($email, array $columns)
+    function  findByEmail($email, array $columns = null)
     {
+        if($columns == null){
+            $columns = $this->getColumns();
+        }
         return $this->findBy(array('email' => $email),$columns);
     }
 
@@ -48,9 +65,6 @@ class UserRepository extends AbstractRepository implements UserRepositoryInterfa
      $statement = $this->getSql()->delete()->where(array('id' => $userId));
      return   $this->executeDelete($statement);
     }
-
-
-
 
 
 } 

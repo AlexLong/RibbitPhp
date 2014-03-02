@@ -4,19 +4,17 @@ namespace UserProfile\Service;
 
 
 use Application\Service\AbstractCacheService;
-use UserProfile\Service\Interfaces\UserProfileCacheServiceInterface;
-use Zend\Cache\Storage\Adapter\Filesystem;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use UserProfile\Service\Interfaces\ProfileCacheServiceInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ProfileCacheService extends  AbstractCacheService implements ServiceLocatorAwareInterface, UserProfileCacheServiceInterface {
+class ProfileCacheService extends  AbstractCacheService implements  ProfileCacheServiceInterface {
 
     protected $serviceLocator;
 
-    function setUserProfile($username,$value)
+    function setUserProfile($result)
     {
-        $key = $this->formatKey($username);
-        $this->getCacheService()->setItem($key, $value);
+        $key = $this->formatKey($result['username']);
+        $this->getCacheService()->setItem($key, $result);
     }
     /**
      * @param string $username
@@ -77,17 +75,5 @@ class ProfileCacheService extends  AbstractCacheService implements ServiceLocato
         }
 
     }
-
-
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        $this->serviceLocator;
-    }
-
 
 } 

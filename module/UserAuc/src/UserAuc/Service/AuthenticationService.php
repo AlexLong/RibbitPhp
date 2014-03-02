@@ -9,31 +9,32 @@
 
 namespace UserAuc\Service;
 
-use UserAuc\Entity\LoginEntity;
-use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
-use UserProfile\Entity\User;
-use UserProfile\Entity\UserProfile;
+
+use UserProfile\Domain\DbLayerConcrete\ProfileQueryFactory;
+use UserProfile\Domain\DbLayerConcrete\UserAggregate;
 use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
-use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\SessionManager;
+use Zend\Session\Storage\SessionStorage;
 use Zend\Stdlib\ArrayObject;
 
 
 class AuthenticationService  implements  AuthenticationServiceInterface, ServiceLocatorAwareInterface {
 
-    protected $user_repository;
+    protected $userAggregate;
 
     protected $sessionManager;
 
-    protected $validationMessages;
+    protected $sessionData = array();
 
     protected $serviceLocator;
 
     protected $defaultUserId  = 'id';
 
     protected $underDev = false;
+
+    protected $queryFactory;
 
     protected $userCredentials = array();
 
@@ -46,13 +47,12 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
      * @param string $role
      * @return bool
      */
-
     public  function signUp($postData)
     {
-        $result = $this->getUserRepository()->createUser((array)$postData);
+        $result = $this->getUserAggregate()->getUser()->createUser((array)$postData);
         $completed = false;
         if(!empty($result)){
-          $completed =  $this->getServiceLocator()->get('userAggregate')->getProfile()
+          $completed = $this->getUserAggregate()->getProfile()
                                   ->createProfile(array('user_id' => $result['id']));
           if($completed){
               $completed = $this->authenticate($postData);
@@ -69,22 +69,13 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
      */
     public function authenticate($postData)
     {
-       $login_set = array_keys(get_object_vars(new User()));
-
-       $user_profile_set = array_keys(get_object_vars(new UserProfile()));
-
-
-       $user = $this->getUserRepository()->findByEmail($postData['email'],
-           $login_set);
-
-
-
-       if(!$user || $user['password'] != md5($postData['password'])) return false;
-
-            foreach($login_set as $key){
-                $this->getSessionManager()->getStorage()->offsetSet($key,$user[$key]);
+        $result = $this->getQueryFactory()->resolveUserByEmail($postData['email']);
+       if($result['password'] != md5($postData['password'])) return false;
+            foreach($result as $key=>$value){
+                if($key == 'password') continue;
+                $this->getSessionManager()->getStorage()->offsetSet($key,$value);
+                array_push($this->sessionData,$key);
             }
-
             if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
                 $this->getSessionManager()->rememberMe();
             }
@@ -112,9 +103,9 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
 
     public  function logout()
     {
-        if($this->getSessionManager()->getStorage()->offsetExists($this->defaultUserId))
+        if($this->getSessionStorage()->offsetExists($this->defaultUserId))
         {
-           $this->getSessionStorage()->offsetUnset($this->defaultUserId);
+           $this->getSessionStorage()->clear();
         }
         return true;
     }
@@ -128,7 +119,7 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
 
     public  function removeUser($userId)
     {
-        return $this->getUserRepository()->dropById($userId);
+        return $this->getUserAggregate()->getUser()->dropById($userId);
     }
 
     /**
@@ -152,9 +143,8 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
                 }
             }elseif($keydata == null){
                 $identity = array();
-                foreach($this->availableData as $data){
-
-                    $identity[$data] = $this->getSessionManager()->getStorage()->offsetGet($data);
+                foreach($this->sessionData as $key){
+                    $identity[$key] = $this->getSessionManager()->getStorage()->offsetGet($key);
                 }
             }
         }
@@ -177,26 +167,16 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
         return $this->sessionManager;
     }
 
+    /**
+     * @return SessionStorage
+     */
+
     public function getSessionStorage()
     {
         return $this->getSessionManager()->getStorage();
     }
 
-    /**
-     * @param mixed $user_repository
-     */
-    public function setUserRepository(UserRepositoryInterface $user_repository)
-    {
-        $this->user_repository = $user_repository;
-    }
 
-    /**
-     * @return mixed
-     */
-    public function getUserRepository()
-    {
-        return $this->user_repository;
-    }
 
     /**
      * Set service locator
@@ -234,6 +214,29 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
     {
         return $this->underDev;
     }
+
+    /**
+     * @return UserAggregate
+     */
+    public function getUserAggregate()
+    {
+        if(!$this->userAggregate){
+            $this->userAggregate =  $this->getServiceLocator()->get('userAggregate');
+        }
+        return $this->userAggregate;
+    }
+
+    /**
+     * @return ProfileQueryFactory
+     */
+    public function getQueryFactory()
+    {
+        if(!$this->queryFactory){
+            $this->queryFactory = new ProfileQueryFactory($this->getUserAggregate());
+        }
+        return $this->queryFactory;
+    }
+
 
 
 

@@ -11,7 +11,8 @@ namespace UserProfile\Domain\DbLayerConcrete;
 
 
 use Application\Model\DbLayerConcrete\AbstractDbAggregate;
-use Zend\Db\Adapter\AdapterInterface;
+use UserProfile\Entity\User;
+use UserProfile\Entity\UserProfile;
 
 
 class UserAggregate extends AbstractDbAggregate {
@@ -22,30 +23,27 @@ class UserAggregate extends AbstractDbAggregate {
     );
     protected  $user;
     protected  $profile;
-
-    public function __construct(AdapterInterface $adapter){
-           parent::__construct($adapter);
-    }
     /**
-     * @return mixed
+     * @return UserRepository
      */
     public function getUser()
     {
         if(!$this->user){
-            $this->user = new UserRepository($this->tables['user'],$this->dbAdapter);
+            $this->user = new UserRepository($this->tables['user'],$this->dbAdapter, new User());
         }
         return $this->user;
     }
     /**
-     * @return mixed
+     * @return UserProfileRepository
      */
     public function getProfile()
     {
         if(!$this->profile){
-            $this->profile = new UserRepository($this->tables['profile'],$this->dbAdapter);
+            $this->profile = new UserProfileRepository($this->tables['profile'],$this->dbAdapter,new UserProfile());
         }
         return $this->profile;
     }
+
 
 
 

@@ -10,8 +10,6 @@
 namespace UserAuc\Model;
 
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-
 class ChkModel {
     protected $signForm;
     public function  buildResponse($data){

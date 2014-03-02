@@ -11,9 +11,15 @@ namespace UserProfile\Domain\DbLayerConcrete;
 
 use Application\Domain\DbLayerConcrete\AbstractRepository;
 use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use UserProfile\Entity\UserProfile;
+use Zend\Db\Adapter\AdapterInterface;
 
 class UserProfileRepository extends  AbstractRepository implements UserProfileRepositoryInterface{
+
+    public function __construct($table,AdapterInterface $adapter, UserProfile $user_profile){
+        parent::__construct($table,$adapter);
+        $this->entity = $user_profile;
+    }
 
     function createProfile(array $userData )
     {
@@ -28,6 +34,10 @@ class UserProfileRepository extends  AbstractRepository implements UserProfileRe
      */
     function findByUserId($user_id,array $columns = null)
     {
+
+        if($columns == null){
+            $columns = $this->getColumns();
+        }
         return $this->findBy(array('user_id' => $user_id),$columns);
     }
     /**
@@ -52,7 +62,6 @@ class UserProfileRepository extends  AbstractRepository implements UserProfileRe
     {
         return $this->getSql()->delete()->where(array('user_id' => $user_id) );
     }
-
 
 }
 
