@@ -14,6 +14,7 @@ use UserAuc\Entity\AuthEntity;
 use UserProfile\Domain\DbLayerConcrete\ProfileQueryFactory;
 use UserProfile\Domain\DbLayerConcrete\UserAggregate;
 use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
+use UserProfileEditor\Service\UserDirService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Session\SessionManager;
@@ -37,6 +38,8 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
 
     protected $authEntity;
 
+    protected $dirService;
+
     /**
      *
      * Creates a new user based on submitted data.
@@ -45,7 +48,7 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
      * @param string $role
      * @return bool
      */
-    public  function signUp($postData)
+    public function signUp($postData)
     {
         $result = $this->getUserAggregate()->getUser()->createUser((array)$postData);
         $completed = false;
@@ -54,8 +57,12 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
                                   ->createProfile(array('user_id' => $result['id']));
           if($completed){
               $completed = $this->authenticate($postData);
+              if($completed){
+                $this->getDirService()->createProfileDir($result['id']);
+              }
           }
         }
+
         return $completed;
     }
     /**
@@ -265,6 +272,25 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
     {
         return $this->authEntity;
     }
+
+    /**
+     * @param mixed UserDirService
+     */
+    public function setDirService($dirService)
+    {
+        $this->dirService = $dirService;
+    }
+
+    /**
+     * @return UserDirService
+     */
+    public function getDirService()
+    {
+        return $this->dirService;
+    }
+
+
+
 
 
 

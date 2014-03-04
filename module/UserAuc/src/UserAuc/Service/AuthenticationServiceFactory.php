@@ -29,6 +29,7 @@ class AuthenticationServiceFactory implements FactoryInterface {
         $authService->setUnderDev(true);
         $authService->setAuthEntity(new AuthEntity());
         $authService->setSessionManager($sessionManager);
+        $authService->setDirService($serviceLocator->get('userDirManager'));
         return $authService;
     }
 

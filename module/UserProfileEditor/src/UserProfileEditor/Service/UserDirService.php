@@ -25,12 +25,15 @@ class UserDirService implements UserDirServiceInterface{
         $this->setProfileImageFolder($options['directories']['profile_image_folder']);
         $this->setDirectoryPermission($options['directory_permission']);
     }
+
+
     public function createProfileDir($user_id){
         $path = $this->profileDirPath($user_id);
         if(is_dir($path)) return true;
         if(!mkdir($path,$this->getDirectoryPermission())){
             throw new \Exception('Unable to create a directory by path: '. $path);
         }
+        $this->createProfileImageDir($user_id);
         return true;
     }
 

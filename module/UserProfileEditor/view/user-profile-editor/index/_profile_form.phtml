@@ -1,7 +1,11 @@
 
 <div class="sign-wrapper">
 
-    <img src=<?php echo $this->url($this->ProfileImg()->getRoute(),$this->ProfileImg()->get()) ?>>
+    <?php if($this->ProfileImg()->has()) {?>
+
+        <img src=<?php echo $this->url($this->ProfileImg()->getRoute(),$this->ProfileImg()->get()) ?>>
+
+    <?php }?>
 
     <a href="<?php echo $this->Url('private_profile/p_child', array('action' => 'picture'))?>">
         Change Your Picture.

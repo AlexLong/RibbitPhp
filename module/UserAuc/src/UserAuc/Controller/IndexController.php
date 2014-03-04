@@ -10,6 +10,7 @@
 namespace UserAuc\Controller;
 
 use UserProfile\Controller\AbstractUserController;
+use UserProfileEditor\Service\UserDirService;
 use Zend\View\Model\JsonModel;
 use Zend\View\Model\ViewModel;
 
@@ -18,6 +19,9 @@ use UserAuc\Model\ChkModel;
 class IndexController extends  AbstractUserController {
 
     protected $chkModel;
+
+    protected $dirService;
+
 
     public function chkUserAction()
     {
@@ -82,6 +86,9 @@ class IndexController extends  AbstractUserController {
                 return new ViewModel(array('failed_form' => $signForm));
             }
             if($this->getAuthService()->signUp($data)){
+
+
+
                 return $this->getUserPlugin()->redirectToHome();
             }
         }
@@ -106,5 +113,6 @@ class IndexController extends  AbstractUserController {
         }
         return $this->getUserPlugin()->redirectToIndex();
     }
+
 
 } 
