@@ -14,7 +14,7 @@ abstract class AbstractEntity {
 
 
     public function __construct(array $newData = null){
-        if( is_array($newData)){
+        if(is_array($newData)){
             $this->ExchangeArray($newData);
         }
     }

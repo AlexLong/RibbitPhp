@@ -11,6 +11,7 @@ namespace UserProfileEditor\Controller;
 
 
 use Application\Strategy\StrategyModel\ImageModel;
+use UserProfile\Service\ProfileCacheService;
 use Zend\Http\Client;
 use Zend\Http\Headers;
 use Zend\Http\Response;
@@ -34,8 +35,10 @@ class ProfileAssetController extends AbstractActionController {
                 $route['pic_name'].".".$route['format'] )
         );
 
+        if(!is_file($path)){
+            return $this->notFoundAction();
+        }
         $this->getCacheService()->cacheProfilePic($path);
-
         return new ImageModel(array('image' => $path));
 
     }
@@ -47,6 +50,9 @@ class ProfileAssetController extends AbstractActionController {
     return $this->dirService;
     }
 
+    /**
+     * @return ProfileCacheService
+     */
     public function getCacheService(){
 
         if(!$this->cacheService){

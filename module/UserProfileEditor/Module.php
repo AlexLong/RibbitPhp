@@ -5,8 +5,10 @@ use UserProfileEditor\Form\PictureForm;
 use UserProfileEditor\Form\PictureModel;
 use UserProfileEditor\Form\ProfileForm;
 use UserProfileEditor\Form\ProfileFormModel;
+use UserProfileEditor\ViewHelper\UserImgResolver;
 use Zend\Config\Config;
 use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Router\RouteMatch;
 
 
 class Module
@@ -32,10 +34,15 @@ class Module
         return array(
             'invokables' => array(
                 'editFormErrors' => 'UserProfileEditor\ViewHelper\EditFormErrors',
-                'profileImgResolver' => 'UserProfileEditor\ViewHelper\UserImgResolver'
+                'img' => 'UserProfileEditor\ViewHelper\UserImgResolver'
             ),
             'factories' => array(
-
+                'profileImg' => function($sm){
+                        $locator = $sm->getServiceLocator();
+                        $resolver = new UserImgResolver();
+                        $resolver->setAuthService($locator->get('AuthService'));
+                return $resolver;
+                }
             ),
         );
     }
@@ -63,8 +70,9 @@ class Module
                    $picture_form = new PictureForm();
                     $picture_model = new PictureModel();
                     $picture_model->setDirService($sm->get('userDirManager'));
-                    $picture_model->setUserAuc($sm->get('UserAuc'));
+                    $picture_model->setUserAuc($sm->get('AuthService'));
                     $picture_form->setInputFilter($picture_model->getInputFilter());
+
                     return $picture_form;
                  },
 

@@ -83,10 +83,12 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
      * @return $this
      */
     public function updateUserSession($data = array()){
-
+       // var_dump($data);
         foreach($data as $key=>$value){
-            $this->getSessionManager()->getStorage()->offsetSet($key,$value);
+            $this->getSessionStorage()->offsetSet($key,$value);
         }
+        $dd = $this->getSessionStorage()->toArray();
+     //   var_dump($dd);
         return $this;
     }
     /**
@@ -144,11 +146,12 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
         if($this->is_identified())
         {
             if(is_string($keydata)){
-                $identity = $this->getSessionManager()->getStorage()->offsetGet($keydata);
+                $identity = $this->getSessionStorage()->offsetGet($keydata);
+               // var_dump($identity);
             }elseif(is_array($keydata)){
                 $identity = array_fill_keys($keydata,array());
-                foreach($keydata as $d){
-                    $identity[$d] = $this->getSessionStorage()->offsetGet($d);
+                foreach($keydata as $s){
+                    $identity[$s] = $this->getSessionStorage()->offsetGet($s);
                 }
             }else{
                 $fields = $this->getAuthEntity()->getFields();

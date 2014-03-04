@@ -25,8 +25,6 @@ class UserDirService implements UserDirServiceInterface{
         $this->setProfileImageFolder($options['directories']['profile_image_folder']);
         $this->setDirectoryPermission($options['directory_permission']);
     }
-
-
     public function createProfileDir($user_id){
         $path = $this->profileDirPath($user_id);
         if(is_dir($path)) return true;
@@ -53,8 +51,6 @@ class UserDirService implements UserDirServiceInterface{
         $path = join(DIRECTORY_SEPARATOR,array($this->profileDirPath($user_id),$this->getProfileImageFolder()));
         return rtrim($path,DIRECTORY_SEPARATOR);
     }
-
-
 
 
     /**

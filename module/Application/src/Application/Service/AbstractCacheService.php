@@ -27,9 +27,7 @@ abstract class AbstractCacheService {
         $this->cacheService = $cacheService;
     }
 
-    /**
-     * @return AbstractAdapter
-     */
+
     public function getCacheService()
     {
         return $this->cacheService;

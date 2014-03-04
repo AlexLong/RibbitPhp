@@ -2,7 +2,7 @@
 
     <?php
 
-    $form = $this->profile_form;
+    $form = $this->picture_form;
 
     $form->setAttributes(array(
         'method' => 'post',
@@ -15,12 +15,11 @@
 
     <label for="profile_picture">Your picture</label>
     <div class="standard-field">
-        <?php if($this->tmp_file) {
 
+        <?php if($this->ProfileImg()->has()) {?>
 
-            $url = $this->url('prof_asset/profile_img',$this->profileImgResolver()->get($this->tmp_file,$this->user_id)); ?>
+        <img src=<?php echo $this->url($this->ProfileImg()->getRoute(),$this->ProfileImg()->get()) ?>>
 
-            <img src="<?php echo $url?>" alt="Your profile image"/>
 
         <?php }?>
 

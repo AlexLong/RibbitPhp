@@ -14,7 +14,6 @@ class ProfileCacheService extends  AbstractCacheService implements  ProfileCache
     function setUserProfile($result)
     {
         $key = $this->formatKey($result['username']);
-        $this->getCacheService()->removeItem($key);
         $this->getCacheService()->setItem($key, $result);
     }
     /**
@@ -48,6 +47,7 @@ class ProfileCacheService extends  AbstractCacheService implements  ProfileCache
     }
 
     public function cacheProfilePic($path){
+
 
         //get the last-modified-date of this very file
         $lastModified=filemtime($path);

@@ -57,18 +57,15 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
      * @return array
      */
     public function updateProfile(array $profile_data){
-
         if(empty($profile_data) ) return true;
-        $auth = $this->getAuthService();
-
+       $auth = $this->getAuthService();
        $identity = $auth->getUserIdentify();
        $this->getUserAggregate()->getProfile()
            ->update($profile_data,array('user_id' => $identity['id']));
        $updated_data = $this->getUserAggregate()->getProfile()
                                             ->findByUserId($identity['id']);
       $auth->updateUserSession($updated_data);
-      $cache_data = array_push($auth->getUserIdentify(),$auth->getUserIdentify('username'));
-      $this->getProfileCacheService()->setUserProfile($cache_data);
+      $this->getProfileCacheService()->setUserProfile($auth->getUserIdentify());
       return $updated_data;
    }
     public function isProfileOwner($user_id){

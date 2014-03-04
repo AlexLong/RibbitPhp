@@ -20,9 +20,11 @@ class ProfilePicture  extends AbstractEntity{
     public $size = null;
     public $prefix = 'av_';
 
-    public function __construct($picture){
+    /*
+    public function __construct($picture = null){
 
     }
+    */
 
     /**
      * @return string

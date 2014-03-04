@@ -19,6 +19,8 @@ class UserIdentity extends  AbstractHelper {
 
     function __invoke($key = null)
     {
+
+
         if($key){
             return $this->getIdentity($key);
         }

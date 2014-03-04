@@ -1,8 +1,13 @@
 
 <div class="sign-wrapper">
 
-    <?php
+    <img src=<?php echo $this->url($this->ProfileImg()->getRoute(),$this->ProfileImg()->get()) ?>>
 
+    <a href="<?php echo $this->Url('private_profile/p_child', array('action' => 'picture'))?>">
+        Change Your Picture.
+    </a>
+
+    <?php
     $form = $this->profile_form;
 
     $form->setAttributes(array(

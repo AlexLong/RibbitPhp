@@ -32,14 +32,13 @@ class Module
             ),
             'factories' => array(
                 'UserIdentity' => 'UserAuc\ViewHelpers\Service\UserIdentityFactory',
-
                 'renderForm' => function($sm){
                         $locator = $sm->getServiceLocator();
                         $helper = new RenderFormHelper();
                         $helper->setSignForm($locator->get('SignForm'));
                         $helper->setLoginForm($locator->get('LoginForm'));
                         return $helper;
-                    },
+             },
 
             ),
         );
@@ -85,7 +84,7 @@ class Module
                         $loginForm->setInputFilter($loginModel->getInputFilter());
                         return $loginForm;
 
-                    },
+               },
             ),
         );
     }
