@@ -2,61 +2,44 @@
 /**
  * 
  * User: Windows
- * Date: 2/21/14
- * Time: 4:58 PM
+ * Date: 3/3/14
+ * Time: 7:37 PM
  * 
  */
 
 namespace UserProfileEditor\Form;
 
 
+
+
+
+
 use Zend\Form\Form;
 
-
-
-class ProfileForm extends Form {
+class PictureForm extends Form {
 
 
     protected $underDev = false;
 
 
-    protected $profileModel;
-
-
+    protected $pictureModel;
 
     public function __construct(){
-
-        parent::__construct('Profile');
-
+        parent::__construct('Picture');
 
         $this->add(array(
-            'name' => 'first_name',
-            'type' => 'Text',
+            'name' => 'profile_picture',
+            'type' => 'File',
 
             'options' => array(
-                'label' => 'First Name',
+                'label' => 'Your Picture',
             ),
             'attributes' => array(
                 'class' => 'form-control',
                 'autocomplete' => 'off',
-                'id' => 'first_name'
-
+                'id' => 'profile_picture'
             ),
         ));
-        $this->add(array(
-            'name' => 'last_name',
-            'type' => 'Text',
-            'options' => array(
-                'label' => 'Last name',
-            ),
-            'attributes' => array(
-                'class' => 'form-control',
-                'autocomplete' => 'off',
-                'id' => 'last_name'
-
-            ),
-        ));
-
 
         if(!$this->underDev)
         {
@@ -86,17 +69,16 @@ class ProfileForm extends Form {
                 'id' => 'submitbutton',
                 'class' => 'btn btn-default'
             ),
-        ));
+        )
+       );
 
     }
 
-    /**
-     * @param mixed $profileModel
-     */
-    public function setProfileModel($profileModel)
-    {
-        $this->profileModel = $profileModel;
-    }
+
+
+
+
+
 
 
 

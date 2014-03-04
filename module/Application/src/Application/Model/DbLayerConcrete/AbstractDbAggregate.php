@@ -35,7 +35,8 @@ abstract class AbstractDbAggregate  extends  AggregateDbInterface{
     }
 
     /**
-     * @return array
+     * @param string $name
+     * @return string mixed
      */
     public function getTable($name)
     {

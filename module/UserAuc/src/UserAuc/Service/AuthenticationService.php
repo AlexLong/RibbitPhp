@@ -10,6 +10,7 @@
 namespace UserAuc\Service;
 
 
+use UserAuc\Entity\AuthEntity;
 use UserProfile\Domain\DbLayerConcrete\ProfileQueryFactory;
 use UserProfile\Domain\DbLayerConcrete\UserAggregate;
 use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
@@ -26,8 +27,6 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
 
     protected $sessionManager;
 
-    protected $sessionData = array();
-
     protected $serviceLocator;
 
     protected $defaultUserId  = 'id';
@@ -36,8 +35,7 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
 
     protected $queryFactory;
 
-    protected $userCredentials = array();
-
+    protected $authEntity;
 
     /**
      *
@@ -60,7 +58,6 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
         }
         return $completed;
     }
-
     /**
      * Authenticates user based on submitted data.
      *
@@ -71,15 +68,26 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
     {
         $result = $this->getQueryFactory()->resolveUserByEmail($postData['email']);
        if($result['password'] != md5($postData['password'])) return false;
-            foreach($result as $key=>$value){
-                if($key == 'password') continue;
+            $entity = $this->getAuthEntity()->ExchangeArray($result)->getFields();
+            foreach($entity as $key=>$value){
                 $this->getSessionManager()->getStorage()->offsetSet($key,$value);
-                array_push($this->sessionData,$key);
             }
             if(isset($postData['remember_me']) && $postData['remember_me'] == true && !$this->underDev){
                 $this->getSessionManager()->rememberMe();
             }
       return true;
+    }
+
+    /**
+     * @param array $data
+     * @return $this
+     */
+    public function updateUserSession($data = array()){
+
+        foreach($data as $key=>$value){
+            $this->getSessionManager()->getStorage()->offsetSet($key,$value);
+        }
+        return $this;
     }
     /**
      * Checks user identity.
@@ -131,19 +139,21 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
      */
     public function getUserIdentify($keydata = null)
     {
+
         $identity = null;
         if($this->is_identified())
         {
-            if(!is_array($keydata) && $keydata !== null){
+            if(is_string($keydata)){
                 $identity = $this->getSessionManager()->getStorage()->offsetGet($keydata);
             }elseif(is_array($keydata)){
                 $identity = array_fill_keys($keydata,array());
                 foreach($keydata as $d){
-                    $identity[$d] = $this->getSessionManager()->getStorage()->offsetGet($d);
+                    $identity[$d] = $this->getSessionStorage()->offsetGet($d);
                 }
-            }elseif($keydata == null){
-                $identity = array();
-                foreach($this->sessionData as $key){
+            }else{
+                $fields = $this->getAuthEntity()->getFields();
+                $identity = array_fill_keys($fields,array());
+                foreach($fields as $key=>$val){
                     $identity[$key] = $this->getSessionManager()->getStorage()->offsetGet($key);
                 }
             }
@@ -235,6 +245,22 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
             $this->queryFactory = new ProfileQueryFactory($this->getUserAggregate());
         }
         return $this->queryFactory;
+    }
+
+    /**
+     * @param mixed AuthEntity
+     */
+    public function setAuthEntity($authEntity)
+    {
+        $this->authEntity = $authEntity;
+    }
+
+    /**
+     * @return AuthEntity
+     */
+    public function getAuthEntity()
+    {
+        return $this->authEntity;
     }
 
 

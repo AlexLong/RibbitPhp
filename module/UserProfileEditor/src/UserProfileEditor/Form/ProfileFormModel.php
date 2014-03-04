@@ -23,13 +23,6 @@ use Zend\InputFilter\InputFilterInterface;
 class ProfileFormModel implements InputFilterAwareInterface {
 
     protected $inputFilter;
-    protected $fileInputFilter;
-    protected $user_dir_service;
-    protected $user_id;
-    protected $profile_pic;
-    protected $dir_service;
-    protected $user_auc;
-    protected $pic_name = "av.jpg";
 
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
@@ -43,35 +36,7 @@ class ProfileFormModel implements InputFilterAwareInterface {
         if(!$this->inputFilter){
             //   var_dump( $this->getEmailValidator());
             $inputFilter = new InputFilter();
-            $fileInput = new FileInput('profile_picture');
-            $fileInput->breakOnFailure();
-            $fileInput->setAllowEmpty(true);
 
-            $fileInput->getValidatorChain()
-                       ->attachByName("filesize",array('max' => '5MB' ))
-                       ->attachByName('filemimetype',  array('mimeType' =>
-                                    'image/png,image/x-png,image/gif,
-                                    image/jpeg'))
-                ->attachByName('fileimagesize', array('maxWidth' => 5000,
-                    'maxHeight' => 5000));
-            $fileInput->getFilterChain()->attach(new ImageFilter(array(
-                'dir_path' => $this->dirPath(),
-                'target' => $this->target(),
-                'randomize' => true,
-                'overwrite' =>true
-            )),1);
-            /*
-            $fileInput->getFilterChain()
-                      ->attachByName(
-                        'filerenameupload',
-                        array(
-                            'target' => $this->targetPath(),
-                            'randomize' => true,
-                            'overwrite' =>true
-                        )
-                    );
-            */
-            $inputFilter->add($fileInput);
 
           //  $fileInput->getFilterChain()->attachByName();
 
@@ -128,56 +93,6 @@ class ProfileFormModel implements InputFilterAwareInterface {
         }
      //   var_dump($this->inputFilter);
         return $this->inputFilter;
-    }
-
-
-    public function target(){
-        $path = join(DIRECTORY_SEPARATOR,array(
-            $this->getDirService()->profilePicPath($this->getUserId()),
-            $this->pic_name
-        ));
-        return $path;
-    }
-    public function dirPath(){
-        $path = $this->getDirService()->profilePicPath($this->getUserId());
-        return $path;
-    }
-
-    /**
-     * @param mixed $dir_service
-     */
-    public function setDirService(UserDirServiceInterface $dir_service)
-    {
-        $this->dir_service = $dir_service;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDirService()
-    {
-        return $this->dir_service;
-    }
-
-    /**
-     * @param mixed $user_auc
-     */
-    public function setUserAuc(AuthenticationServiceInterface $user_auc)
-    {
-        $this->user_auc = $user_auc;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserAuc()
-    {
-        return $this->user_auc;
-    }
-
-    public function getUserId(){
-
-        return $this->getUserAuc()->getUserIdentify('id');
     }
 
 

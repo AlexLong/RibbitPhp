@@ -10,6 +10,7 @@
 namespace UserProfile\Controller;
 
 
+use UserAuc\Service\AuthenticationService;
 use UserProfile\Controller\Plugin\UserPlugin;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Mvc\MvcEvent;
@@ -21,6 +22,9 @@ class AbstractUserController extends AbstractActionController
 
     protected  $config;
 
+    /**
+     * @return AuthenticationService
+     */
 
     public function getAuthService()
     {

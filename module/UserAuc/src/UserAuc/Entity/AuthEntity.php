@@ -2,18 +2,26 @@
 /**
  * 
  * User: Windows
- * Date: 2/15/14
- * Time: 6:06 PM
+ * Date: 3/3/14
+ * Time: 1:50 AM
  * 
  */
 
-namespace UserProfile\Entity;
-
+namespace UserAuc\Entity;
 
 
 use Application\Entity\AbstractEntity;
 
-class UserProfile extends AbstractEntity {
+class AuthEntity extends AbstractEntity {
+
+    /**
+     * @var Userid
+     */
+    public $id;
+
+    public $username = null;
+
+    public $email = null;
 
     public $user_id = null;
 
@@ -25,11 +33,11 @@ class UserProfile extends AbstractEntity {
 
     public $profile_url = null;
 
-    public function __construct(array $newData = null){
-        if($newData){
-            $this->ExchangeArray($newData);
-        }
-    }
+
+
+
+
+
 
 
 } 

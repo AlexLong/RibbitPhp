@@ -16,7 +16,6 @@ use UserProfile\Entity\UserProfile;
 
 
 class UserAggregate extends AbstractDbAggregate {
-
     protected $tables = array(
         'user'  => 'ribbit_user',
         'profile' => 'ribbit_user_profile'
@@ -43,9 +42,5 @@ class UserAggregate extends AbstractDbAggregate {
         }
         return $this->profile;
     }
-
-
-
-
 
 }

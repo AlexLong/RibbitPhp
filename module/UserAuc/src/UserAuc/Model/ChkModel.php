@@ -9,7 +9,6 @@
 
 namespace UserAuc\Model;
 
-
 class ChkModel {
     protected $signForm;
     public function  buildResponse($data){

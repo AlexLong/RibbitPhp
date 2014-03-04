@@ -10,6 +10,7 @@
 namespace UserAuc\Service;
 
 
+use UserAuc\Entity\AuthEntity;
 use UserAuc\Service\AuthenticationService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -26,6 +27,7 @@ class AuthenticationServiceFactory implements FactoryInterface {
         $authService = new AuthenticationService();
         $sessionManager = $serviceLocator->get('Zend\Session\SessionManager');
         $authService->setUnderDev(true);
+        $authService->setAuthEntity(new AuthEntity());
         $authService->setSessionManager($sessionManager);
         return $authService;
     }

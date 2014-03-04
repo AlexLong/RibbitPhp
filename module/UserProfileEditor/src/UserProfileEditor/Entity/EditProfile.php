@@ -10,12 +10,31 @@
 namespace UserProfileEditor\Entity;
 
 
-class EditProfile {
+use Application\Entity\AbstractEntity;
 
-   protected $user_id;
-   protected $picture;
-   protected $first_name;
-   protected $last_name;
+class EditProfile extends  AbstractEntity {
+
+   public  $first_name;
+   public  $last_name;
+
+    public function __construct(array $data = null){
+        if($data){
+            $this->ExchangeArray($data);
+        }
+    }
+
+
+    public function toUpdate($sessionData = array()){
+
+        $current = $this->getFields();
+        foreach($current as $key => $val){
+            if($current[$key] == $sessionData[$key]){
+                unset($current[$key]);
+            }
+        }
+       return $current;
+    }
+
 
     /**
      * @param mixed $last_name

@@ -1,39 +1,17 @@
 
 <div class="sign-wrapper">
+
     <?php
 
     $form = $this->profile_form;
 
     $form->setAttributes(array(
         'method' => 'post',
-        'action' => $this->Url('private_profile/p_child', array('action' => 'updateProfile'))
+        'action' => $this->Url('private_profile/p_child', array('action' => 'profile'))
     ));
     $form->prepare();
     echo $this->form()->openTag($form);
-    echo $this->formFileSessionProgress();
     ?>
-
-    <label for="profile_picture">Your picture</label>
-    <div class="standard-field">
-        <?php if($this->tmp_file) {
-
-
-            $url = $this->url('prof_asset/profile_img',$this->profileImgResolver()->get($this->tmp_file,$this->user_id)); ?>
-
-            <img src="<?php echo $url?>" alt="Your profile image"/>
-
-        <?php }?>
-
-        <div class="tip-wrapper">
-            <div class="signtip" data-target="profile_picture">
-                <?php
-                echo $this->userFormErrors($form->get('profile_picture'));?>
-            </div>
-        </div>
-
-        <?php echo $this->formElement($form->get('profile_picture'));?>
-
-    </div>
 
     <?php echo $this->formLabel($form->get('first_name'));?>
 
@@ -63,9 +41,6 @@
         <?php echo $this->formElement($form->get('last_name'));?>
 
     </div>
-    <?php echo $this->formLabel($form->get('profile_picture'));?>
-
-
 
 
     <?php echo $this->formElement($form->get('edit_token'));?>

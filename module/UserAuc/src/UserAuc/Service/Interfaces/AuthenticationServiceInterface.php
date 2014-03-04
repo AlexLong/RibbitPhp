@@ -20,4 +20,6 @@ interface AuthenticationServiceInterface {
      function getUserIdentify($keydata = null);
 
      function removeUser($userId);
+
+    function updateUserSession($data = array());
 } 

@@ -65,12 +65,13 @@ abstract class AbstractRepository extends TableGateway implements RepositoryInte
         $result = array();
         $select = $this->getSql()
                 ->select()
-                 ->columns($columns)
+                ->columns($columns)
                 ->where($where)
                 ->limit($limit);
         if(is_object($select)){
             if($limit == 1){
                 $result = $this->executeSelect($select)->current();
+
             }else{
                 $result = $this->executeSelect($select);
             }
@@ -85,6 +86,7 @@ abstract class AbstractRepository extends TableGateway implements RepositoryInte
      * @param int $limit
      * @return array
      */
+
    public function findAll(array $include_columns, $limit = 1){
         $result = array();
         $select = $this->getSql()
@@ -113,6 +115,15 @@ abstract class AbstractRepository extends TableGateway implements RepositoryInte
                 ->values($values));
     }
 
+
+    public function update($set, $where = null){
+
+        if(is_object($set)){
+            $set = get_object_vars($set);
+        }
+        parent::update($set,$where);
+
+    }
     /**
      * @return array|null
      */

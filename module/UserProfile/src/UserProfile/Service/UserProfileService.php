@@ -10,11 +10,15 @@
 namespace UserProfile\Service;
 
 
+use UserAuc\Service\AuthenticationService;
+use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
 use UserProfile\Domain\DbLayerConcrete\ProfileQueryFactory;
 use UserProfile\Domain\DbLayerConcrete\UserAggregate;
+use UserProfile\Entity\UserProfile;
 use UserProfile\Service\Interfaces\UserProfileServiceInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\Hydrator\ArraySerializable;
 
 
 class UserProfileService implements ServiceLocatorAwareInterface, UserProfileServiceInterface{
@@ -29,6 +33,8 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
     protected $userRepository;
 
     protected $queryFactory;
+
+    protected $authService;
 
     function getUserProfile($username, $fromCache = true)
     {
@@ -45,9 +51,29 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
         }
         return  $result;
     }
+
+    /**
+     * @param array $profile_data
+     * @return array
+     */
+    public function updateProfile(array $profile_data){
+
+        if(empty($profile_data) ) return true;
+        $auth = $this->getAuthService();
+
+       $identity = $auth->getUserIdentify();
+       $this->getUserAggregate()->getProfile()
+           ->update($profile_data,array('user_id' => $identity['id']));
+       $updated_data = $this->getUserAggregate()->getProfile()
+                                            ->findByUserId($identity['id']);
+      $auth->updateUserSession($updated_data);
+      $cache_data = array_push($auth->getUserIdentify(),$auth->getUserIdentify('username'));
+      $this->getProfileCacheService()->setUserProfile($cache_data);
+      return $updated_data;
+   }
     public function isProfileOwner($user_id){
      $owner = false;
-     $auth_service =  $this->getServiceLocator()->get('AuthService');
+     $auth_service = $this->getAuthService();
         if($user_id && $auth_service->is_identified()){
             $id =  $auth_service->getUserIdentify("id");
             if($id == $user_id) $owner = true;
@@ -82,9 +108,8 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
 
         return  $this->getServiceLocator()->get('userAggregate');
     }
-
     /**
-     * @param mixed $globalCacheService
+     * @param mixed $profileCacheService
      */
     public function setProfileCacheService($profileCacheService)
     {
@@ -92,7 +117,7 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
     }
 
     /**
-     * @return mixed
+     * @return ProfileCacheService
      */
     public function getProfileCacheService()
     {
@@ -108,6 +133,25 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
             $this->queryFactory = new ProfileQueryFactory($this->getUserAggregate());
         }
         return $this->queryFactory;
+    }
+
+    /**
+     * @param mixed AuthenticationServiceInterface
+     */
+    public function setAuthService(AuthenticationServiceInterface $authService)
+    {
+        $this->authService = $authService;
+    }
+
+    /**
+     * @return AuthenticationService
+     */
+    public function getAuthService()
+    {
+        if(!$this->authService){
+            $this->setAuthService($this->getServiceLocator()->get('AuthService'));
+        }
+        return $this->authService;
     }
 
 

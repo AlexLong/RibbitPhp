@@ -10,6 +10,8 @@
 namespace Application\Service;
 
 
+use Zend\Cache\Storage\Adapter\AbstractAdapter;
+
 abstract class AbstractCacheService {
 
 
@@ -26,7 +28,7 @@ abstract class AbstractCacheService {
     }
 
     /**
-     * @return null
+     * @return AbstractAdapter
      */
     public function getCacheService()
     {
