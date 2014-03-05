@@ -41,6 +41,7 @@ class Module
                         $locator = $sm->getServiceLocator();
                         $resolver = new UserImgResolver();
                         $resolver->setAuthService($locator->get('AuthService'));
+                        $resolver->setUserAggregate($locator->get('userAggregate'));
                 return $resolver;
                 }
             ),

@@ -72,9 +72,11 @@ class IndexController extends AbstractUserController
         }elseif(is_array($rpg)){
             if($picture_form->isValid()){
               $entity = new ProfilePicture($picture_form->get('profile_picture')->getValue());
-              $update= $entity->getParsedName();
+              $updated_val = $entity->getParsedName();
 
-            $updated_data = $this->getProfileService()->updateProfile($update);
+                if($updated_val){
+                    $this->getProfileService()->updateProfile($updated_val);
+                }
             }else{
                 $element = $picture_form->get('profile_picture');
                 $errorMessages = $element->getMessages();

@@ -40,23 +40,6 @@ class ImageFormatter {
         //$high = ($size['height'] / $size['width']) * $this->default_with;
             $height = $size['height'];
             $width =  $size['width'];
-        /*
-      $this->image_tick->resizeimage($this->default_with, $high,\Imagick::FILTER_LANCZOS, 1);
-        $this->image_tick->thumbnailimage($this->default_with,$this->default_with,1,0);
-      $this->image_tick->sh
-
-
-        if($width > $height){
-            $newHeight = $this->default_with;
-            $newWidth = ($this->default_with / $height) * $width;
-        }else{
-            $newWidth = $this->default_with;
-            $newHeight = ($this->default_with / $width) * $height;
-        }
-        $this->image_tick->resizeImage($newWidth,$newHeight, \Imagick::FILTER_LANCZOS, 1, true);
-        $this->image_tick->cropImage ($this->default_with,$this->default_with,0,0);
-
-        */
         $handler = fopen($this->imagePath,'w');
         if(!$handler){
             throw new \Exception("Unable to open file : ".$this->imagePath . "to write.");

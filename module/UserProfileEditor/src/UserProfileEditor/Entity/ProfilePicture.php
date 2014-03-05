@@ -31,6 +31,7 @@ class ProfilePicture  extends AbstractEntity{
      */
 
     public function getParsedName(){
+        if(!$this->tmp_name) return null;
         $img_suffix = $this->prefix;
         $parsed  = preg_filter('/.*[^'.$img_suffix.'\w+\.]/','',$this->tmp_name);
         $result = array('profile_picture' => $parsed);

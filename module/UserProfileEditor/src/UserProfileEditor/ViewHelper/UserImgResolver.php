@@ -11,6 +11,8 @@ namespace UserProfileEditor\ViewHelper;
 
 
 use UserAuc\Service\AuthenticationService;
+use UserProfile\Domain\DbLayerConcrete\UserAggregate;
+use UserProfile\Service\ProfileCacheService;
 use Zend\Form\View\Helper\AbstractHelper;
 use Zend\View\Helper\Url;
 
@@ -18,27 +20,39 @@ use Zend\View\Helper\Url;
 class UserImgResolver extends  AbstractHelper{
 
 
-    protected  $image_suffix = 'av_';
+    protected $image_suffix = 'av_';
 
-    protected  $authService;
+    protected $authService;
+
+    protected $profileCacheService;
 
     protected $route = "prof_asset/profile_img";
 
+    protected $user_aggregate;
+
     public function __invoke(){
+
         return $this;
     }
 
     public function has(){
-        $user_picture = $this->getAuthService()->getUserIdentify('profile_picture');
-        return $user_picture ?: false;
+
+        return $this->getAuthService()->getUserIdentify('user_id');
     }
 
-    public function get(){
+    public function get($user_id = null){
 
-        $user_id = $this->getAuthService()->getUserIdentify('user_id');
-        $user_picture = $this->getAuthService()->getUserIdentify('profile_picture');
-        if(!$user_picture) return null;
-        $pic = explode('.',$user_picture);
+        if($user_id === null){
+            $user_id = $this->getAuthService()->getUserIdentify('id');
+            if(!$user_id) return null;
+        }
+
+            $res = $this->getUserAggregate()->getProfile()
+                ->findBy(array('user_id' => $user_id),array('profile_picture'));
+
+        if(!$res) return null;
+
+        $pic = explode('.',$res['profile_picture']);
         $pic_name = $pic[0];
         $format = $pic[1];
         $url = array(
@@ -64,6 +78,23 @@ class UserImgResolver extends  AbstractHelper{
     public function getAuthService()
     {
         return $this->authService;
+    }
+
+
+    /**
+     * @param mixed $user_aggregate
+     */
+    public function setUserAggregate($user_aggregate)
+    {
+        $this->user_aggregate = $user_aggregate;
+    }
+
+    /**
+     * @return UserAggregate
+     */
+    public function getUserAggregate()
+    {
+        return $this->user_aggregate;
     }
 
     /**

@@ -27,7 +27,9 @@
 
         <div>
             <div class="head_picture">
-                <img src="http://tp4.sinaimg.cn/1711232443/180/5604250224/1" alt="Lin Chengren">
+
+                <img src=<?php echo $this->url($this->ProfileImg()->getRoute(),$this->ProfileImg()->get($this->user['user_id'])) ?>>
+
             </div>
             <ul class="user_posts clearfix">
                 <li class="S_line1">
