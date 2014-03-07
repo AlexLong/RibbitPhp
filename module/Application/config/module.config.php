@@ -1,7 +1,6 @@
 <?php
 
 return array(
-
     'service_manager' => array(
         'abstract_factories' => array(
             'Zend\Cache\Service\StorageCacheAbstractServiceFactory',
@@ -11,6 +10,7 @@ return array(
             'translator' => 'MvcTranslator',
         ),
     ),
+
     'translator' => array(
         'locale' => 'en_US',
         'translation_file_patterns' => array(
@@ -21,11 +21,7 @@ return array(
             ),
         ),
     ),
-    // Placeholder for console routes
-    'console' => array(
-        'router' => array(
-            'routes' => array(
-            ),
-        ),
-    ),
+
+
+
 );

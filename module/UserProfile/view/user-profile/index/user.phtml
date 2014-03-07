@@ -1,0 +1,58 @@
+
+<div class="profile_cover">
+    <div class="profile_info clearfix">
+        <div class="profile_info_left_part left">
+            <div>
+                <div class="user_meta clearfix">
+                    <span class="name"><?php echo $this->user["first_name"] . " " . $this->user["last_name"] ?></span>
+                    <div class="profile_link clearfix">
+                        <div class="alert-link"><a href="/trumanlam?from=profile&amp;wvr=5&amp;loc=infdomain" class="pf_lin S_link1">http://example.com/<?php echo $this->user["username"]?></a></div>
+                    </div>
+                </div>
+                <div class="profile_int">
+             <span class="job_status" title="Founder of fruitless searching, concerns personalized recommendations.  Cattle prayer request to join.  Can private letter.">
+                  Founder of fruitless searching, concerns personalized recommendations. Cattle prayer request to join. Can private letter.
+                </div>
+                <div class="user_location"  style="position:relative">
+                    <span class="W_vline S_line1_c">Shenzhen, Guangdong</span>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="profile_fans">
+
+        <div>
+            <div class="head_picture">
+
+                <img src=<?php echo $this->url($this->ProfileImg()->getRoute(),$this->ProfileImg()->get($this->user['user_id'])) ?>>
+
+            </div>
+            <ul class="user_posts clearfix">
+                <li class="S_line1">
+                    <a class="S_func1" href="/p/1005051711232443/follow?from=page_100505&amp;wvr=5&amp;mod=headfollow">
+                        <strong node-type="follow">875</strong>
+                        posts
+                    </a>
+                </li>
+                <li class="follower S_line1">
+                    <a class="S_func1" name="place" href="/p/1005051711232443/follow?relate=fans&amp;from=100505&amp;wvr=5&amp;mod=headfans">
+                        <strong node-type="fans">9282 </strong>
+                        <span>Fans</span>
+                    </a>
+                </li>
+                <li class="">
+                    <a class="S_func1" name="profile_tab" href="/p/1005051711232443/weibo?from=page_100505&amp;wvr=5&amp;mod=headweibo">
+                        <strong>7271 </strong>
+                        <span>microblogging</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+ <?php
+echo  $this->partial("timeline/index", array( 'isOwner' => $this->isOwner,"user_id" => $this->user["user_id"]));
+?>

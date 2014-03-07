@@ -13,6 +13,11 @@ return array(
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
             'error/form_error'         => __DIR__ . '/../view/error/form_error.phtml',
+
+
+            'layout/html_head' => __DIR__ . '/../view/layout/_html_head.phtml',
+            'layout/navbar' => __DIR__ . '/../view/layout/_body_navbar.phtml',
+
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -20,5 +25,8 @@ return array(
         'strategies' => array(
             'ViewJsonStrategy',
         ),
+    ),
+    'asset_resolver' => array(
+        'asset_directory' => '/st/app',
     ),
 );

@@ -1,0 +1,287 @@
+
+<?php if($this->validation_messages){?>
+
+<div class="alert alert-danger">
+    <?php
+    if(is_array($this->validation_messages))
+    {
+        echo($this->validation_messages[0]);
+
+    }else{
+        echo $this->validation_messages;
+    }
+
+    }?>
+</div>
+<div class="sign-wrapper">
+<?php
+    (isset($this->failed_form)) ? $form = $this->failed_form : $form = $this->renderForm()->sign();
+    $form->setAttributes(array(
+    'method' => 'post',
+    'action' => $this->Url('auc/auc_child', array('action' => 'sign'))
+    ));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+// ->setAttributes(array('class' =>'alert alert-danger' ));
+?>
+
+
+<?php echo $this->formLabel($form->get('username'));?>
+
+<div class="standard-field">
+
+    <div class="tip-wrapper">
+        <div class="signtip" data-target="username">
+
+            <?php
+            echo $this->formElementErrors()
+                ->setMessageCloseString('')
+                ->setMessageOpenFormat('')
+                ->setAttributes(array('class' => ''))
+                ->render($form->get('username'));
+            ?>
+
+        </div>
+    </div>
+
+    <?php echo $this->formElement($form->get('username'));?>
+
+</div>
+
+
+<?php echo $this->formLabel($form->get('email'));?>
+
+<div class="standard-field">
+    <div class="tip-wrapper">
+        <div class="signtip" data-target="email">
+            <?php
+            echo $this->formElementErrors()
+                ->setMessageCloseString('')
+                ->setMessageOpenFormat('')
+                ->setAttributes(array('class' => 'alert alert-danger'))
+                ->render($form->get('email'));
+            ?>
+        </div>
+    </div>
+    <?php echo $this->formElement($form->get('email'));?>
+
+</div>
+
+
+<?php $this->formElementErrors($form->get('email'));?>
+
+<?php echo $this->formLabel($form->get('password'));?>
+
+
+<div class="standard-field">
+
+    <div class="tip-wrapper">
+        <div class="signtip" data-target="password">
+            <?php
+            echo $this->formElementErrors()
+                ->setMessageCloseString('')
+                ->setMessageOpenFormat('')
+                ->setAttributes(array('class' => ''))
+                ->render($form->get('password'));
+            ?>
+        </div>
+    </div>
+
+    <?php echo $this->formElement($form->get('password'));?>
+
+</div>
+
+<?php echo $this->formLabel($form->get('remember_me'));?>
+
+<?php echo $this->formElement($form->get('remember_me'));?>
+
+
+<?php echo $this->formElement($form->get('sign_token'));?>
+
+<input type="submit" value="submit">
+
+<?php echo $this->form()->closeTag(); ?>
+
+
+
+</div>
+
+
+
+
+<script>
+
+
+   var SignValidator = function(form, options){
+       this.dev = true;
+       this.$form = $(form);
+       this.options  = options;
+       this.inputList = ["username", "email", "password"];
+       this.validatedFields = [];
+       this.invalidFields = [];
+       this.requestDuration = 1200;
+       this.timer = null;
+       this.messages = {
+              beforeSend: "validating..",
+              ok: "Looks good",
+              unknownProblem: "Some Problem"
+       };
+   };
+   SignValidator.prototype.parseResponse = function(response){
+       var parsedSet = [];
+       $.each(response, function(key,value){
+
+           parsedSet.push(value);
+       });
+       return parsedSet;
+
+   };
+   SignValidator.prototype.removeElement = function(element, elementList){
+       var inFields = [];
+       for(var i = 0; i < elementList.length; i++ ){
+           if(elementList[i] == element)  continue;
+           inFields.push(elementList[i]);
+       }
+       elementList = inFields;
+   };
+
+   SignValidator.prototype.addSuccess = function(element, successClass){
+
+   }
+
+   SignValidator.prototype.validateElement = function(element,url){
+       var self = this;
+       var $el = this.$form.find(element);
+
+       var name = $el.attr('name');
+       var data = $el.serialize() + "&type=" + name;
+       var $errorZone = this.$form.find('[data-target='+ name +']');
+       var request = $.ajax({
+           data: data,
+           type: "POST",
+           url: url,
+           dataType: "json",
+           cache: false,
+           beforeSend: function(){
+               $errorZone.html(self.messages.beforeSend);
+           },
+           timeout: function(e){
+               if(self.dev){
+                   console.log(e);
+               }
+               $errorZone.html(self.messages.unknownProblem);
+           },
+           error : function(e){
+               if(self.dev){
+                   console.log(e);
+               }
+               $errorZone.html(self.messages.unknownProblem);
+           }
+       });
+        request.done(function(data) {
+               switch(data[0]){
+                   case 1:
+                       $errorZone.html(self.messages.ok);
+                       if(jQuery.inArray(name,self.invalidFields) != -1){
+                           var inFields = [];
+                           for(var i = 0; i < self.invalidFields.length; i++ ){
+                               if(self.invalidFields[i] == name){
+
+                                   continue;
+                               }
+                               inFields.push(self.invalidFields[i]);
+                           }
+                           self.invalidFields = inFields;
+
+                       }
+                      // console.log(self.invalidFields);
+                       break;
+                   case -1:
+                       $errorZone.html(self.messages.unknownProblem);
+                       if($errorZone.hasClass('has-success')){
+                           $errorZone.removeClass('has-success');
+                           $errorZone.addClass('has-error');
+                       }
+                       if(jQuery.inArray(name,self.invalidFields) == -1){
+                           self.invalidFields.push(name);
+
+                       }
+                       break;
+                   default:
+                       $errorZone.html(self.parseResponse(data)[0]);
+
+                       /*
+                       if($errorZone.hasClass('has-success')){
+                           $errorZone.removeClass('has-success');
+                           $errorZone.addClass('has-error');
+                       }else if(!$errorZone.hasClass('has-error')){
+                           $errorZone.addClass('has-error');
+                       }
+                       */
+                       if(jQuery.inArray(name,self.invalidFields) == -1){
+                           self.invalidFields.push(name);
+
+                       }
+                       break;
+               }
+        });
+   };
+   SignValidator.prototype.isEmpty = function(inputList)
+   {
+       var self = this;
+       var result = false;
+       for(var i = 0; i < inputList.length; i++){
+           var $element = self.$form.find('[name='+inputList[i]+']');
+           var value = $.trim($element.val());
+           if(value.length > 0 && jQuery.inArray(inputList[i],self.invalidFields) != -1){
+               self.removeElement(inputList[i],self.invalidFields);
+           }else if(value.length == 0){
+               if(jQuery.inArray(inputList[i],self.invalidFields) == -1){
+                   self.invalidFields.push(inputList[i]);
+               }
+               result = true;
+               break;
+           }
+       }
+       return result;
+   };
+   SignValidator.prototype.isReadyToSubmit = function()
+   {
+       var self = this;
+       var result = true;
+       if(self.isEmpty(self.inputList) || self.invalidFields.length > 0){
+          var $element = self.$form.find('[name='+self.invalidFields[0]+']');
+         // console.log(self.invalidFields[0]);
+          $element.focus();
+          result = false;
+       }
+       return result;
+   };
+    $(document).ready(function(){
+        var validator = new SignValidator("#sign");
+
+        $("#username").on("change",function(e){
+            var url = "<?php echo $this->url('auc/auc_child', array('action' => 'chkUser'))?>";
+            validator.validateElement("#username", url);
+        });
+        $("#email").on("change",function(e){
+            var url = "<?php echo $this->url('auc/auc_child', array('action' => 'chkUser'))?>";
+            validator.validateElement("#email", url);
+        });
+        $("#password").on("change",function(e){
+            var url = "<?php echo $this->url('auc/auc_child', array('action' => 'chkUser'))?>";
+            validator.validateElement("#password", url);
+        });
+        $("#sign").on("submit",function(e){
+            if(validator.isReadyToSubmit()){
+                validator.$form.submit();
+            }else{
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+
+
+
+

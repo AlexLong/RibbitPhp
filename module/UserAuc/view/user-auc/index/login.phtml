@@ -1,0 +1,9 @@
+<h1>Login</h1>
+<?php
+echo $this->partial('user-auc/login_form',array(
+    'validation_messages' => $this->validation_messages,
+    'failed_form' => $this->failed_form
+    )
+);
+?>
+New Here? <a href="<?php echo $this->Url('auc/auc_child', array('action' => 'sign'))?>">Create an account.</a>

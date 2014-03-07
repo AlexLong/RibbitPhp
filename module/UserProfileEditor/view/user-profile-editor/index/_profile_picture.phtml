@@ -1,0 +1,110 @@
+
+<div class="sign-wrapper">
+
+
+
+    <?php
+
+    $form = $this->picture_form;
+
+    $form->setAttributes(array(
+        'method' => 'post',
+        'action' => $this->Url('private_profile/p_child', array('action' => 'updatePicture'))
+    ));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formFileSessionProgress();
+    ?>
+
+    <label for="profile_picture">Your picture</label>
+
+
+    <div class="standard-field">
+
+        <?php if($this->ProfileImg()->has()) {?>
+
+        <img src=<?php echo $this->url($this->ProfileImg()->getRoute(),$this->ProfileImg()->get()) ?>>
+
+        <?php }?>
+
+        <img id="img_preview" src="" >
+
+        <div class="tip-wrapper">
+            <div class="signtip" data-target="profile_picture">
+                <?php echo $this->userFormErrors($form->get('profile_picture'));?>
+            </div>
+        </div>
+
+        <?php echo $this->formElement($form->get('profile_picture'));?>
+
+    </div>
+
+
+    <?php echo $this->formElement($form->get('edit_token'));?>
+
+    <input type="submit" value="submit">
+
+    <?php echo $this->form()->closeTag(); ?>
+
+</div>
+<script>
+
+    /*
+    var readPicture = function(input){
+        this.$file_input =  $(input);
+
+    };
+    readPicture.prototype.readInput = function(){
+        var self = this;
+
+        var reader = new FileReader();
+        var result = null;
+        this.$file_input.on('change', function(){
+
+                var regex = new RegExp('image.*');
+                if(!this.files[0].type.match(regex)){
+                   alert("Please select image which has a valid format (jpeg, png, gif)");
+                    return false;
+                }
+                reader.readAsDataURL(this.files[0]);
+                reader.onload = function(e){
+                   this.result = e.target.result;
+                };
+
+           return null;
+        });
+        return result;
+    };
+    $(document).ready(function(){
+       // var $file = $("#profile_picture");
+
+        var $previewFiv =  $("#img_preview");
+        $("#profile_picture").on('change',function(file){
+
+            var types = new RegExp('(image/png|image/jpeg|image/gif)');
+           // console.log(this.files[0].type);
+
+            if(!this.files[0].type.match(types)){
+                alert("Please select image which has a valid format (jpeg, png, gif)");
+
+                return false;
+            }
+            var reader = new FileReader();
+            reader.readAsDataURL(this.files[0]);
+            reader.onload = function(e){
+                $previewFiv.attr('src',e.target.result);
+                console.log($previewFiv.width());
+                console.log($previewFiv.height());
+            };
+
+            return true;
+
+        });
+
+
+
+    })
+*/
+
+
+</script>

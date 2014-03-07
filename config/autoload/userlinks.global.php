@@ -16,11 +16,6 @@ return array(
              'route' => 'user_home',
              'action' => 'index'
          ),
-         'login_form' =>  array(
-             'route' => 'u/u_child',
-             'action' => 'login'
-         ),
-
      )
 
 );

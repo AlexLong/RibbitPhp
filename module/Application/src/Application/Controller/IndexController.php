@@ -10,6 +10,7 @@
 namespace Application\Controller;
 
 
+use UserProfile\Entity\UserProfile;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -19,24 +20,9 @@ class IndexController extends AbstractActionController
    public function indexAction()
    {
 
-      // $this->getResponse()->
-
-       /*
-       $request = $this->getEvent()->getRouteMatch()->getParams();
-       var_dump(isset($request['user']) ? $request['user'] : '');
-       */
-
 
 
         return new ViewModel();
    }
-    public function userAction(){
 
-
-
-        //var_dump(isset($request['user']) ? $request['user'] : '');
-
-       // throw new \Exception("Not Implemented ");
-
-    }
 }

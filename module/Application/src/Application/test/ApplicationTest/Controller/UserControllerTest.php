@@ -12,7 +12,7 @@
 namespace ApplicationTest;
 
 
-use Application\Controller\UserController;
+use Application\Controller\UserAucController;
 use UserProfile\Domain\DbLayerConcrete\UserProfile;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use Application\Controller\IndexController;
@@ -45,13 +45,13 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     {
        $this->serviceManager = Bootstrap::getServiceManager();
 
-        $this->controller = new UserController();
+        $this->controller = new UserAucController();
       //  $this->controller->getResponse()
 
         $this->request    = new Request();
 
         $this->adapter = $this->serviceManager->get('Zend\Db\Adapter\Adapter');
-       // $this->userRepository = $this->serviceManager->get('user_repository');
+       // $this->userRepository = $this->serviceManager->get('userAggregate')->getUser();
 
         $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
         $this->storage = $this->sessionManager->getStorage();
@@ -154,8 +154,8 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     public function testCanGetAMockProfile(){
 
 
-  // $user_profile = $this->serviceManager->get('UserService')->getUserProfileByUsername('test');
-      // $user_profile = $this->serviceManager->get('user_profile_repository');
+  // $user_profile = $this->serviceManager->get('UserProfileService')->getUserProfileByUsername('test');
+      // $user_profile = $this->serviceManager->get('userAggregate')->getProfile();
        // var_dump($user_profile->getUserProfileByUsername('test'));
        // $user_profile = new UserProfile($this->serviceManager);
   //  $this->assertNotNull($user_profile);

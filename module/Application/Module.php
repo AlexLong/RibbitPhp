@@ -23,11 +23,10 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH,function($e){
 
-        },50);
 
         $this->bootstrapSession($e);
+      //  $this->registerStrategy($e);
     }
 
     public  function  bootstrapSession($e)
@@ -42,15 +41,25 @@ class Module
             $session->regenerateId(true);
             $container->init = 1;
         }
-
     }
 
+    /*
+    public function registerStrategy($e){
+        $sharedEvents        = $e->getApplication()->getEventManager()->getSharedManager();
+        $sm = $e->getApplication()->getServiceManager();
+
+        $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, function($e) use ($sm) {
+            $strategy = $sm->get('ImageStrategy');
+            $view     = $sm->get('ViewManager')->getView();
+            $strategy->attach($view->getEventManager());
+        }, 100);
+    }
+    */
     public function getConfig()
     {
-
-
-        $conf = array_merge(
+        $conf = array_merge_recursive(
             include __DIR__ . '/config/template.config.php',
+            include __DIR__ . '/config/routes.config.php',
             include __DIR__ . '/config/module.config.php'
         );
 
@@ -74,28 +83,23 @@ class Module
     {
         return array(
             'invokables' => array(
-
+                'userFormErrors' => 'Application\ViewHelpers\UserFormErrors',
 
             ),
             'factories' => array(
 
-
-
             ),
-
-
         );
     }
     public  function  getServiceConfig()
     {
         return array(
-            'invokables' => array(
-
-            ),
+            'invokables' => array(),
            'factories' => array(
-
+               'GlobalCacheService' => 'Zend\Cache\Service\StorageCacheFactory',
+               'ImageRenderer' => 'Application\Service\ImageRendererFactory',
+               'ImageStrategy' => 'Application\Service\ImageFactory',
                'Zend\Session\SessionManager' => function ($sm) {
-
                        $config = $sm->get('config');
                        if (isset($config['session'])) {
                            $session = $config['session'];

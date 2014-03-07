@@ -10,7 +10,7 @@
 namespace UserProfile\Controller\Plugin;
 
 
-use UserProfile\Service\Interfaces\AuthenticationServiceInterface;
+use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
 use Zend\Http\Request;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Mvc\Controller\Plugin\Redirect;
@@ -20,14 +20,11 @@ use Zend\View\Helper\ViewModel;
 
 class UserPlugin extends AbstractPlugin  {
 
-
     protected $redirect;
 
     protected $event;
 
     protected $authService;
-
-    protected $authPath = array('route' => "u/u_child", 'action' => 'login');
 
     protected $userLinks;
 
@@ -49,7 +46,6 @@ class UserPlugin extends AbstractPlugin  {
         }
 
         return false;
-
     }
 
     public function postOnly()
@@ -235,9 +231,5 @@ class UserPlugin extends AbstractPlugin  {
     {
         return $this->request;
     }
-
-
-
-
 
 } 

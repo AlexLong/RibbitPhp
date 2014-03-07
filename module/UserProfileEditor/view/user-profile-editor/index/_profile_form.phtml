@@ -1,0 +1,64 @@
+
+<div class="sign-wrapper">
+
+    <?php if($this->ProfileImg()->has()) {?>
+
+        <img src=<?php echo $this->url($this->ProfileImg()->getRoute(),$this->ProfileImg()->get()) ?>>
+
+    <?php }?>
+
+    <a href="<?php echo $this->Url('private_profile/p_child', array('action' => 'picture'))?>">
+        Change Your Picture.
+    </a>
+
+    <?php
+    $form = $this->profile_form;
+
+    $form->setAttributes(array(
+        'method' => 'post',
+        'action' => $this->Url('private_profile/p_child', array('action' => 'profile'))
+    ));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    ?>
+
+    <?php echo $this->formLabel($form->get('first_name'));?>
+
+    <div class="standard-field">
+
+        <div class="tip-wrapper">
+            <div class="signtip" data-target="first_name">
+
+                <?php
+                 echo $this->userFormErrors($form->get('first_name'))
+                ?>
+
+            </div>
+        </div>
+        <?php echo $this->formElement($form->get('first_name'));?>
+    </div>
+    <?php echo $this->formLabel($form->get('last_name'));?>
+
+    <div class="standard-field">
+        <div class="tip-wrapper">
+            <div class="signtip" data-target="last_name">
+                <?php
+                echo $this->userFormErrors($form->get('last_name'));
+                ?>
+            </div>
+        </div>
+        <?php echo $this->formElement($form->get('last_name'));?>
+
+    </div>
+
+
+    <?php echo $this->formElement($form->get('edit_token'));?>
+
+    <input type="submit" value="submit">
+
+    <?php echo $this->form()->closeTag(); ?>
+
+</div>
+
+
+

@@ -1,0 +1,18 @@
+<?php
+
+
+return array(
+    'service_manager' => array(
+        'factories' => array(
+
+            'UserProfileService' => function($sm){
+                    $user_service = new \UserProfile\Service\UserProfileService();
+                    $user_service->setServiceLocator($sm);
+                    return $user_service;
+                },
+
+            'AuthService' => 'UserProfile\Service\AuthenticationServiceFactory',
+            'profileCacheService' => 'UserProfile\Service\ProfileCacheStorageFactory',
+        )
+    )
+);

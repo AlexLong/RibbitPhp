@@ -3,77 +3,68 @@
 namespace UserProfile\Domain\DbLayerConcrete;
 
 use Application\Domain\DbLayerConcrete\AbstractRepository;
-use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
 use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use UserProfile\Entity\User;
+use Zend\Db\Adapter\AdapterInterface;
+
+class UserRepository extends AbstractRepository implements UserRepositoryInterface {
+
+   protected $insert_columns = array('email', 'username', 'password',
+        'registration_date');
 
 
-class UserRepository extends AbstractRepository implements UserRepositoryInterface, ServiceLocatorAwareInterface {
 
-
-    protected $table = 'ribbit_user';
-
-    protected $userProfile;
-
-    protected $insert_columns = array('email', 'username', 'password',
-        'registration_date', 'role');
-
-    public function __construct(ServiceLocatorInterface $sm){
-        parent::__construct($sm);
+    public function __construct($table,AdapterInterface $adapter,User $user){
+        parent::__construct($table,$adapter);
+        $this->entity = $user;
     }
+
     function  findById($id, array $columns = null)
     {
+        if($columns == null){
+            $columns = $this->getColumns();
+        }
          return $this->findBy(array('id' => $id),$columns);
     }
     function  findByUsername($username, array $columns = null)
     {
-
+        if($columns == null){
+            $columns = $this->getColumns();
+        }
         return $this->findBy(array('username' => $username),$columns);
     }
     function  findByEmail($email, array $columns = null)
     {
+        if($columns == null){
+            $columns = $this->getColumns();
+        }
         return $this->findBy(array('email' => $email),$columns);
     }
 
-    function createUser($values = array())
+    function createUser(array $values )
     {
+        $result = null;
         foreach($values as $key => $v)
         {
             if(!in_array($key,$this->insert_columns))
                 unset($values[$key]);
         }
-        if(array_key_exists('password',$values)){
+        if(isset($values['password'])){
             $values['password'] = md5($values['password']);
         }
         $values['registration_date'] = date("Y-m-d H:i:s");
 
         if($this->addTo($values)){
-
-       $id = $this->findByUsername($values['username'], array('id'));
-
-       $this->getServiceLocator()->get('user_profile_repository')->createProfile(
-           array('user_id' => is_array($id) ? $id['id'] : $id));
-
-       }else{
-            return false;
+            $result = $this->findByUsername(
+                $values['username'], array('id'));
         }
-
-      return true;
+      return $result;
     }
-
     function dropById($userId)
     {
-
-    if(!$this->findById($userId, array('id'))) return false;
-        $statement = array();
-        $statement[] = $this->getSqlManager()->delete($this->table)->where(array('id' => $userId));
-        $statement[] = $this->getServiceLocator()->get('user_profile_repository')->deleteUserProfile($userId);
-        $this->execute($statement);
-     return  true;
-    
+     $statement = $this->getSql()->delete()->where(array('id' => $userId));
+     return   $this->executeDelete($statement);
     }
-
 
 
 } 
