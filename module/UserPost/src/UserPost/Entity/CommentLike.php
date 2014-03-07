@@ -14,6 +14,8 @@ use Application\Entity\AbstractEntity;
 
 class CommentLike extends AbstractEntity{
 
+    public $id = null;
+
     public $comment_id = null;
 
     public $user_id = null;

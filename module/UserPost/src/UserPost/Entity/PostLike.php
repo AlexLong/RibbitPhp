@@ -14,6 +14,7 @@ use Application\Entity\AbstractEntity;
 
 class PostLike extends AbstractEntity {
 
+    public $id = null;
 
     public $post_id = null;
 
