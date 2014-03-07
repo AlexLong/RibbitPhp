@@ -50,9 +50,8 @@ class PictureModel implements  InputFilterAwareInterface {
         if(!$this->inputFilter){
             $inputFilter = new InputFilter();
             $fileInput = new FileInput('profile_picture');
-            $fileInput->breakOnFailure();
-            $fileInput->setAllowEmpty(true);
 
+            $fileInput->setAllowEmpty(true);
             $fileInput->getValidatorChain()
                 ->attachByName("filesize",array('max' => '5MB' ))
                 ->attachByName('filemimetype',  array('mimeType' =>
@@ -60,12 +59,15 @@ class PictureModel implements  InputFilterAwareInterface {
                     image/jpeg'))
                 ->attachByName('fileimagesize', array('maxWidth' => 5000,
                     'maxHeight' => 5000));
+
             $fileInput->getFilterChain()->attach(new ImageFilter(array(
                 'dir_path' => $this->dirPath(),
                 'target' => $this->target(),
                 'randomize' => true,
                 'overwrite' =>true
             )),1);
+
+           $fileInput->setBreakOnFailure(true);
             $inputFilter->add($fileInput);
 
             $this->inputFilter = $inputFilter;

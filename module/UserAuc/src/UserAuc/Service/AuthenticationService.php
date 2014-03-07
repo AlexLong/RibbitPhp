@@ -94,8 +94,6 @@ class AuthenticationService  implements  AuthenticationServiceInterface, Service
         foreach($data as $key=>$value){
             $this->getSessionStorage()->offsetSet($key,$value);
         }
-        $dd = $this->getSessionStorage()->toArray();
-      var_dump($dd);
         return $this;
     }
     /**

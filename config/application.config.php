@@ -15,7 +15,8 @@ return array(
         'UserProfile',
         'UserTimeline',
         'UserAuc',
-        'UserProfileEditor'
+        'UserProfileEditor',
+        'UserPost'
         ),
     'module_listener_options' => array(
         'module_paths' => array(
