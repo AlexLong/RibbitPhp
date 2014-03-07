@@ -39,7 +39,7 @@ class UsernameExists extends  AbstractUserValidator {
     {
         $valid = true;
 
-        $user = $this->getUserRepository()->findByUsername($post_data,
+        $user = $this->getUserTable()->findByUsername($post_data,
             array('username'));
 
         if(($user != null) || (is_array($user) && count($user) > 0) ) {

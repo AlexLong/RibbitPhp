@@ -24,21 +24,6 @@ class ProfileQueryFactory {
         $this->aggregate = $aggregate;
     }
 
-    public function  complexSelect($entities = array()){
-
-
-        $query = "Select ";
-        $tmp = array();
-        foreach($entities as $table=>$value){
-            array_push($tmp,$table . ".".$value);
-        }
-        $query = implode(",",$tmp);
-
-
-        return $query;
-
-    }
-
     public function resolveUserProfile($username, $limit = 1){
         $result = null;
         $user_table = $this->aggregate->getTable('user');

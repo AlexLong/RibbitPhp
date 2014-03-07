@@ -36,7 +36,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
     protected $sessionManager;
     protected $storage;
     protected $serviceManager;
-    protected $userRepository;
+    protected $userTable;
 
     protected $mock_user;
 
@@ -51,7 +51,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $this->request    = new Request();
 
         $this->adapter = $this->serviceManager->get('Zend\Db\Adapter\Adapter');
-       // $this->userRepository = $this->serviceManager->get('userAggregate')->getUser();
+       // $this->userTable = $this->serviceManager->get('userAggregate')->getUser();
 
         $this->sessionManager = $this->serviceManager->get('Zend\Session\SessionManager');
         $this->storage = $this->sessionManager->getStorage();
@@ -106,7 +106,7 @@ class IndexControllerTest  extends  PHPUnit_Framework_TestCase {
         $params = new Parameters(array('email' => 'test@test.com',
             'password' => 'secret', 'remember_me' => 1, 'auth_token' => 'dd'));
 
-      $id =  $this->userRepository->findByEmail($params['email'], array('id'));
+      $id =  $this->userTable->findByEmail($params['email'], array('id'));
 
         if(!$id){
             $this->authService->signUp($this->mock_user);

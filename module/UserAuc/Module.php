@@ -67,8 +67,8 @@ class Module
                         $signModel = new SignModel();
                         $emailExistValidator = new EmailExists();
                         $usernameExistsValidator = new UsernameExists();
-                        $usernameExistsValidator->setUserRepository($sm->get('userAggregate')->getUser());
-                        $emailExistValidator->setUserRepository($sm->get('userAggregate')->getUser());
+                        $usernameExistsValidator->setUserTable($sm->get('userAggregate')->getUser());
+                        $emailExistValidator->setUserTable($sm->get('userAggregate')->getUser());
                         $signModel->setEmailValidator($emailExistValidator);
                         $signModel->setUsernameValidator($usernameExistsValidator);
                         $signForm->setInputFilter($signModel->getInputFilter());
@@ -79,7 +79,7 @@ class Module
                         $loginForm = new LoginForm();
                         $loginModel = new LoginModel();
                         $emailExistValidator = new EmailExists(array('login' => true));
-                        $emailExistValidator->setUserRepository($sm->get('userAggregate')->getUser());
+                        $emailExistValidator->setUserTable($sm->get('userAggregate')->getUser());
                         $loginModel->setEmailValidator($emailExistValidator);
                         $loginForm->setInputFilter($loginModel->getInputFilter());
                         return $loginForm;

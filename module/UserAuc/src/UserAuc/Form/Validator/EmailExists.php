@@ -10,7 +10,7 @@
 namespace UserAuc\Form\Validator;
 
 
-use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
+
 use Zend\Validator\AbstractValidator;
 use Zend\Validator\Exception;
 
@@ -51,7 +51,7 @@ class EmailExists extends  AbstractUserValidator {
     {
         $valid = true;
 
-        $user = $this->getUserRepository()->findByEmail($post_data,
+        $user = $this->getUserTable()->findByEmail($post_data,
             array('email'));
 
         if(($user != null) || (is_array($user) && count($user) > 0) ) {

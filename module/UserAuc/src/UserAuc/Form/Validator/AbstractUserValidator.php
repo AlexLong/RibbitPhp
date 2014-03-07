@@ -10,13 +10,12 @@
 namespace UserAuc\Form\Validator;
 
 
-use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
+
 use Zend\Validator\AbstractValidator;
 
 abstract class AbstractUserValidator extends  AbstractValidator{
 
-
-    protected  $userRepository;
+    protected  $userTable;
 
     public  function __construct(array $options = null)
     {
@@ -25,20 +24,20 @@ abstract class AbstractUserValidator extends  AbstractValidator{
     }
 
     /**
-     * @param mixed $userRepository
+     * @param mixed $userTable
      */
-    public function setUserRepository(UserRepositoryInterface $userRepository)
+    public function setUserTable($userTable)
     {
 
-        $this->userRepository = $userRepository;
+        $this->userTable = $userTable;
     }
 
     /**
      * @return mixed
      */
-    public function getUserRepository()
+    public function getUserTable()
     {
-        return $this->userRepository;
+        return $this->userTable;
     }
 
 

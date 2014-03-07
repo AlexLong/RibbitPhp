@@ -9,12 +9,12 @@
 
 namespace UserProfile\Domain\DbLayerConcrete;
 
-use Application\Domain\DbLayerConcrete\AbstractRepository;
-use UserProfile\Domain\DbLayerInterfaces\UserProfileRepositoryInterface;
+use Application\Domain\DbLayerConcrete\AbstractTable;
+
 use UserProfile\Entity\UserProfile;
 use Zend\Db\Adapter\AdapterInterface;
 
-class UserProfileRepository extends  AbstractRepository implements UserProfileRepositoryInterface{
+class UserProfileTable extends  AbstractTable {
 
     public function __construct($table,AdapterInterface $adapter, UserProfile $user_profile){
         parent::__construct($table,$adapter);

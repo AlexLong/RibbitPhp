@@ -2,12 +2,11 @@
 
 namespace UserProfile\Domain\DbLayerConcrete;
 
-use Application\Domain\DbLayerConcrete\AbstractRepository;
-use UserProfile\Domain\DbLayerInterfaces\UserRepositoryInterface;
+use Application\Domain\DbLayerConcrete\AbstractTable;
 use UserProfile\Entity\User;
 use Zend\Db\Adapter\AdapterInterface;
 
-class UserRepository extends AbstractRepository implements UserRepositoryInterface {
+class UserTable extends AbstractTable {
 
    protected $insert_columns = array('email', 'username', 'password',
         'registration_date');

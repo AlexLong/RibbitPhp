@@ -31,7 +31,7 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
 
     protected $userProfile;
 
-    protected $userRepository;
+    protected $userTable;
 
     protected $queryFactory;
 

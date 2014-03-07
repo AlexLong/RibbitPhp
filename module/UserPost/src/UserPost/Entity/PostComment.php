@@ -14,7 +14,6 @@ class PostComment extends AbstractEntity {
 
     public $id = null;
 
-
     public $post_id = null;
 
     public $parent_id = null;

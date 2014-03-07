@@ -18,4 +18,24 @@ class Module
             ),
         );
     }
+
+    public function getViewHelperConfig()
+    {
+        return array(
+            'invokables' => array(),
+            'factories' => array(),
+        );
+    }
+
+
+    public  function  getServiceConfig(){
+        return array(
+            'invokables' => array(
+
+            ),
+            'factories' => array(
+
+            )
+        );
+    }
 }

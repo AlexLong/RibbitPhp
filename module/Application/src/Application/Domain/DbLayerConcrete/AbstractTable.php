@@ -8,7 +8,7 @@
  */
 
 namespace Application\Domain\DbLayerConcrete;
-use Application\Domain\DbLayerInterfaces\RepositoryInterface;
+
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Sql\Sql;
@@ -16,7 +16,7 @@ use Zend\Db\TableGateway\TableGateway;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 
-abstract class AbstractRepository extends TableGateway implements RepositoryInterface {
+abstract class AbstractTable extends TableGateway {
 
 
     protected $columns = null;

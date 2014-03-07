@@ -16,29 +16,31 @@ use UserProfile\Entity\UserProfile;
 
 
 class UserAggregate extends AbstractDbAggregate {
+
     protected $tables = array(
         'user'  => 'ribbit_user',
         'profile' => 'ribbit_user_profile'
     );
+
     protected  $user;
     protected  $profile;
     /**
-     * @return UserRepository
+     * @return UserTable
      */
     public function getUser()
     {
         if(!$this->user){
-            $this->user = new UserRepository($this->tables['user'],$this->dbAdapter, new User());
+            $this->user = new UserTable($this->tables['user'],$this->dbAdapter, new User());
         }
         return $this->user;
     }
     /**
-     * @return UserProfileRepository
+     * @return UserProfileTable
      */
     public function getProfile()
     {
         if(!$this->profile){
-            $this->profile = new UserProfileRepository($this->tables['profile'],$this->dbAdapter,new UserProfile());
+            $this->profile = new UserProfileTable($this->tables['profile'],$this->dbAdapter,new UserProfile());
         }
         return $this->profile;
     }

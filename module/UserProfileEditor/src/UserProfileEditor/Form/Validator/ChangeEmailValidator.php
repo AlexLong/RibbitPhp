@@ -24,7 +24,7 @@ class ChangeEmailValidator extends EmailAddress {
 
     protected $currentEmail;
 
-    protected $userRepository;
+    protected $userTable;
 
 
 
@@ -52,7 +52,7 @@ class ChangeEmailValidator extends EmailAddress {
             return true;
         }
 
-        $user = $this->getUserRepository()->findByEmail($value,
+        $user = $this->getUserTable()->findByEmail($value,
             array('email'));
 
         if(($user != null) || (is_array($user) && count($user) > 0) ) {
@@ -80,19 +80,19 @@ class ChangeEmailValidator extends EmailAddress {
     }
 
     /**
-     * @param mixed $userRepository
+     * @param mixed $userTable
      */
-    public function setUserRepository($userRepository)
+    public function setUserTable($userTable)
     {
-        $this->userRepository = $userRepository;
+        $this->userTable = $userTable;
     }
 
     /**
      * @return mixed
      */
-    public function getUserRepository()
+    public function getUserTable()
     {
-        return $this->userRepository;
+        return $this->userTable;
     }
 
 
