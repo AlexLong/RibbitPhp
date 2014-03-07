@@ -12,16 +12,16 @@ use Application\Entity\AbstractEntity;
 
 class PostComment extends AbstractEntity {
 
-    public $post_id;
+    public $post_id = null;
 
-    public $parent_id;
+    public $parent_id = null;
 
-    public $user_id;
+    public $user_id = null;
 
-    public $comment_date;
+    public $comment_date = null;
 
-    public $comment_content;
+    public $comment_content = null;
 
-    public $comment_image;
+    public $comment_image = null;
 
 } 

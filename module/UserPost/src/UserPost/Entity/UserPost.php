@@ -24,6 +24,6 @@ class UserPost extends AbstractEntity{
 
     public $user_id = null;
 
-    public $vcl_mode = 0;
+    public $vcl_mode = null;
 
 } 
