@@ -7,7 +7,7 @@
  * 
  */
 
-namespace UserProfile\Domain\DbLayerConcrete;
+namespace UserProfile\Domain\Concrete;
 
 
 use Zend\ServiceManager\FactoryInterface;

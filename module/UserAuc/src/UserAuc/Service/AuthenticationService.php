@@ -11,8 +11,8 @@ namespace UserAuc\Service;
 
 
 use UserAuc\Entity\AuthEntity;
-use UserProfile\Domain\DbLayerConcrete\ProfileQueryFactory;
-use UserProfile\Domain\DbLayerConcrete\UserAggregate;
+use UserProfile\Domain\Concrete\ProfileQueryFactory;
+use UserProfile\Domain\Concrete\UserAggregate;
 use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
 use UserProfileEditor\Service\UserDirService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;

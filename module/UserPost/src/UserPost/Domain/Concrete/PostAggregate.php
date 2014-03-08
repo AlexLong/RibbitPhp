@@ -7,10 +7,11 @@
  * 
  */
 
-namespace UserPost\src\UserPost\Domain\DbLayerConcrete;
+namespace UserPost\src\UserPost\Domain\Concrete;
 
 
-use Application\Model\DbLayerConcrete\AbstractDbAggregate;
+use Application\Domain\Concrete\AbstractDbAggregate;
+use UserPost\src\UserPost\Entity\PostEntity;
 
 class PostAggregate extends AbstractDbAggregate{
 
@@ -29,14 +30,10 @@ class PostAggregate extends AbstractDbAggregate{
     {
         if(!$this->post){
 
-            $this->post = new PostTable($this->tables['post'],$this->getDbAdapter());
+            $this->post = new PostTable($this->tables['post'],$this->dbAdapter, new PostEntity());
         }
         return $this->post;
     }
-
-
-
-
 
 
 

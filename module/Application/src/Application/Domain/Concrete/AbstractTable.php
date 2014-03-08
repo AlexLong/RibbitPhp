@@ -7,13 +7,11 @@
  *
  */
 
-namespace Application\Domain\DbLayerConcrete;
+namespace Application\Domain\Concrete;
 
 use Zend\Db\Adapter\Adapter;
-use Zend\Db\Adapter\AdapterInterface;
-use Zend\Db\Sql\Sql;
 use Zend\Db\TableGateway\TableGateway;
-use Zend\ServiceManager\ServiceLocatorInterface;
+
 
 
 abstract class AbstractTable extends TableGateway {

@@ -12,7 +12,7 @@ namespace UserPost\src\UserPost\Entity;
 
 use Application\Entity\AbstractEntity;
 
-class UserPost extends AbstractEntity{
+class PostEntity extends AbstractEntity{
 
     public $post_id = null;
 
@@ -25,5 +25,7 @@ class UserPost extends AbstractEntity{
     public $user_id = null;
 
     public $vcl_mode = null;
+
+
 
 } 

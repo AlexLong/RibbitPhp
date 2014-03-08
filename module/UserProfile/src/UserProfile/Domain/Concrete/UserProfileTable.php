@@ -7,9 +7,9 @@
  * 
  */
 
-namespace UserProfile\Domain\DbLayerConcrete;
+namespace UserProfile\Domain\Concrete;
 
-use Application\Domain\DbLayerConcrete\AbstractTable;
+use Application\Domain\Concrete\AbstractTable;
 
 use UserProfile\Entity\UserProfile;
 use Zend\Db\Adapter\AdapterInterface;

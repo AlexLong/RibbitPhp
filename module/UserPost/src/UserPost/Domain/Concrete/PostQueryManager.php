@@ -7,7 +7,7 @@
  * 
  */
 
-namespace UserPost\src\UserPost\Domain\DbLayerConcrete;
+namespace UserPost\src\UserPost\Domain\Concrete;
 
 
 class PostQueryManager {

@@ -13,7 +13,7 @@ namespace ApplicationTest;
 
 
 use Application\Controller\UserAucController;
-use UserProfile\Domain\DbLayerConcrete\UserProfile;
+use UserProfile\Domain\Concrete\UserProfile;
 use Zend\Mvc\Router\Http\TreeRouteStack as HttpRouter;
 use Application\Controller\IndexController;
 use Zend\Http\Request;

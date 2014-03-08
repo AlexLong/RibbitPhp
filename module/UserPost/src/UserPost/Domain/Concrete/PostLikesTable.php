@@ -7,10 +7,10 @@
  * 
  */
 
-namespace UserPost\src\UserPost\Domain\DbLayerConcrete;
+namespace UserPost\src\UserPost\Domain\Concrete;
 
 
-use Application\Domain\DbLayerConcrete\AbstractTable;
+use Application\Domain\Concrete\AbstractTable;
 
 class PostLikesTable extends AbstractTable{
 

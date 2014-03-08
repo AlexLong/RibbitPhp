@@ -7,10 +7,10 @@
  * 
  */
 
-namespace Application\Model\DbLayerConcrete;
+namespace Application\Domain\Concrete;
 
 
-use Application\Model\DbLayerInterfaces\AggregateDbInterface;
+use Application\Domain\DbInterfaces\AggregateDbInterface;
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\AdapterInterface;
 

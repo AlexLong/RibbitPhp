@@ -45,7 +45,7 @@ class Module
 
             ),
             'factories' => array(
-                'userAggregate' => 'UserProfile\Domain\DbLayerConcrete\UserAggregateFactory',
+                'userAggregate' => 'UserProfile\Domain\Concrete\UserAggregateFactory',
                 'profileCacheService' => function($sm){
                       $userProfileCache = new ProfileCacheService();
                       $userProfileCache->setServiceLocator($sm);

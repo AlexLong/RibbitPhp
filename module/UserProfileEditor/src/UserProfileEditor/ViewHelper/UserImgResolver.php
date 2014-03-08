@@ -11,7 +11,7 @@ namespace UserProfileEditor\ViewHelper;
 
 
 use UserAuc\Service\AuthenticationService;
-use UserProfile\Domain\DbLayerConcrete\UserAggregate;
+use UserProfile\Domain\Concrete\UserAggregate;
 use UserProfile\Service\ProfileCacheService;
 use Zend\Form\View\Helper\AbstractHelper;
 use Zend\View\Helper\Url;

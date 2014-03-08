@@ -7,10 +7,10 @@
  * 
  */
 
-namespace UserProfile\Domain\DbLayerConcrete;
+namespace UserProfile\Domain\Concrete;
 
 
-use Application\Model\DbLayerConcrete\AbstractDbAggregate;
+use Application\Domain\Concrete\AbstractDbAggregate;
 use UserProfile\Entity\User;
 use UserProfile\Entity\UserProfile;
 

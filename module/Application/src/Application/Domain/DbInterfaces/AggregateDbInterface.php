@@ -7,7 +7,7 @@
  * 
  */
 
-namespace Application\Model\DbLayerInterfaces;
+namespace Application\Domain\DbInterfaces;
 
 
 class AggregateDbInterface {

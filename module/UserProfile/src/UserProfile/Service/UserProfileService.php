@@ -12,14 +12,12 @@ namespace UserProfile\Service;
 
 use UserAuc\Service\AuthenticationService;
 use UserAuc\Service\Interfaces\AuthenticationServiceInterface;
-use UserProfile\Domain\DbLayerConcrete\ProfileQueryFactory;
-use UserProfile\Domain\DbLayerConcrete\UserAggregate;
-use UserProfile\Entity\UserProfile;
+use UserProfile\Domain\Concrete\ProfileQueryFactory;
+use UserProfile\Domain\Concrete\UserAggregate;
 use UserProfile\Service\Interfaces\UserProfileServiceInterface;
-use Zend\EventManager\EventManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\Hydrator\ArraySerializable;
+
 
 
 class UserProfileService implements ServiceLocatorAwareInterface, UserProfileServiceInterface{
@@ -63,15 +61,10 @@ class UserProfileService implements ServiceLocatorAwareInterface, UserProfileSer
        $identity = $auth->getUserIdentify();
        $this->getUserAggregate()->getProfile()
            ->update($profile_data,array('user_id' => $identity['id']));
-        $updated_data = (array)$this->getUserAggregate()->getProfile()
-            ->findByUserId($identity['id']);
+
        $res  = (array)$this->getUserAggregate()->getUser()->findById($identity['id'],array('username'));
-
-
-
-     $this->getProfileCacheService()->setUserProfile(array_merge($updated_data,$res));
-        return $updated_data;
-     // return $updated_data;
+     $this->getProfileCacheService()->setUserProfile(array_merge($profile_data,$res));
+        return $profile_data;
    }
 
     public function updateProfilePicture($new_picture){

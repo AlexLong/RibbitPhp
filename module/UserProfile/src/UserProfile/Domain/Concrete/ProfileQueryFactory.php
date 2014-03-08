@@ -7,10 +7,10 @@
  * 
  */
 
-namespace UserProfile\Domain\DbLayerConcrete;
+namespace UserProfile\Domain\Concrete;
 
 
-use Application\Model\DbLayerInterfaces\AggregateDbInterface;
+use Application\Domain\DbInterfaces\AggregateDbInterface;
 use Zend\Db\Adapter\Adapter;
 
 class ProfileQueryFactory {
