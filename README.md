@@ -3,7 +3,7 @@ Intoduction
 -------------
 
  RibbitPhp  - The php powered clone of twitter.
- Used Framework: Zend 2
+ Used Framework: Zend F 2
 
 Developed Features:
 1. User Sign up/ Sign in ,.
